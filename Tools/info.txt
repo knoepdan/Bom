@@ -1,0 +1,19 @@
+NSWAG (generate open api spec and clients)
+https://github.com/RicoSuter/NSwag
+
+------- base dev environment -------
+VS 2019
+Git
+KDIFF3 (https://sourceforge.net/projects/kdiff3/files/latest/download)
+IIS (to run in iis for development: https://blogs.msdn.microsoft.com/webdev/2017/07/13/development-time-iis-support-for-asp-net-core-applications/)
+
+
+
+------ tools not used ------------
+## Poco generator
+for core (to be tested!!)
+https://docs.microsoft.com/en-us/ef/core/miscellaneous/cli/dotnet
+
+// for normal entity framework.. maybe this works
+https://marketplace.visualstudio.com/items?itemName=ErikEJ.EntityFramework6PowerToolsCommunityEdition
+https://marketplace.visualstudio.com/items?itemName=SimonHughes.EntityFrameworkReversePOCOGenerator

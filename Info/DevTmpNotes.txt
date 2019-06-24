@@ -1,0 +1,33 @@
+
+
+Nodes
+
+initial root data-> given
+ -> CREATE
+ 
+		ParentPath
+		Title
+ 
+ 
+ 
+ 
+ -> Get
+ 
+ 
+	Filter:
+		BaseNode: Id  (if empty -> means root)
+		Include Parents paths:  (depth)
+		Include Children:  (depth)
+		Include ChildrenWithContent: (depth)
+ 
+			
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+
+ 

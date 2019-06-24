@@ -1,0 +1,11 @@
+## Logging
+https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/index?view=aspnetcore-2.2
+https://github.com/aspnet/AspNetCore.Docs/tree/master/aspnetcore/fundamentals/logging/index/samples/2.x/TodoApiSample
+
+
+## configuration
+https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/index?view=aspnetcore-2.2
+https://exceptionnotfound.net/working-with-environments-and-launch-settings-in-asp-net-core/
+Basics: 
+Host defines whether app runs development or production mode (etc)-> is defined by environment variable or cmd line args. (environment var can also be set by launch.setting.json)
+Configuration is defined by: appsettings.json -> appsetting.{environment}.json (environment set by host), .... and others see docs. 
