@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[MoveNodeProc]
+﻿CREATE PROCEDURE dbo.[MoveNodeProc]
 	@pathId INT NOT NULL,
 	@newParentPathId INT NOT NULL,
 	@moveChildrenToo BIT NOT NULL
@@ -19,7 +19,7 @@ BEGIN
 	DECLARE @oldParentPathId INT
 	DECLARE @oldParentPath HIERARCHYID
 	DECLARE @newParentPath HIERARCHYID
-	SELECT  @oldParentPath = NodePath.GetAncestor(1) FROM dbo.[PATH] WHERE PathId = @pathId
+	SELECT  @oldParentPath = NodePath.GetAncestor(1) FROM dbo.[Path] WHERE PathId = @pathId
 	SELECT @oldParentPathId = pp.PathId FROM dbo.[Path] pp  WHERE pp.NodePath = @oldParentPath
 	SELECT @newParentPath = pp.NodePath FROM dbo.[Path] pp  WHERE pp.PathId = @newParentPathId
 
@@ -29,7 +29,7 @@ BEGIN
 
 		DECLARE @currentPath HIERARCHYID
 		DECLARE @currentLevel INT
-		SELECT  @currentPath = NodePath, @currentLevel = [Level] FROM dbo.[PATH] WHERE PathId = @pathId
+		SELECT  @currentPath = NodePath, @currentLevel = [Level] FROM dbo.[Path] WHERE PathId = @pathId
 
 		-- loop over all child nodes and call sp recursivly
 		DECLARE @childPathId INT

@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[DeletePathProc]
+﻿CREATE PROCEDURE dbo.[DeletePathProc]
 	@pathId INT NOT NULL,
 	@newMainPathId INT NULL,
 	@alsoDeleteNode BIT NOT NULL
@@ -7,13 +7,13 @@ BEGIN
 
 
 	DECLARE @nodeId INT
-	SELECT  @nodeId = NodeId FROM dbo.[PATH] WHERE PathId = @pathId
+	SELECT  @nodeId = NodeId FROM dbo.[Path] WHERE PathId = @pathId
 
 
 	-- ## 1. Set mainPath Node
 	IF NOT @newMainPathId IS NULL 
 	BEGIN
-		IF NOT EXISTS (SELECT PathId FROM dbo.[PATH] WHERE PathId = @newMainPathId AND NodeId = @nodeId)
+		IF NOT EXISTS (SELECT PathId FROM dbo.[Path] WHERE PathId = @newMainPathId AND NodeId = @nodeId)
 		BEGIN
 			print 'error 1. execution aborted';
 			THROW 234, 'passed replacement pathId does not exist or does not belong to node', 1;
@@ -48,7 +48,7 @@ BEGIN
 	DECLARE @parentPath HIERARCHYID
 	DECLARE @parentPathId INT
 	DECLARE @currentLevel INT
-	SELECT  @currentPath = NodePath, @currentLevel = [Level], @parentPath = NodePath.GetAncestor(1) FROM dbo.[PATH] WHERE PathId = @pathId
+	SELECT  @currentPath = NodePath, @currentLevel = [Level], @parentPath = NodePath.GetAncestor(1) FROM dbo.[Path] WHERE PathId = @pathId
 	SELECT @parentPathId = PathId FROM dbo.[Path] WHERE NodePath = @parentPath
 
 	-- loop over all child nodes and call sp recursivly
