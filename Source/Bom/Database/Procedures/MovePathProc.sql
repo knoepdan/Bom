@@ -1,10 +1,27 @@
 ﻿CREATE PROCEDURE dbo.[MoveNodeProc]
-	@pathId INT NOT NULL,
-	@newParentPathId INT NOT NULL,
-	@moveChildrenToo BIT NOT NULL
+	@pathId INT NULL,
+	@newParentPathId INT NULL,
+	@moveChildrenToo BIT NULL
 AS
 BEGIN
 	
+	-- simple params checking
+	IF (@pathId IS NULL)
+	BEGIN
+		print 'passed param @pathId may not be NULL';
+		THROW 50201, 'passed param @pathId may not be NULL', 1;
+	END
+	IF (@newParentPathId IS NULL)
+	BEGIN
+		print 'passed param @@newParentPathId may not be NULL';
+		THROW 50201, 'passed param @@newParentPathId may not be NULL', 1;
+	END
+	IF (@moveChildrenToo IS NULL)
+	BEGIN
+		print 'passed param @@moveChildrenToo may not be NULL';
+		THROW 50201, 'passed param @@moveChildrenToo may not be NULL', 1;
+	END
+	-- end params checking
 
 	-- Example: 
 	-- pilosa 12      ( /1/2/11/12/  )

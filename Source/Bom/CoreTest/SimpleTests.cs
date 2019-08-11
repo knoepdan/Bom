@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using Xunit;
 using Core.TestUtils;
-using Core.TestUtils.Init;
+using Core.Testing;
 
 namespace Core
 {
@@ -17,18 +17,16 @@ namespace Core
             var firstNode = context.GetNodes().FirstOrDefault();
             Console.WriteLine("value1", "value2", $"Path: {firstPath}", $"firstNode: {firstNode}");
         }
-
+      
         [Fact]
-        public void InitializeDatabase()
+        public void CleanDatabase()
         {
             try
             {
                 using (var context = TestHelpers.GetModelContext(true))
                 {
-                    var initializer = new DataInitializer(context);
-
-                    initializer.AddTestData();
-                    context.SaveChanges();
+                    var preparer = new TestDataPreparer(context);
+                    preparer.CleanTestDatabase();
                 }
             }
             catch (Exception ex)
@@ -38,6 +36,25 @@ namespace Core
             }
         }
 
+        [Fact]
+        public void SetupTestdata()
+        {
+            try
+            {
+                using (var context = TestHelpers.GetModelContext(true))
+                {
+                    var dataFactory = new TestDataFactory();
+                    var rootNode = dataFactory.CreateSampleNodes();
+                    var preparer = new TestDataPreparer(context);
+                    preparer.CreateTestData(rootNode);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                throw;
+            }
+        }
 
     }
 }

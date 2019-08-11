@@ -1,9 +1,22 @@
 ﻿CREATE PROCEDURE dbo.[DeletePathProc]
-	@pathId INT NOT NULL,
+	@pathId INT NULL,
 	@newMainPathId INT NULL,
-	@alsoDeleteNode BIT NOT NULL
+	@alsoDeleteNode BIT  NULL
 AS
 BEGIN
+
+	-- simple params checking
+	IF (@pathId IS NULL)
+	BEGIN
+		print 'passed param @pathId may not be NULL';
+		THROW 50001, 'passed param @pathId may not be NULL', 1;
+	END
+	IF (@alsoDeleteNode IS NULL)
+	BEGIN
+		print 'passed param @@alsoDeleteNode may not be NULL';
+		THROW 50002, 'passed param @@alsoDeleteNode may not be NULL', 1;
+	END
+	-- end params checking
 
 
 	DECLARE @nodeId INT
@@ -16,7 +29,7 @@ BEGIN
 		IF NOT EXISTS (SELECT PathId FROM dbo.[Path] WHERE PathId = @newMainPathId AND NodeId = @nodeId)
 		BEGIN
 			print 'error 1. execution aborted';
-			THROW 234, 'passed replacement pathId does not exist or does not belong to node', 1;
+			THROW 50101, 'passed replacement pathId does not exist or does not belong to node', 1;
 		END
 
 		UPDATE dbo.[Node]
@@ -35,7 +48,7 @@ BEGIN
 			IF @alsoDeleteNode = 0 
 			BEGIN
 				print 'error 2. execution aborted';
-				THROW 244, 'No replacement for main path id found and node is not to be deleted.. will not work', 1;
+				THROW 50104, 'No replacement for main path id found and node is not to be deleted.. will not work', 1;
 			END
 			-- set to null
 			UPDATE dbo.[Node] SET MainPathId = NULL WHERE NodeId = @nodeId AND MainPathId = @pathId

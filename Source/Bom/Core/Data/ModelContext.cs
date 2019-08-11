@@ -55,6 +55,20 @@ namespace Core.Data
         }
 
 
+        protected internal System.Data.Common.DbCommand GetStoredProcedureCommand(string storedProcName)
+        {
+            var cmd = this.Database.GetDbConnection().CreateCommand();
+            cmd.CommandText = storedProcName;
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            return cmd;
+        }
+
+        protected internal void ExecuteRawSql(RawSqlString sql, params object[] parameters)
+        {
+            // https://www.learnentityframeworkcore.com/raw-sql
+            this.Database.ExecuteSqlCommand(sql, parameters);
+        }
+
         #region not used
 
 

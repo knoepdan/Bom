@@ -6,15 +6,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Core.Data;
-using Core.Model;
-using Web.Models;
 using Core.DataAccess;
 using Web.Areas.Main.Models;
 using Web.Lib.Infrastructure;
 
-namespace Web.Controllers
+namespace Web.Areas.Main.Controllers
 {
-    // [Route("api/[controller]")]
     [Area("Main")]
     [Route("main")]
     [ApiController]
