@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE dbo.[MoveNodeProc]
-	@pathId INT NULL,
-	@newParentPathId INT NULL,
-	@moveChildrenToo BIT NULL
+	@pathId AS INT NULL,
+	@newParentPathId AS INT NULL,
+	@moveChildrenToo AS BIT NULL
 AS
 BEGIN
 	

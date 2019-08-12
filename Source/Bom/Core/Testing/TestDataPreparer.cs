@@ -34,22 +34,22 @@ namespace Core.Testing
             //}
         }
 
-        public void CreateTestData(TreeNode<MemoryNode> rootNode)
+        public Path CreateTestData(TreeNode<MemoryNode> rootNode)
         {
             CleanTestDatabase();
 
             // insert data
-            InsertNodeAndAllChildren(rootNode, null);
+            return InsertNodeAndAllChildren(rootNode, null);
         }
 
-        private void InsertNodeAndAllChildren(TreeNode<MemoryNode> rootNode, Path dbParentPath = null)
+        private Path InsertNodeAndAllChildren(TreeNode<MemoryNode> rootNode, Path dbParentPath = null)
         {
             var rootPath = AddNode(rootNode.Data.Title, dbParentPath);
             foreach (var child in rootNode.Children)
             {
                 InsertNodeAndAllChildren(child, rootPath);
             }
-
+            return rootPath;
         }
 
         private Path AddNode(string nodeTitle, Path parentPath, bool saveOnAdd = true)

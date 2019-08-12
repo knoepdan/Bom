@@ -9,7 +9,7 @@ namespace Core
     public class SimpleTests
     {
         [Fact]
-        public void CanAccessDatabase()
+        public void Database_is_accessible()
         {
             var context = TestHelpers.GetModelContext();
             var firstPath = context.GetPaths().FirstOrDefault();
@@ -19,7 +19,7 @@ namespace Core
         }
       
         [Fact]
-        public void CleanDatabase()
+        public void Database_clean_does_not_throw()
         {
             try
             {
@@ -37,7 +37,7 @@ namespace Core
         }
 
         [Fact]
-        public void SetupTestdata()
+        public void Setup_test_data_works()
         {
             try
             {

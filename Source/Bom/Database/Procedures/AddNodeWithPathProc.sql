@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE [dbo].[AddNodeWithParentPathProc]
-	@title NVARCHAR(255) NULL,
-	@parentPath NVARCHAR(MAX) NULL
+	@title AS NVARCHAR(255) NULL,
+	@parentPath AS NVARCHAR(MAX) NULL
 AS
 BEGIN
 	DECLARE @genId INT
