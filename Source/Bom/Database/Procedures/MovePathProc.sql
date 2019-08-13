@@ -33,52 +33,65 @@ BEGIN
 	--SET @newParentPathId = 4
 	----
 
-	DECLARE @oldParentPathId INT
-	DECLARE @oldParentPath HIERARCHYID
-	DECLARE @newParentPath HIERARCHYID
-	SELECT  @oldParentPath = NodePath.GetAncestor(1) FROM dbo.[Path] WHERE PathId = @pathId
-	SELECT @oldParentPathId = pp.PathId FROM dbo.[Path] pp  WHERE pp.NodePath = @oldParentPath
-	SELECT @newParentPath = pp.NodePath FROM dbo.[Path] pp  WHERE pp.PathId = @newParentPathId
+	BEGIN TRANSACTION;
+    SAVE TRANSACTION MovePathSavePoint;
+	BEGIN TRY
 
-	IF @moveChildrenToo = 0
-	BEGIN
-		-- children of node/path to move are moved to the current parent tree
+		DECLARE @oldParentPathId INT
+		DECLARE @oldParentPath HIERARCHYID
+		DECLARE @newParentPath HIERARCHYID
+		SELECT  @oldParentPath = NodePath.GetAncestor(1) FROM dbo.[Path] WHERE PathId = @pathId
+		SELECT @oldParentPathId = pp.PathId FROM dbo.[Path] pp  WHERE pp.NodePath = @oldParentPath
+		SELECT @newParentPath = pp.NodePath FROM dbo.[Path] pp  WHERE pp.PathId = @newParentPathId
 
-		DECLARE @currentPath HIERARCHYID
-		DECLARE @currentLevel INT
-		SELECT  @currentPath = NodePath, @currentLevel = [Level] FROM dbo.[Path] WHERE PathId = @pathId
+		IF @moveChildrenToo = 0
+		BEGIN
+			-- children of node/path to move are moved to the current parent tree
 
-		-- loop over all child nodes and call sp recursivly
-		DECLARE @childPathId INT
-		DECLARE db_cursor CURSOR FOR 
-		SELECT PathId FROM dbo.[Path]
-			WHERE NodePath.IsDescendantOf(@currentPath) = 1
-			AND [Level] =  (@currentLevel + 1)
+			DECLARE @currentPath HIERARCHYID
+			DECLARE @currentLevel INT
+			SELECT  @currentPath = NodePath, @currentLevel = [Level] FROM dbo.[Path] WHERE PathId = @pathId
 
-		OPEN db_cursor  
-		FETCH NEXT FROM db_cursor INTO @childPathId  
+			-- loop over all child nodes and call sp recursivly
+			DECLARE @childPathId INT
+			DECLARE db_cursor CURSOR FOR 
+			SELECT PathId FROM dbo.[Path]
+				WHERE NodePath.IsDescendantOf(@currentPath) = 1
+				AND [Level] =  (@currentLevel + 1)
 
-		WHILE @@FETCH_STATUS = 0  
-		BEGIN  
-			EXEC dbo.MoveNodeProc @pathId = @childPathId, @newParentPathId = @oldParentPathId, @moveChildrenToo = 1
-			FETCH NEXT FROM db_cursor INTO @childPathId 
-		END 
+			OPEN db_cursor  
+			FETCH NEXT FROM db_cursor INTO @childPathId  
 
-		CLOSE db_cursor  
-		DEALLOCATE db_cursor 
-	END
+			WHILE @@FETCH_STATUS = 0  
+			BEGIN  
+				EXEC dbo.MoveNodeProc @pathId = @childPathId, @newParentPathId = @oldParentPathId, @moveChildrenToo = 1
+				FETCH NEXT FROM db_cursor INTO @childPathId 
+			END 
 
-	-- move node (including children... in case the didnt need to be moved, they would have hinged to the parent node already)
-	UPDATE dbo.[Path] 
-	SET NodePath = t.NewNodePath
-		FROM (
-			SELECT PathId, NodePath.GetReparentedValue(@oldParentPath, @newParentPath).ToString() AS NewNodePath
-			FROM dbo.[Path] p
-			WHERE NodePath.IsDescendantOf(@oldParentPath) = 1
-				AND p.PathId <> @oldParentPathId) t
-		WHERE t.PathId = dbo.[Path].PathId
+			CLOSE db_cursor  
+			DEALLOCATE db_cursor 
+		END
+
+		-- move node (including children... in case the didnt need to be moved, they would have hinged to the parent node already)
+		UPDATE dbo.[Path] 
+		SET NodePath = t.NewNodePath
+			FROM (
+				SELECT PathId, NodePath.GetReparentedValue(@oldParentPath, @newParentPath).ToString() AS NewNodePath
+				FROM dbo.[Path] p
+				WHERE NodePath.IsDescendantOf(@oldParentPath) = 1
+					AND p.PathId <> @oldParentPathId) t
+			WHERE t.PathId = dbo.[Path].PathId
 
 
-	-- return new node (not the child nodes)
-	SELECT * FROM  [dbo].[Path] WHERE PathId = @pathId
+		-- return new node (not the child nodes)
+		SELECT * FROM  [dbo].[Path] WHERE PathId = @pathId
+		COMMIT TRANSACTION
+	END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0
+            ROLLBACK TRANSACTION MovePathSavePoint; -- rollback to MySavePoint
+
+		-- rethrow
+		THROW 
+    END CATCH
 END

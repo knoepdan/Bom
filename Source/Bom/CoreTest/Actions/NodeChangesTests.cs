@@ -13,40 +13,28 @@ namespace Core.Actions
         [Fact]
         public void Simple_move_works()
         {
-            try
+            using (var context = TestHelpers.GetModelContext(true))
             {
-                using (var context = TestHelpers.GetModelContext(true))
-                {
-                    EnsureSampleData(context);
-                    var prov = new PathNodeProvider(context);
-                   // prov.MovePath()
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error: " + ex.Message);
-                throw;
+                EnsureSampleData(context);
+                var prov = new PathNodeProvider(context);
+                // prov.MovePath()
             }
         }
 
         [Fact]
-        public void Delete_works()
+        public void Delete_root_with_children_will_throw()
         {
-            try
+            using (var context = TestHelpers.GetModelContext(true))
             {
-                using (var context = TestHelpers.GetModelContext(true))
-                {
-                    var root = EnsureSampleData(context);
-                    var prov = new PathNodeProvider(context);
-                    prov.DeletePath(root.PathId, true, null);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error: " + ex.Message);
-                throw;
+                var root = EnsureSampleData(context);
+                var prov = new PathNodeProvider(context);
+                prov.DeletePath(root.PathId, true, null);
+
+                // todo catch excpect failure in unit test 
             }
         }
+
+      
 
 
         private Model.Path EnsureSampleData(Data.ModelContext context)
