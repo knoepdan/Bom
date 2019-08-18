@@ -1,17 +1,20 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Bom.Core.Testing
 {
-    public class TreeNode<T> : IEnumerable<TreeNode<T>>
+    public class TreeNode<T>
     {
         // https://stackoverflow.com/questions/66893/tree-data-structure-in-c-sharp
 
         public T Data { get; set; }
-        public TreeNode<T> Parent { get; set; }
-        public ICollection<TreeNode<T>> Children { get; set; }
+        public TreeNode<T> Parent { get; private set; }
+
+        private List<TreeNode<T>> _children = new List<TreeNode<T>>();
+        public IReadOnlyList<TreeNode<T>> Children => this._children;
 
         public int Level
         {
@@ -19,7 +22,7 @@ namespace Bom.Core.Testing
             {
                 int level = 1;
                 var p = this;
-                while(p.Parent != null)
+                while (p.Parent != null)
                 {
                     level++;
                     p = p.Parent;
@@ -32,45 +35,41 @@ namespace Bom.Core.Testing
         public TreeNode(T data)
         {
             this.Data = data;
-            this.Children = new LinkedList<TreeNode<T>>();
         }
 
         public TreeNode<T> AddChild(T child)
         {
             TreeNode<T> childNode = new TreeNode<T>(child) { Parent = this };
-            this.Children.Add(childNode);
+            this._children.Add(childNode);
             return childNode;
-        }
-
-        public IEnumerator<TreeNode<T>> GetEnumerator()
-        {
-            return Children.GetEnumerator();
         }
 
         #region iterating
 
-        //IEnumerator IEnumerable.GetEnumerator()
-        //{
-        //    return GetEnumerator();
-        //}
-
-        public IEnumerator<TreeNode<T>> GetGenericEnumerator()
+        public IEnumerable<TreeNode<T>> AllNodes
         {
-            yield return this;
-            foreach (var directChild in this.Children)
+            get
             {
-                foreach (var anyChild in directChild)
-                {
-                    yield return anyChild;
-                }
+                var list = new List<TreeNode<T>>();
+                list.Add(this);
+                this.GetAllChildreRecursive(list);
+                return list;
             }
         }
 
+        private void GetAllChildreRecursive(List<TreeNode<T>> list)
+        {
+            list.AddRange(this.Children);
+            foreach (var child in this.Children)
+            {
+                child.GetAllChildreRecursive(list);
+            }
+        }
         #endregion
 
-        IEnumerator IEnumerable.GetEnumerator()
+        public override string ToString()
         {
-           return this.GetGenericEnumerator();
+            return $"Node[{Level}] '{ this.Data }'  (Nof children: {Children.Count})";
         }
     }
 }

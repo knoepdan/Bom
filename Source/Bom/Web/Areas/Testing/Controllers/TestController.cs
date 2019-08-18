@@ -47,7 +47,7 @@ namespace Bom.Web.Areas.Testing.Controllers
                     rootNode = dataFactory.CreateSampleAnimalNodes();
                     break;
                 default:
-                    rootNode = dataFactory.CreateSampleNodes();
+                    rootNode = dataFactory.CreateSampleNodes(5,4);
                     break;
             }
 

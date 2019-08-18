@@ -7,34 +7,51 @@ namespace Bom.Core.Testing
     public class TestDataFactory
     {
         /*
-         *                                          a
-         *          a-b1                a-b2                a-b3            a-b4
-         *    a-b1-c1   a-b1-c2     
-         *         
-         * 
-         * 
-         * 
-         * 
+         *                          1a
+         *          1a-2a                     1a-2b        
+         *    1a-2a-3a   1a-2a-3b        1a-2b-3a   1a-2b-3b
+         *    etc... 
          */
+        public const string PositionChars = "abcdefghijklmnopqrstuvwxyz";
 
         private static char GetCharForPos(int pos)
         {
-            const string abc = "abcdefghijklmnopqrstuvwxyz";
-            return abc[pos];
+            if (pos > PositionChars.Length - 1)
+            {
+                throw new ArgumentException($"pos is to big. Max lenght is: {PositionChars.Length - 1}", nameof(pos));
+            }
+            return PositionChars[pos];
         }
 
-
-        public TreeNode<MemoryNode> CreateSampleNodesx()
+        private static string GetTitle(TreeNode<MemoryNode> parentNode, int level, int pos)
         {
-            var level = "";
-            var root = new TreeNode<MemoryNode>(new MemoryNode("a"));
-            // TODO
-            return null;
-
+            var title = $"{parentNode.Data.Title}-{level}{GetCharForPos(pos)}";
+            return title;
         }
 
+        public TreeNode<MemoryNode> CreateSampleNodes(int nofLevels, int nofPos = 3)
+        {
+            var root = new TreeNode<MemoryNode>(new MemoryNode("1a"));
+            AddSampleNodesRecursive(root, nofLevels, nofPos);
+            return root;
+        }
 
-        public TreeNode<MemoryNode> CreateSampleNodes()
+        public void AddSampleNodesRecursive(TreeNode<MemoryNode> parent, int nofLevels, int nofPos)
+        {
+            int level = parent.GetLevel();
+            for (int pos = 0; pos < nofPos; pos++)
+            {
+                var nodeTitle = GetTitle(parent, (level+1), pos);
+                var memNode = new MemoryNode(nodeTitle);
+                var node = parent.AddChild(memNode);
+                if (node.Level < nofLevels)
+                {
+                    AddSampleNodesRecursive(node, nofLevels, nofPos);
+                }
+            }
+        }
+
+        public TreeNode<MemoryNode> CreateSampleNodesUnevenExample()
         {
             var root = new TreeNode<MemoryNode>(new MemoryNode("a"));
             {
