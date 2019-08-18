@@ -37,9 +37,9 @@ namespace Bom.Web.Lib.Infrastructure.ErrorHandling
             {
                 switch (appEx.ErrorCode)
                 {
-                    case Utils.Error.ErrorCode.NotFound:
+                    case Core.Error.ErrorCode.NotFound:
                         return 404;
-                    case Utils.Error.ErrorCode.Forbidden:
+                    case Core.Error.ErrorCode.Forbidden:
                         return 403;
                     default:
                         return 400;
@@ -91,11 +91,11 @@ namespace Bom.Web.Lib.Infrastructure.ErrorHandling
             return info;
         }
 
-        private static Utils.Error.AppException GetAppException(Exception ex)
+        private static Core.Error.BomException GetAppException(Exception ex)
         {
             while (ex != null)
             {
-                var appEx = ex as Utils.Error.AppException;
+                var appEx = ex as Core.Error.BomException;
                 if (appEx != null)
                 {
                     return appEx;

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Bom.Utils.Error
+namespace Bom.Core.Error
 {
-    public class AppException : Exception
+    public class BomException : Exception
     {
-        public AppException(ErrorCode errorCode, string message = "", Exception innerException = null, string userMessage = "") : base(message, innerException)
+        public BomException(ErrorCode errorCode, string message = "", Exception innerException = null, string userMessage = "") : base(message, innerException)
         {
             ErrorCode = errorCode;
             UserMessage = userMessage;

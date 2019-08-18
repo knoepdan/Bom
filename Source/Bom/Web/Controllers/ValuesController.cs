@@ -32,7 +32,7 @@ namespace Bom.Web.Controllers
         [HttpGet("ex")]
         public ActionResult<string> Ex(int id)
         {
-            throw new Utils.Error.AppException(Utils.Error.ErrorCode.NotFound, "blabla", null, "this is the usermessage");
+            throw new Core.Error.BomException(Core.Error.ErrorCode.NotFound, "blabla", null, "this is the usermessage");
            // return "value";
         }
 
