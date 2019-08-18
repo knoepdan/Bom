@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Threading.Tasks;
-using Web.Controllers.Upload;
+using Bom.Web.Controllers.Upload;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using Ch.Knomes.IO;
-using Web.Lib.Infrastructure;
+using Bom.Web.Lib.Infrastructure;
 
-namespace Web.Controllers
+namespace Bom.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

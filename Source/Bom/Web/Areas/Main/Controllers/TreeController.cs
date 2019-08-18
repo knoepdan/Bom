@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Core.Data;
-using Core.DataAccess;
-using Web.Areas.Main.Models;
-using Web.Lib.Infrastructure;
+using Bom.Core.Data;
+using Bom.Core.DataAccess;
+using Bom.Web.Areas.Main.Models;
+using Bom.Web.Lib.Infrastructure;
 
-namespace Web.Areas.Main.Controllers
+namespace Bom.Web.Areas.Main.Controllers
 {
     [Area("Main")]
     [Route("main")]

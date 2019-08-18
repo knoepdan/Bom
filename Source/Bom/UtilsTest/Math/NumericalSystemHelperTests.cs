@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using Xunit;
 
-namespace Utils.Math
+namespace Bom.Utils.Math
 {
     public class NumericalSystemHelperTests
     {

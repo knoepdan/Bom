@@ -6,7 +6,7 @@ using System.IO;
 using System.Drawing;
 using Microsoft.AspNetCore.Http;
 
-namespace Web.Controllers.Upload
+namespace Bom.Web.Controllers.Upload
 {
 
     public class EnsureWebImagesPostSaveHandler : IPostSaveHandler

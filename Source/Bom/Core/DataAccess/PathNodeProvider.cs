@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
-using Core.Data;
-using Core.Model;
+using Bom.Core.Data;
+using Bom.Core.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer;
 
-namespace Core.DataAccess
+namespace Bom.Core.DataAccess
 {
     public class PathNodeProvider
     {

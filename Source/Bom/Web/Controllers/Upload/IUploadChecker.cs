@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace Web.Controllers.Upload
+namespace Bom.Web.Controllers.Upload
 {
     public interface IUploadChecker
     {

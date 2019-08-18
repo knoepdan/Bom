@@ -6,6 +6,8 @@
     <IsPackable>false</IsPackable>
 
     <AssemblyName>BomCoreTest</AssemblyName>
+
+    <RootNamespace>Bom.Core</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

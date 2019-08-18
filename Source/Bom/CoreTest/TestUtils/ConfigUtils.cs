@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 
-namespace Core.TestUtils
+namespace Bom.Core.TestUtils
 {
     public static class ConfigUtils
     {

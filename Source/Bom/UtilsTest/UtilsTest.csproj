@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
 
     <IsPackable>false</IsPackable>
 
-    <RootNamespace>Utils</RootNamespace>
+    <RootNamespace>Bom.Utils</RootNamespace>
 
     <AssemblyName>BomUtilsTest</AssemblyName>
   </PropertyGroup>

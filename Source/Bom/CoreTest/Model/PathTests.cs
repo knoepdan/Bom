@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
 using Xunit;
-using Core.TestUtils;
-using Core.Model;
-using Utils.Math;
+using Bom.Core.TestUtils;
+using Bom.Core.Model;
+using Bom.Utils.Math;
 
-namespace Core
+namespace Bom.Core
 {
     public class PathTests
     {

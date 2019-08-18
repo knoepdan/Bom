@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Testing
+namespace Bom.Core.Testing
 {
     public class TreeNode<T> : IEnumerable<TreeNode<T>>
     {
@@ -12,6 +12,22 @@ namespace Core.Testing
         public T Data { get; set; }
         public TreeNode<T> Parent { get; set; }
         public ICollection<TreeNode<T>> Children { get; set; }
+
+        public int Level
+        {
+            get
+            {
+                int level = 1;
+                var p = this;
+                while(p.Parent != null)
+                {
+                    level++;
+                    p = p.Parent;
+                }
+                return level;
+            }
+
+        }
 
         public TreeNode(T data)
         {

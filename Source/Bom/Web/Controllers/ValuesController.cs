@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Core.Data;
-using Web.Lib.Infrastructure;
+using Bom.Core.Data;
+using Bom.Web.Lib.Infrastructure;
 
-namespace Bom.Controllers
+namespace Bom.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

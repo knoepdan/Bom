@@ -4,9 +4,9 @@ using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Core.Model;
+using Bom.Core.Model;
 
-namespace Core.Data
+namespace Bom.Core.Data
 {
     public class ModelContext : DbContext
     {

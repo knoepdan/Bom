@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 
-namespace Web.Lib.Infrastructure.ErrorHandling
+namespace Bom.Web.Lib.Infrastructure.ErrorHandling
 {
     public class ErrorUtility
     {

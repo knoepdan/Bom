@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WebTest.TestUtils
+namespace Bom.Web.TestUtils
 {
     public class ConfigUtils
     {

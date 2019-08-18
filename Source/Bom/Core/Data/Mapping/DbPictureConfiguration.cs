@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Core.Model;
+using Bom.Core.Model;
 
-namespace Core.Data.ModelMapping
+namespace Bom.Core.Data.ModelMapping
 {
     public class DbPictureConfiguration : IEntityTypeConfiguration<DbPicture>
     {

@@ -19,15 +19,15 @@ using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Diagnostics;
 //using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Web.Lib.Infrastructure.ErrorHandling;
+using Bom.Web.Lib.Infrastructure.ErrorHandling;
 
 
-using Core.Model;
-using Core.Data;
+using Bom.Core.Model;
+using Bom.Core.Data;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Bom
+namespace Bom.Web
 {
     public class Startup
     {

@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
-using Core.Data;
-using Core.Model;
-using Core.DataAccess;
+using Bom.Core.Data;
+using Bom.Core.Model;
+using Bom.Core.DataAccess;
 
-namespace Core.Testing
+namespace Bom.Core.Testing
 {
     public class TestDataPreparer
     {

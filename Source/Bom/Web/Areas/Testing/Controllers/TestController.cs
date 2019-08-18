@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Core.Data;
-using Core.Model;
-using Core.DataAccess;
-using Web.Areas.Main.Models;
-using Web.Lib.Infrastructure;
-using Core.Testing;
+using Bom.Core.Data;
+using Bom.Core.Model;
+using Bom.Core.DataAccess;
+using Bom.Web.Areas.Main.Models;
+using Bom.Web.Lib.Infrastructure;
+using Bom.Core.Testing;
 using System.Web;
 
-namespace Web.Areas.Testing.Controllers
+namespace Bom.Web.Areas.Testing.Controllers
 {
     [Area("Test")]
     [Route("test")]

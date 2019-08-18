@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Testing
+namespace Bom.Core.Testing
 {
 
     public class MemoryNode
@@ -17,8 +17,6 @@ namespace Core.Testing
         public override string ToString()
         {
             return "" + this.Title;
-        } 
+        }
     }
-
-    
 }

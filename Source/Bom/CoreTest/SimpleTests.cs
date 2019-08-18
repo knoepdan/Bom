@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
 using Xunit;
-using Core.TestUtils;
-using Core.Testing;
+using Bom.Core.TestUtils;
+using Bom.Core.Testing;
 
-namespace Core
+namespace Bom.Core
 {
     public class SimpleTests
     {

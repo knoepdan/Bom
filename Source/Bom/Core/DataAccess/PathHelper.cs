@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
-using Core.Model;
-using Utils.Math;
+using Bom.Core.Model;
+using Bom.Utils.Math;
 
-namespace Core.DataAccess
+namespace Bom.Core.DataAccess
 {
     public static class PathHelper
     {

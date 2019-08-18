@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Reflection;
-using Core.Data;
+using Bom.Core.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Core.TestUtils
+namespace Bom.Core.TestUtils
 {
     public class TestHelpers
     {

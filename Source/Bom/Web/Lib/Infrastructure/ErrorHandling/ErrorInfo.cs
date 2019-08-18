@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Utils.Error;
+using Bom.Utils.Error;
 
-namespace Web.Lib.Infrastructure.ErrorHandling
+namespace Bom.Web.Lib.Infrastructure.ErrorHandling
 {
     public class ErrorInfo
     {

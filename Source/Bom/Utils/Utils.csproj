@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AssemblyName>BomUtils</AssemblyName>
+    <RootNamespace>Bom.Utils</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

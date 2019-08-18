@@ -2,9 +2,9 @@ using System;
 using System.Linq;
 using Xunit;
 using BomClient;
-using WebTest.TestUtils;
+using Bom.Web.TestUtils;
 
-namespace WebTest
+namespace Bom.Web.Test
 {
     public class SimpleTests
     {

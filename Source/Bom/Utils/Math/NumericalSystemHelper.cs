@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Numerics;
 
-namespace Utils.Math
+namespace Bom.Utils.Math
 {
     public static class NumericalSystemHelper
     {

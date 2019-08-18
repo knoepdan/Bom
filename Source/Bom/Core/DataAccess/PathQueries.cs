@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Core.Model;
+using Bom.Core.Model;
 using System.Globalization;
 
-namespace Core.DataAccess
+namespace Bom.Core.DataAccess
 {
     public static class PathQueries
     {

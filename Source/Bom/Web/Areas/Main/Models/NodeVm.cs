@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Web.Areas.Main.Models
+namespace Bom.Web.Areas.Main.Models
 {
     public class NodeVm
     {

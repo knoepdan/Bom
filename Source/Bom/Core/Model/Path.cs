@@ -2,12 +2,12 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
-using Utils.Math;
-using Core.DataAccess;
+using Bom.Utils.Math;
+using Bom.Core.DataAccess;
 using Microsoft.SqlServer.Server;
 using Microsoft.SqlServer.Types;
 
-namespace Core.Model
+namespace Bom.Core.Model
 {
     public class Path
     {

@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Core.Data;
-using Core.Model;
-using Web.Lib.Infrastructure;
+using Bom.Core.Data;
+using Bom.Core.Model;
+using Bom.Web.Lib.Infrastructure;
 
-namespace Web.Controllers
+namespace Bom.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -21,9 +21,6 @@ namespace Web.Controllers
         {
             _context = context;
         }
-
-
-
 
         // GET: api/Paths
         [HttpGet]

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
 
-namespace Core.Model
+namespace Bom.Core.Model
 {
     /// <summary>
     /// Data to be saved in Db (example: image)

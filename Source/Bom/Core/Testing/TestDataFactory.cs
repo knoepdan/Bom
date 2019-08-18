@@ -2,10 +2,38 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Testing
+namespace Bom.Core.Testing
 {
     public class TestDataFactory
     {
+        /*
+         *                                          a
+         *          a-b1                a-b2                a-b3            a-b4
+         *    a-b1-c1   a-b1-c2     
+         *         
+         * 
+         * 
+         * 
+         * 
+         */
+
+        private static char GetCharForPos(int pos)
+        {
+            const string abc = "abcdefghijklmnopqrstuvwxyz";
+            return abc[pos];
+        }
+
+
+        public TreeNode<MemoryNode> CreateSampleNodesx()
+        {
+            var level = "";
+            var root = new TreeNode<MemoryNode>(new MemoryNode("a"));
+            // TODO
+            return null;
+
+        }
+
+
         public TreeNode<MemoryNode> CreateSampleNodes()
         {
             var root = new TreeNode<MemoryNode>(new MemoryNode("a"));
