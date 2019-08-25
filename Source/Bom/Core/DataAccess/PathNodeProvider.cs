@@ -55,6 +55,7 @@ namespace Bom.Core.DataAccess
         {
             var spParams = new object[] { pathIdToMove, newParentPathId, moveChildrenToo };
             var movedPath = ModelContext.Paths.FromSql("MoveNodeProc  @p0, @p1, @p2", spParams).Single();
+            ModelContext.Entry(movedPath).Reload();
             return movedPath;
 
             // SP

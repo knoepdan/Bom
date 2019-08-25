@@ -30,8 +30,7 @@ namespace Bom.Core.TestUtils
         {
             if (newContext || _cachedContext == null)
             {
-                _cachedContext?.Dispose();
-
+                // dont dispose old cached context.. it may still be in use
                 var connectionString = ConfigUtils.ConnectionString;
                 var options = new DbContextOptionsBuilder<ModelContext>();
                 options.UseSqlServer(connectionString);

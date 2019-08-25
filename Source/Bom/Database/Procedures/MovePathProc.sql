@@ -76,10 +76,16 @@ BEGIN
 		UPDATE dbo.[Path] 
 		SET NodePath = t.NewNodePath
 			FROM (
+			/*
+				-- this code would also move siblings
 				SELECT PathId, NodePath.GetReparentedValue(@oldParentPath, @newParentPath).ToString() AS NewNodePath
 				FROM dbo.[Path] p
 				WHERE NodePath.IsDescendantOf(@oldParentPath) = 1
 					AND p.PathId <> @oldParentPathId) t
+					*/
+				SELECT PathId, NodePath.GetReparentedValue(@oldParentPath, @newParentPath).ToString() AS NewNodePath
+					FROM dbo.[Path] p
+					WHERE p.PathId = @pathId ) t
 			WHERE t.PathId = dbo.[Path].PathId
 
 
