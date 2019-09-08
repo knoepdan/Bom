@@ -5,6 +5,7 @@ using System.Text;
 using Bom.Core.Data;
 using Bom.Core.Model;
 using Bom.Core.DataAccess;
+using Bom.Core.Utils;
 
 namespace Bom.Core.Testing
 {
@@ -34,7 +35,7 @@ namespace Bom.Core.Testing
             //}
         }
 
-        public Path CreateTestData(TreeNode<MemoryNode> rootNode)
+        public Path CreateTestData(TreeNode<SimpleNode> rootNode)
         {
             CleanTestDatabase();
 
@@ -42,7 +43,7 @@ namespace Bom.Core.Testing
             return InsertNodeAndAllChildren(rootNode, null);
         }
 
-        private Path InsertNodeAndAllChildren(TreeNode<MemoryNode> rootNode, Path dbParentPath = null)
+        private Path InsertNodeAndAllChildren(TreeNode<SimpleNode> rootNode, Path dbParentPath = null)
         {
             var rootPath = AddNode(rootNode.Data.Title, dbParentPath);
             foreach (var child in rootNode.Children)

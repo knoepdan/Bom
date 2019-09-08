@@ -7,13 +7,14 @@ using Bom.Core.TestUtils;
 using Bom.Core.Testing;
 using Bom.Core.DataAccess;
 using Bom.Core.Model;
+using Bom.Core.Utils;
 
 
 namespace Bom.Core.Actions.Utils
 {
     public class TestMoveNodeArgs
     {
-        public TestMoveNodeArgs(TreeNode<MemoryNode> moveNode, TreeNode<MemoryNode> newParentNode, bool moveChildrenToo = false)
+        public TestMoveNodeArgs(TreeNode<SimpleNode> moveNode, TreeNode<SimpleNode> newParentNode, bool moveChildrenToo = false)
         {
             ToMoveNode = moveNode;
             NewParentNode = newParentNode;
@@ -22,9 +23,9 @@ namespace Bom.Core.Actions.Utils
 
         public bool MoveChildrenToo { get; set; }
 
-        public TreeNode<MemoryNode> ToMoveNode { get; set; }
+        public TreeNode<SimpleNode> ToMoveNode { get; set; }
 
-        public TreeNode<MemoryNode> NewParentNode { get; set; }
+        public TreeNode<SimpleNode> NewParentNode { get; set; }
 
     }
 }

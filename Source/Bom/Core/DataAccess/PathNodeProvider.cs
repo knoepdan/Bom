@@ -43,21 +43,26 @@ namespace Bom.Core.DataAccess
         /// <summary>
         /// Moves node (attention.. if childNodes are not to be moved.. the children of the moved node will be moved one level up to the former parent of the moved node
         /// </summary>
-        public Path MovePath(Path pathToMove, int newParentPathId, bool moveChildrenToo)
+        public Path MovePathAndReload(Path pathToMove, int newParentPathId, bool moveChildrenToo)
         {
-            return MovePath(pathToMove, newParentPathId, moveChildrenToo);
+            return MovePathAndReload(pathToMove, newParentPathId, moveChildrenToo);
         }
 
         /// <summary>
         /// Moves node (attention.. if childNodes are not to be moved.. the children of the moved node will be moved one level up to the former parent of the moved node
         /// </summary>
-        public Path MovePath(int pathIdToMove, int newParentPathId, bool moveChildrenToo)
+        public Path MovePathAndReload(int pathIdToMove, int newParentPathId, bool moveChildrenToo)
+        {
+            MovePath(pathIdToMove, newParentPathId, moveChildrenToo);
+            var movedPath = this.ModelContext.GetPaths().Single(p => p.PathId == pathIdToMove);
+            ModelContext.Entry(movedPath).Reload();// needed
+            return movedPath;
+        }
+
+        public void MovePath(int pathIdToMove, int newParentPathId, bool moveChildrenToo)
         {
             var spParams = new object[] { pathIdToMove, newParentPathId, moveChildrenToo };
-            var movedPath = ModelContext.Paths.FromSql("MoveNodeProc  @p0, @p1, @p2", spParams).Single();
-            ModelContext.Entry(movedPath).Reload();
-            return movedPath;
-
+            this.ModelContext.ExecuteRawSql("EXEC MoveNodeProc @p0, @p1, @p2", spParams);
             // SP
             //CREATE PROCEDURE dbo.[MoveNodeProc]   @pathId INT NULL,	@newParentPathId INT NULL,	@moveChildrenToo BIT NULL
         }
@@ -74,7 +79,7 @@ namespace Bom.Core.DataAccess
             var p1 = new System.Data.SqlClient.SqlParameter("@p1", alsoDeleteNode);
             if (newMainPathId.HasValue)
             {
-                spParams = new object[] {p0 , p1, new System.Data.SqlClient.SqlParameter("@p2", newMainPathId.Value) };
+                spParams = new object[] { p0, p1, new System.Data.SqlClient.SqlParameter("@p2", newMainPathId.Value) };
                 this.ModelContext.ExecuteRawSql("EXEC DeletePathProc @p0, @p1, @p2", spParams);
             }
             else

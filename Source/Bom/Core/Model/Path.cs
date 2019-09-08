@@ -6,10 +6,11 @@ using Bom.Utils.Math;
 using Bom.Core.DataAccess;
 using Microsoft.SqlServer.Server;
 using Microsoft.SqlServer.Types;
+using Bom.Core.Utils;
 
 namespace Bom.Core.Model
 {
-    public class Path
+    public class Path : INodeTitle
     {
         public const char Separator = '/';
 
@@ -20,38 +21,41 @@ namespace Bom.Core.Model
         public short Level { get; protected set; }
 
         public string NodePathString { get; protected set; }
-        
+
         public int NodeId { get; internal set; }
 
         public virtual Node Node { get; internal set; }
 
         #region calculated values
 
-        public string[] PathValues => PathHelper.GetPathValues(NodePathString);
-
-        public int NofFragments => PathValues != null ? PathValues.Length : 0;
+        /// <summary>
+        /// NodeIds as string (not yet converted)
+        /// </summary>
+        internal string[] AllRawNodeIds => PathHelper.GetPathValues(NodePathString);
 
         public IEnumerable<long> AllNodeIds => PathHelper.GetNodeIdsFromPath(NodePathString);
 
-        public IEnumerable<long> AllParentNodeIds
-        {
-            get
-            {
-                var allNodeIds = AllNodeIds;
-                if (allNodeIds.Any())
-                {
-                    allNodeIds.Skip(1);
-                }
-                return new List<long>();
-            }
-        }
+        internal int NofFragments => AllRawNodeIds != null ? AllRawNodeIds.Length : 0;
+
 
         #endregion
+
+        string INodeTitle.GetTitleString()
+        {
+            var node = $"{PathId} '{string.Join(Path.Separator, this.AllNodeIds)}'";
+#if DEBUG
+            if (Node != null)
+            {
+                node += $" (Node: '{Node.Title}')";
+            }
+#endif
+            return node;
+        }
 
 
         public override string ToString()
         {
-            var node = $"Path {PathId} '{string.Join(Path.Separator, this.AllParentNodeIds)}'";
+            var node = $"Path {PathId} '{string.Join(Path.Separator, this.AllNodeIds)}'";
 #if DEBUG
             if (Node != null)
             {

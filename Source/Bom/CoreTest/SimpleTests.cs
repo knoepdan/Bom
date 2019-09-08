@@ -43,8 +43,7 @@ namespace Bom.Core
             {
                 using (var context = TestHelpers.GetModelContext(true))
                 {
-                    var dataFactory = new TestDataFactory();
-                    var rootNode = dataFactory.CreateSampleNodes(2, 2);
+                    var rootNode = TestDataFactory.CreateSampleNodes(2, 2);
                     var preparer = new TestDataPreparer(context);
                     preparer.CreateTestData(rootNode);
                 }

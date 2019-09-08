@@ -25,8 +25,7 @@ namespace Bom.Core.Data.ModelMapping
             builder.AddNodeForeignKey(x => x.Node, nameof(Path.NodeId));
 
 
-            builder.Ignore(x => x.PathValues);
-            builder.Ignore(x => x.AllParentNodeIds);
+            builder.Ignore(x => x.AllRawNodeIds);
             builder.Ignore(x => x.NofFragments);
         }
     }

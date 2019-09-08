@@ -40,7 +40,8 @@ BEGIN
 		DECLARE @oldParentPathId INT
 		DECLARE @oldParentPath HIERARCHYID
 		DECLARE @newParentPath HIERARCHYID
-		SELECT  @oldParentPath = NodePath.GetAncestor(1) FROM dbo.[Path] WHERE PathId = @pathId
+		DECLARE @moveNodePath HIERARCHYID
+		SELECT  @oldParentPath = NodePath.GetAncestor(1), @moveNodePath = NodePath FROM dbo.[Path] WHERE PathId = @pathId
 		SELECT @oldParentPathId = pp.PathId FROM dbo.[Path] pp  WHERE pp.NodePath = @oldParentPath
 		SELECT @newParentPath = pp.NodePath FROM dbo.[Path] pp  WHERE pp.PathId = @newParentPathId
 
@@ -76,21 +77,14 @@ BEGIN
 		UPDATE dbo.[Path] 
 		SET NodePath = t.NewNodePath
 			FROM (
-			/*
-				-- this code would also move siblings
+			
 				SELECT PathId, NodePath.GetReparentedValue(@oldParentPath, @newParentPath).ToString() AS NewNodePath
 				FROM dbo.[Path] p
-				WHERE NodePath.IsDescendantOf(@oldParentPath) = 1
-					AND p.PathId <> @oldParentPathId) t
-					*/
-				SELECT PathId, NodePath.GetReparentedValue(@oldParentPath, @newParentPath).ToString() AS NewNodePath
-					FROM dbo.[Path] p
-					WHERE p.PathId = @pathId ) t
-			WHERE t.PathId = dbo.[Path].PathId
+				WHERE     p.PathId = @pathId OR p.NodePath.IsDescendantOf(@moveNodePath) = 1
+				) t
+				WHERE t.PathId = dbo.Path.PathId
 
-
-		-- return new node (not the child nodes)
-		SELECT * FROM  [dbo].[Path] WHERE PathId = @pathId
+		-- no need to return changed node (besides.. this seemed not always to be correct)-> SELECT * FROM  [dbo].[Path] WHERE PathId = @pathId
 		COMMIT TRANSACTION
 	END TRY
     BEGIN CATCH

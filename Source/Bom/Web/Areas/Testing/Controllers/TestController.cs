@@ -12,6 +12,7 @@ using Bom.Web.Areas.Main.Models;
 using Bom.Web.Lib.Infrastructure;
 using Bom.Core.Testing;
 using System.Web;
+using Bom.Core.Utils;
 
 namespace Bom.Web.Areas.Testing.Controllers
 {
@@ -38,16 +39,15 @@ namespace Bom.Web.Areas.Testing.Controllers
         [HttpPost("clearAndFillDatabase")]
         public IActionResult ClearAndFillDatabase(string typeOfData = null)
         {
-            var dataFactory = new TestDataFactory();
-            TreeNode<MemoryNode> rootNode;
+            TreeNode<SimpleNode> rootNode;
             typeOfData = typeOfData?.ToLowerInvariant();
             switch (typeOfData)
             {
                 case "animals":
-                    rootNode = dataFactory.CreateSampleAnimalNodes();
+                    rootNode = TestDataFactory.CreateSampleAnimalNodes();
                     break;
                 default:
-                    rootNode = dataFactory.CreateSampleNodes(5,4);
+                    rootNode = TestDataFactory.CreateSampleNodes(5,4);
                     break;
             }
 

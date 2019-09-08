@@ -2,12 +2,13 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
+using Bom.Core.Utils;
 
 namespace Bom.Core.Testing
 {
-    public class MemoryNode
+    public class SimpleNode : INodeTitle
     {
-        public MemoryNode(string title)
+        public SimpleNode(string title)
         {
             this.Title = title;
         }
@@ -18,11 +19,16 @@ namespace Bom.Core.Testing
         {
             return "" + this.Title;
         }
+
+        string INodeTitle.GetTitleString()
+        {
+            return this.Title;
+        }
     }
 
-    public static class MemoryNodeExtensiosn
+    public static class SimpleNodeExtensions
     {
-        public static string GetParentTitle(this TreeNode<MemoryNode> node)
+        public static string GetParentTitle(this TreeNode<SimpleNode> node)
         {
             if (!string.IsNullOrEmpty(node.Data.Title))
             {
@@ -38,7 +44,7 @@ namespace Bom.Core.Testing
             return "";
         }
 
-        public static string GetNonParentPart(this TreeNode<MemoryNode> node)
+        public static string GetNonParentPart(this TreeNode<SimpleNode> node)
         {
             if (!string.IsNullOrEmpty(node.Data.Title))
             {
@@ -54,7 +60,7 @@ namespace Bom.Core.Testing
             return "";
         }
 
-        public static int GetLevel(this TreeNode<MemoryNode> node)
+        public static int GetLevel(this TreeNode<SimpleNode> node)
         {
             var definingPart = GetNonParentPart(node);
             if (!string.IsNullOrEmpty(definingPart))
@@ -78,7 +84,7 @@ namespace Bom.Core.Testing
             return 0;
         }
 
-        public static int GetPosition(this TreeNode<MemoryNode> node)
+        public static int GetPosition(this TreeNode<SimpleNode> node)
         {
             var definingPart = GetNonParentPart(node);
             if (!string.IsNullOrWhiteSpace(definingPart))
@@ -98,13 +104,13 @@ namespace Bom.Core.Testing
             return 0;
         }
 
-        public static IEnumerable<TreeNode<MemoryNode>> GetChildrenByAbsoluteLevel(this IEnumerable<TreeNode<MemoryNode>> treeNodes, int level)
+        public static IEnumerable<TreeNode<SimpleNode>> GetChildrenByAbsoluteLevel(this IEnumerable<TreeNode<SimpleNode>> treeNodes, int level)
         {
             var nodesOnSpecificLevel = treeNodes.Where(x => x.GetLevel() == level);
             return nodesOnSpecificLevel;
         }
 
-        public static TreeNode<MemoryNode> GetChildNodeByPos(this IEnumerable<TreeNode<MemoryNode>> treeNodes, int pos, int nofSkips = 0)
+        public static TreeNode<SimpleNode> GetChildNodeByPos(this IEnumerable<TreeNode<SimpleNode>> treeNodes, int pos, int nofSkips = 0)
         {
             var nodesWithPosition = treeNodes.OrderBy(x => x.Data.Title).Where(x => x.GetPosition() == pos);
             if(nofSkips > 0)

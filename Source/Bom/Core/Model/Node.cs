@@ -23,7 +23,7 @@ namespace Bom.Core.Model
 #if DEBUG
           if(MainPathId.HasValue && MainPath != null)
             {
-                node += $" (ParentPath: '{string.Join(Path.Separator, MainPath.AllParentNodeIds)}')";
+                node += $" (ParentPath: '{string.Join(Path.Separator, MainPath.AllNodeIds)}')";
             }
 #endif
             return node;

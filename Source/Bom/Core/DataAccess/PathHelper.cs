@@ -18,7 +18,7 @@ namespace Bom.Core.DataAccess
             {
                 return new string[0]; // there is nothing above
             }
-            var tmp = path.PathValues;
+            var tmp = path.AllRawNodeIds;
             var steps = stepsToGoUp + 1; // as current node is also in path
             if (tmp.Length > steps)
             {
@@ -39,7 +39,7 @@ namespace Bom.Core.DataAccess
             {
                 return new List<string>(); // root
             }
-            var tmp = path.PathValues;
+            var tmp = path.AllRawNodeIds;
             var listOfParentPaths = new List<string>();
 
             int steps = stepsToGoUp.HasValue ? Math.Min(stepsToGoUp.Value, tmp.Length) : tmp.Length;
@@ -58,7 +58,7 @@ namespace Bom.Core.DataAccess
             {
                 return ""; // root
             }
-            var tmp = path.PathValues;
+            var tmp = path.AllRawNodeIds;
             var pathValues = GetParentPathFragments(path, stepsToGoUp);
             var pathString = CreatePathFromFragments(pathValues); // would be something like this: string.Join(Path.Separator, pathValues);
             return pathString;
@@ -79,9 +79,9 @@ namespace Bom.Core.DataAccess
                 throw new ArgumentNullException(nameof(path));
             }
             var fragments = new List<string>();
-            if (path.PathValues != null)
+            if (path.AllRawNodeIds != null)
             {
-                fragments.AddRange(path.PathValues);
+                fragments.AddRange(path.AllRawNodeIds);
             }
             var finalPath = CreatePathFromFragments(fragments);
             return finalPath;
