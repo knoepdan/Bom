@@ -26,7 +26,7 @@ namespace Bom.Core.TestUtils
 
 
         private static ModelContext _cachedContext;
-        public static ModelContext GetModelContext(bool newContext = false)
+        public static ModelContext GetModelContext(bool newContext = true)
         {
             if (newContext || _cachedContext == null)
             {

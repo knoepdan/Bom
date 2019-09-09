@@ -87,7 +87,6 @@ namespace Ch.Knomes.Structure
             {
                 var list = Descendants;
                 list.Add(this);
-                this.GetAllChildreRecursive(list);
                 return list;
             }
         }
@@ -107,9 +106,9 @@ namespace Ch.Knomes.Structure
             get
             {
                 var list = new List<TreeNode<T>>();
-                if(this.Parent != null)
+                if(this.Parent != null && this.Parent.Children.Count > 1 )
                 {
-                    list.AddRange(this.Parent.Children);
+                    list.AddRange(this.Parent.Children.Where(x => x != this));
                 }
                 return list;
             }

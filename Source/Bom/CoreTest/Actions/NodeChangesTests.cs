@@ -25,7 +25,7 @@ namespace Bom.Core.Actions
 
         public const int NofChildrenPerNode = 2;
 
-        private Bom.Core.Data.ModelContext Context { get; }
+        private Bom.Core.Data.ModelContext Context { get; set; }
 
         private TreeNode<SimpleNode> RootNode { get; }
 
@@ -88,7 +88,7 @@ namespace Bom.Core.Actions
         {
             // remember some state before
             TreeNode<SimpleNode> oldParent = args.ToMoveNode.Parent;
-            var siblings = oldParent.Siblings;
+            var siblings = args.ToMoveNode.Siblings;
 
             // do actual move
             var movedPath = MoveNodePath(args.ToMoveNode.Data.Title, args.NewParentNode.Data.Title, args.MoveChildrenToo);
@@ -120,7 +120,7 @@ namespace Bom.Core.Actions
                 }
 
             }
-            // ## siblings of moved node not affected
+            // ## check all descendants of old parent
             {
                 if (oldParent != null)
                 {
@@ -128,8 +128,14 @@ namespace Bom.Core.Actions
                     var currentChildren = this.Context.GetPaths().GetChildren(dbOldParentPath, 9999).ToList(); // level so hight we get all children and subchildren .. we just want to check all children here
                     if (currentChildren.Count != oldParent.Descendants.Count)
                     {
+#if DEBUG
+                        var dbRoot = this.Context.GetPaths().First(p => p.Node.Title == "1a");
+                        var dbAllNodes = this.Context.GetPaths().GetChildren(dbRoot, 9999).ToList();
+                        dbAllNodes.Add(dbRoot);
+                        var inMemoryModel = TreeNodeUtils.CreateInMemoryModel(dbAllNodes);
+#endif
                         // must be 2 less (the one that was moved and parent node itself may not be counted)
-                        throw new Exception($"The number of children does not mach the expected number. Expected: {(args.ToMoveNode.Parent.DescendantsAndI.Count() - 2)}, actual: {currentChildren.Count }");
+                        throw new Exception($"The number of descendants does not mach the expected number. Expected: {(args.ToMoveNode.Parent.Descendants.Count)}, actual: {currentChildren.Count }");
                     }
 
                     // check direct children
@@ -165,6 +171,10 @@ namespace Bom.Core.Actions
             var inMemoryMoveNode = this.RootNode.DescendantsAndI.First(n => n.Data.Title == moveTitle);
             var inMemoryNewParentNode = this.RootNode.DescendantsAndI.First(n => n.Data.Title == newParentTitle);
             inMemoryMoveNode.MoveToNewParent(inMemoryNewParentNode, moveChildrenToo);
+
+            // new context otherwise we might get wrong data (important)
+            this.Context.Dispose();
+            this.Context = TestHelpers.GetModelContext(true);
 
             return movedPath;
         }
