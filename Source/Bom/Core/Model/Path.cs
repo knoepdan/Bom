@@ -7,10 +7,11 @@ using Bom.Core.DataAccess;
 using Microsoft.SqlServer.Server;
 using Microsoft.SqlServer.Types;
 using Bom.Core.Utils;
+using Ch.Knomes.Structure;
 
 namespace Bom.Core.Model
 {
-    public class Path : INodeTitle
+    public class Path : ITreeNodeTitle
     {
         public const char Separator = '/';
 
@@ -40,7 +41,7 @@ namespace Bom.Core.Model
 
         #endregion
 
-        string INodeTitle.GetTitleString()
+        string ITreeNodeTitle.GetTitleString()
         {
             var node = $"{PathId} '{string.Join(Path.Separator, this.AllNodeIds)}'";
 #if DEBUG

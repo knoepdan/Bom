@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
-using Bom.Core.Utils;
+using Ch.Knomes.Structure;
 
 namespace Bom.Core.Testing
 {
-    public class SimpleNode : INodeTitle
+    public class SimpleNode : ITreeNodeTitle
     {
         public SimpleNode(string title)
         {
@@ -20,7 +20,7 @@ namespace Bom.Core.Testing
             return "" + this.Title;
         }
 
-        string INodeTitle.GetTitleString()
+        string ITreeNodeTitle.GetTitleString()
         {
             return this.Title;
         }

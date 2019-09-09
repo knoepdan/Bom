@@ -179,16 +179,13 @@ namespace Bom.Web.Controllers
 
                 //  _logger.LogErrorEx("Error upon Upload for file: " + passedFileName, ex);
                 // return HandleError(this.HttpContext, ex.Message);
-                Utils.Dev.Todo("better errorhandling for upload!");
+                Utils.Dev.Todo($"better errorhandling for upload! (caught error: {ex.Message}");
                 throw;
             }
         }
 
-
-
         private string _handleUpload(string fileName, Stream filestream)
         {
-
             var request = this.Request;
             // var session = Session;
 
@@ -437,10 +434,6 @@ namespace Bom.Web.Controllers
                 //  _logger.LogErrorEx("Error upon Upload for file (legacy): " + uploadString, ex);
                 throw;
             }
-            //-------------
-
-            return null;
-
         }
 
         #endregion

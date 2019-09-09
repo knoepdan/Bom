@@ -33,6 +33,9 @@ BEGIN
 	--SET @newParentPathId = 4
 	----
 
+
+	-- possible improvment -> check that we dont create a loop (making a parent his own child)
+
 	BEGIN TRANSACTION;
     SAVE TRANSACTION MovePathSavePoint;
 	BEGIN TRY

@@ -8,6 +8,7 @@ using Bom.Core.Testing;
 using Bom.Core.DataAccess;
 using Bom.Core.Model;
 using Bom.Core.Utils;
+using Ch.Knomes.Structure;
 
 
 namespace Bom.Core.Actions.Utils

@@ -13,6 +13,7 @@ using Bom.Web.Lib.Infrastructure;
 using Bom.Core.Testing;
 using System.Web;
 using Bom.Core.Utils;
+using Ch.Knomes.Structure;
 
 namespace Bom.Web.Areas.Testing.Controllers
 {

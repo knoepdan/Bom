@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Bom.Core.Utils;
+using Ch.Knomes.Structure;
 
 namespace Bom.Core.Testing
 {

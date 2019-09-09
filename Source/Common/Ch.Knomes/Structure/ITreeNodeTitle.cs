@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Bom.Core.Utils
+namespace Ch.Knomes.Structure
 {
-    public interface INodeTitle
+    public interface ITreeNodeTitle
     {
         string GetTitleString();
     }

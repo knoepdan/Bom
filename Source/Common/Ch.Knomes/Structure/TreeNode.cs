@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Bom.Core.Utils
+namespace Ch.Knomes.Structure
 {
     public class TreeNode<T>
     {
@@ -156,7 +156,7 @@ namespace Bom.Core.Utils
             }
         }
 
-        private static void DrawVisualRecursive<T>(StringBuilder sb, TreeNode<T> rootNode, int level)
+        private static void DrawVisualRecursive(StringBuilder sb, TreeNode<T> rootNode, int level)
         {
             const string filler = "         ";
             var tmp = new List<String>();
@@ -178,12 +178,12 @@ namespace Bom.Core.Utils
             }
         }
 
-        private static string GetVisual<T>(TreeNode<T> node)
+        private static string GetVisual(TreeNode<T> node)
         {
             var nodeString = node.Data.ToString();
-            if(node.Data is INodeTitle)
+            if(node.Data is ITreeNodeTitle)
             {
-                nodeString = ((INodeTitle)node.Data).GetTitleString();
+                nodeString = ((ITreeNodeTitle)node.Data).GetTitleString();
             }
             return $"[{nodeString}]";
         }
