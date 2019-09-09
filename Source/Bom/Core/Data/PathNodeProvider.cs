@@ -8,7 +8,7 @@ using Bom.Core.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer;
 
-namespace Bom.Core.DataAccess
+namespace Bom.Core.Data
 {
     public class PathNodeProvider
     {

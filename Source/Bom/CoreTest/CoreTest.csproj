@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <Folder Include="Queries\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
 
   <ItemGroup>

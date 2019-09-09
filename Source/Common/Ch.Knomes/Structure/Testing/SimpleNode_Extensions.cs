@@ -1,31 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Text;
-using Ch.Knomes.Structure;
+using System.Linq;
 
-namespace Bom.Core.Testing
+namespace Ch.Knomes.Structure.Testing
 {
-    public class SimpleNode : ITreeNodeTitle
-    {
-        public SimpleNode(string title)
-        {
-            this.Title = title;
-        }
-
-        public string Title { get; set; }
-
-        public override string ToString()
-        {
-            return "" + this.Title;
-        }
-
-        string ITreeNodeTitle.GetTitleString()
-        {
-            return this.Title;
-        }
-    }
-
     public static class SimpleNodeExtensions
     {
         public static string GetParentTitle(this TreeNode<SimpleNode> node)
@@ -113,7 +92,7 @@ namespace Bom.Core.Testing
         public static TreeNode<SimpleNode> GetChildNodeByPos(this IEnumerable<TreeNode<SimpleNode>> treeNodes, int pos, int nofSkips = 0)
         {
             var nodesWithPosition = treeNodes.OrderBy(x => x.Data.Title).Where(x => x.GetPosition() == pos);
-            if(nofSkips > 0)
+            if (nofSkips > 0)
             {
                 nodesWithPosition.Skip(nofSkips);
             }

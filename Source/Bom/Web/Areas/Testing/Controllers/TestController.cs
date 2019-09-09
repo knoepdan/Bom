@@ -7,13 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Bom.Core.Data;
 using Bom.Core.Model;
-using Bom.Core.DataAccess;
 using Bom.Web.Areas.Main.Models;
 using Bom.Web.Lib.Infrastructure;
 using Bom.Core.Testing;
 using System.Web;
 using Bom.Core.Utils;
 using Ch.Knomes.Structure;
+using Ch.Knomes.Structure.Testing;
 
 namespace Bom.Web.Areas.Testing.Controllers
 {

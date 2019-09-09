@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Bom.Core.Data;
-using Bom.Core.DataAccess;
 using Bom.Web.Areas.Main.Models;
 using Bom.Web.Lib.Infrastructure;
 
@@ -23,7 +22,6 @@ namespace Bom.Web.Areas.Main.Controllers
         {
             _context = context;
         }
-
 
         // GET: api/Paths
         [HttpGet("root")]

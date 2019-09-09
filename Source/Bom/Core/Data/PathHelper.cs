@@ -5,7 +5,7 @@ using System.Text;
 using Bom.Core.Model;
 using Bom.Utils.Math;
 
-namespace Bom.Core.DataAccess
+namespace Bom.Core.Data
 {
     public static class PathHelper
     {

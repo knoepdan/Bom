@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Bom.Core.Model;
 using System.Globalization;
 
-namespace Bom.Core.DataAccess
+namespace Bom.Core.Data
 {
     public static class PathQueries
     {

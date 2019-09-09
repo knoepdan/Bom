@@ -5,7 +5,7 @@ using System.Linq;
 using Xunit;
 using Bom.Core.TestUtils;
 using Bom.Core.Testing;
-using Bom.Core.DataAccess;
+using Bom.Core.Data;
 using Bom.Core.Model;
 using Bom.Core.Utils;
 using Ch.Knomes.Structure;

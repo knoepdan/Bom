@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using Bom.Utils.Math;
-using Bom.Core.DataAccess;
+using Bom.Core.Data;
 using Microsoft.SqlServer.Server;
 using Microsoft.SqlServer.Types;
 using Bom.Core.Utils;

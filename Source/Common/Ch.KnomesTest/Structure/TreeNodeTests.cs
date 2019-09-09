@@ -1,12 +1,10 @@
 using System;
 using System.Linq;
 using Xunit;
-using Bom.Core.TestUtils;
-using Bom.Core.Model;
-using Bom.Utils.Math;
-using Bom.Core.Testing;
 
-namespace Bom.Core.Utils
+using Ch.Knomes.Structure.Testing;
+
+namespace Ch.Knomes.Structure
 {
     public class TreeNodeTests
     {

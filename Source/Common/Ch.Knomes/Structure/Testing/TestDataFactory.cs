@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Ch.Knomes.Structure;
 
-namespace Bom.Core.Testing
+namespace Ch.Knomes.Structure.Testing
 {
     public static class TestDataFactory
     {

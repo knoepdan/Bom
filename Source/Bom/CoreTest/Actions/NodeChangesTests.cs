@@ -4,11 +4,12 @@ using System.Linq;
 using Xunit;
 using Bom.Core.TestUtils;
 using Bom.Core.Testing;
-using Bom.Core.DataAccess;
+using Bom.Core.Data;
 using Bom.Core.Model;
 using Bom.Core.Actions.Utils;
 using Bom.Core.Utils;
 using Ch.Knomes.Structure;
+using Ch.Knomes.Structure.Testing;
 
 namespace Bom.Core.Actions
 {
