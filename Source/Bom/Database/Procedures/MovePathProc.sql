@@ -34,7 +34,7 @@ BEGIN
 	----
 
 
-	-- possible improvment -> check that we dont create a loop (making a parent his own child)
+	-- possible improvment -> check that we dont create a loop (making a parent his own child) ... remark: check only necessary when we move children too
 
 	BEGIN TRANSACTION;
     SAVE TRANSACTION MovePathSavePoint;

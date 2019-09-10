@@ -51,8 +51,8 @@ namespace Bom.Core.Actions
 
         private void MoveLeaveUp()
         {
-            var leaveNode = RootNode.DescendantsAndI.GetChildrenByAbsoluteLevel(MaxLevel).First(); // 1a-2a-3a-4a-5a
-            var targetParent = RootNode.DescendantsAndI.GetChildrenByAbsoluteLevel(2).GetChildNodeByPos(2);// 1a-2b
+            var leaveNode = RootNode.DescendantsAndI.First(n => n.Level == MaxLevel); // 1a-2a-3a-4a-5a 
+            var targetParent = RootNode.DescendantsAndI.Where(n => n.Level == 2).Skip(1).First(); // 1a-2b
             var args = new TestMoveNodeArgs(leaveNode, targetParent, false);
 
             var movedPath = TestMoveNodePath(args);
@@ -60,8 +60,8 @@ namespace Bom.Core.Actions
 
         private void MoveNoneLeaveUp()
         {
-            var node = RootNode.DescendantsAndI.GetChildrenByAbsoluteLevel(3).First(); // 1a-2a-3a
-            var targetParent = RootNode.DescendantsAndI.GetChildrenByAbsoluteLevel(1).First(); // 1a
+            var node = RootNode.DescendantsAndI.Where(n => n.Level == 3).First(); // 1a-2a-3a
+            var targetParent = RootNode; // 1a 
             var args = new TestMoveNodeArgs(node, targetParent, false);
             var movedPath = TestMoveNodePath(args);
         }
@@ -69,18 +69,19 @@ namespace Bom.Core.Actions
         private void MoveNoneLeaveUpAndMoveChildren()
         {
             var baseNode = RootNode.Children.Skip(1).First();// 1a-2b
-            var node = baseNode.DescendantsAndI.GetChildrenByAbsoluteLevel(3).First(); // 1a-2a-3a
-            var targetParent = baseNode.DescendantsAndI.GetChildrenByAbsoluteLevel(1).First(); // 1a
+            var node = baseNode.DescendantsAndI.Where(n => n.Level == 4 && n.Children.Any()).First();
+            var targetParent = baseNode.DescendantsAndI.Where(n => n.Level == 2).First();
             var args = new TestMoveNodeArgs(node, targetParent, true);
             var movedPath = TestMoveNodePath(args);
         }
 
         private void MoveNoneLeaveToAnotherBranch()
         {
-            var leaveNode = RootNode.DescendantsAndI.GetChildrenByAbsoluteLevel(3).First(); // 1a-2a-3a
-            var targetParent = RootNode.DescendantsAndI.GetChildrenByAbsoluteLevel(1).First(); // 1a
-            var args = new TestMoveNodeArgs(leaveNode, targetParent, true);
-            var movedPath = TestMoveNodePath(args);
+            // TODO
+            //var leaveNode = RootNode.DescendantsAndI.GetChildrenByAbsoluteLevel(3).First(); // 1a-2a-3a
+            //var targetParent = RootNode.DescendantsAndI.GetChildrenByAbsoluteLevel(1).First(); // 1a
+            //var args = new TestMoveNodeArgs(leaveNode, targetParent, true);
+            //var movedPath = TestMoveNodePath(args);
         }
 
 
@@ -125,8 +126,8 @@ namespace Bom.Core.Actions
                 if (oldParent != null)
                 {
                     var dbOldParentPath = this.Context.GetPaths().First(p => p.Node.Title == oldParent.Data.Title);
-                    var currentChildren = this.Context.GetPaths().GetChildren(dbOldParentPath, 9999).ToList(); // level so hight we get all children and subchildren .. we just want to check all children here
-                    if (currentChildren.Count != oldParent.Descendants.Count)
+                    var currentDescendants = this.Context.GetPaths().GetChildren(dbOldParentPath, 9999).ToList(); // level so hight we get all children and subchildren .. we just want to check all children here
+                    if (currentDescendants.Count != oldParent.Descendants.Count)
                     {
 #if DEBUG
                         var dbRoot = this.Context.GetPaths().First(p => p.Node.Title == "1a");
@@ -135,11 +136,21 @@ namespace Bom.Core.Actions
                         var inMemoryModel = TreeNodeUtils.CreateInMemoryModel(dbAllNodes);
 #endif
                         // must be 2 less (the one that was moved and parent node itself may not be counted)
-                        throw new Exception($"The number of descendants does not mach the expected number. Expected: {(args.ToMoveNode.Parent.Descendants.Count)}, actual: {currentChildren.Count }");
+                        throw new Exception($"The number of descendants does not mach the expected number. Expected: {(args.ToMoveNode.Parent.Descendants.Count)}, actual: {currentDescendants.Count }");
                     }
 
+                    // check descendants
+                    CheckIfAreTheSameAndThrowIfNot(oldParent.Descendants, currentDescendants, "checking descendants of moved node");
+
+
                     // check direct children
-                    CheckIfAreTheSameAndThrowIfNot(oldParent.Children.Where(c => c.Data.Title != args.ToMoveNode.Data.Title), currentChildren, "checking siblings of moved node");
+                    foreach(var directChild in oldParent.Children)
+                    {
+                        if(!currentDescendants.Any(d => d.Node.Title == directChild.Data.Title && d.Level == directChild.Level))
+                        {
+                            throw new Exception($"Direct children not ok. '{directChild.Data.Title}' with level {directChild.Level} not found in db data");
+                        }
+                    }
                 }
             }
             return movedPath;
@@ -151,10 +162,10 @@ namespace Bom.Core.Actions
             var actualTitles = actual.Select(x => x.Node.Title).ToList();
             ComparisonUtils.ThrowIfDuplicates(expectedTitles);
             ComparisonUtils.ThrowIfDuplicates(actualTitles);
-            bool isResultAsExpected = ComparisonUtils.HasSameContent(actualTitles, expectedTitles);
+            bool isResultAsExpected = ComparisonUtils.HasSameContent(actualTitles, expectedTitles); // possible improvment.. replace with simple foreach and also check level
             if (!isResultAsExpected)
             {
-                throw new Exception($"Sibling titles of moved node are not as expected! Expected: {string.Join(", ", expectedTitles)} | actual :  {string.Join(", ", actualTitles)} | {additionalMsgInCaseOfError}");
+                throw new Exception($"Titles of moved node are not as expected! Expected: {string.Join(", ", expectedTitles)} | actual :  {string.Join(", ", actualTitles)} | {additionalMsgInCaseOfError}");
             }
         }
 

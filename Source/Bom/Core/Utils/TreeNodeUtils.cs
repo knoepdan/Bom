@@ -11,6 +11,8 @@ namespace Bom.Core.Utils
     {
         public static List<TreeNode<Path>> CreateInMemoryModel(IEnumerable<Path> pathsToCreateTreeFrom)
         {
+            // possible improvment.. can probably be done faster (idea..presort by hierarchy in db or here.. )
+
             if(pathsToCreateTreeFrom == null)
             {
                 throw new ArgumentNullException(nameof(pathsToCreateTreeFrom));
