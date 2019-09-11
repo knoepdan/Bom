@@ -12,7 +12,7 @@ namespace Ch.Knomes.Structure
         public void Can_get_visual_representation_of_InMemoryTree()
         {
             var rootNode = TestDataFactory.CreateSampleAnimalNodes();
-            var visual = rootNode.VisualStringRepresentation;
+            var visual = rootNode.VisualStringRepresentation();
             Assert.True(!string.IsNullOrWhiteSpace(visual));
         }
     }

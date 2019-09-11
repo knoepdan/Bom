@@ -30,13 +30,13 @@ namespace Ch.Knomes.Structure
 
         public void MoveToNewParent(TreeNode<T> newParent, bool moveChildrenToo = true)
         {
-            if(newParent == null)
+            if (newParent == null)
             {
                 throw new ArgumentNullException(nameof(newParent));
             }
 
             // disallow moving node to its own children
-            if(moveChildrenToo && newParent.Ancestors.Any(a => a == this))
+            if (moveChildrenToo && newParent.Ancestors.Any(a => a == this))
             {
                 throw new ArgumentException("Cannot move a node down to its own children.. would create an endless loop", nameof(newParent));
             }
@@ -46,7 +46,7 @@ namespace Ch.Knomes.Structure
             {
                 // if we don't want to move the children, we only have one option.. we move it to this parent
                 var currentChildren = this._children.ToList();
-                foreach(var child in currentChildren)
+                foreach (var child in currentChildren)
                 {
                     child.MoveToNewParent(this.Parent, true);
                 }
@@ -106,7 +106,7 @@ namespace Ch.Knomes.Structure
             get
             {
                 var list = new List<TreeNode<T>>();
-                if(this.Parent != null && this.Parent.Children.Count > 1 )
+                if (this.Parent != null && this.Parent.Children.Count > 1)
                 {
                     list.AddRange(this.Parent.Children.Where(x => x != this));
                 }
@@ -135,7 +135,7 @@ namespace Ch.Knomes.Structure
             {
                 var root = this;
                 var parent = this.Parent;
-                while(parent != null && parent != this) // this check to prevent loops
+                while (parent != null && parent != this) // this check to prevent loops
                 {
                     root = parent;
                     parent = root.Parent;
@@ -144,88 +144,45 @@ namespace Ch.Knomes.Structure
             }
         }
 
-        public string VisualStringRepresentation 
+        public string VisualStringRepresentation(Func<TreeNode<T>, string> getNodeTitleFunc = null, bool orderByTitle = false)
         {
-            get{
-                var rootNode = this;
-                var sb = new StringBuilder();
-                sb.AppendLine(GetVisual(rootNode));
-                DrawVisualRecursive(sb, rootNode);
-                return sb.ToString();
+            if(getNodeTitleFunc == null)
+            {
+                getNodeTitleFunc = GetNodeDefaultTitle;
             }
+
+            var rootNode = this;
+            var sb = new StringBuilder();
+            sb.AppendLine(getNodeTitleFunc(rootNode));
+            DrawVisualRecursive(sb, rootNode, getNodeTitleFunc);
+            return sb.ToString();
+
         }
 
-        private static void DrawVisualRecursive(StringBuilder sb, TreeNode<T> rootNode)
+        private static void DrawVisualRecursive(StringBuilder sb, TreeNode<T> rootNode, Func<TreeNode<T>, string> getNodeTitleFunc)
         {
             string indentString = "";
             const string filler = "         ";
 
-            // simple but incorrect version of indent string (writing too many |)
-            //var tmp = new List<String>();
-            //for (int i = 0; i < rootNode.Level-1; i++)
-            //{
-            //    tmp.Add(filler);
-            //}
-            //indentString = string.Join('|', tmp);
-            //if (!string.IsNullOrEmpty(indentString))
-            //{
-            //    indentString = "|" + indentString;
-            //}
-
-
-            // variant 2 TODO buggy.. not working
-            // probably solution  -> go up one level and see if after this node there are still children. [check1].. recursive step.. parent.parent and see if after parent are still childre [check2] etc. etc.
-            /*
-             
-                    [Animals]
-                    |--- [Mammals]
-                    |         |--- [Xenarthra]
-                                        |--- [Pilosa]
-                                                  |--- [Anteater]
-                                                  |--- [Three-toed sloths]
-                                                  |--- [Twoe-toed sloths]
-                    |--- [Birds]
-                    |         |--- [Songbirds]
-                    |         |--- [Non-Songbirds]
-                    |--- [Reptiles]
-                              |--- [Turtles]
-                              |--- [Lizards]
-                              |--- [Snakes]
-                              |--- [Crocodilians]    (level 3)
-                                        |--- [Alligators]
-                                        |--- [Crocodiles]
-                                        |--- [Gavial]
-                              |--- [Amphibians]
-
-            */
-            var markerArry = new bool[rootNode.Level-1];
-            if(rootNode.Parent != null)
+            // collect info if "|" has to be drawn in indent string
+            var nodeToCheck = rootNode;
+            var hasChildList = new List<bool>();
+            while (nodeToCheck.Parent != null)
             {
-                bool foundMe = false;
-                int counter = -1;
-                foreach(var sibling in rootNode.Parent.Children)
-                {
-                    if(sibling == rootNode)
-                    {
-                        foundMe = true;
-                        continue;
-                    }
-                    if (foundMe)
-                    {
-                        counter++;
-                        if (counter >= markerArry.Length)
-                        {
-                            break;
-                        }
-                        markerArry[counter] = sibling.Children.Any();
-                    }
-                }
+                var newNodeToCheck = nodeToCheck.Parent;
+                var orderedChildren = newNodeToCheck._children;
+                var index = orderedChildren.IndexOf(nodeToCheck);
+                hasChildList.Add(index < newNodeToCheck._children.Count - 1);
+                nodeToCheck = newNodeToCheck;
             }
-            foreach(var mark in markerArry)
+
+            // draw indent string
+            hasChildList.Reverse();
+            foreach (var mark in hasChildList)
             {
                 if (mark)
                 {
-                    indentString = indentString +  "|" + filler;
+                    indentString = indentString + "|" + filler;
                 }
                 else
                 {
@@ -233,44 +190,21 @@ namespace Ch.Knomes.Structure
                 }
             }
 
-
-
-
-            foreach (var n in rootNode.Children)
+            // draw lines
+            var rootNodeOrderedChildren = rootNode.Children;
+            foreach (var n in rootNodeOrderedChildren)
             {
-                var vis = GetVisual(n);
-                var line = indentString + "|--- " + vis;
+                var nodeTitle = getNodeTitleFunc(n);
+                var line = indentString + "|--- " + nodeTitle;
                 sb.AppendLine(line);
-                DrawVisualRecursive(sb, n);
+                DrawVisualRecursive(sb, n, getNodeTitleFunc);
             }
         }
 
-        //private static void DrawVisualRecursiveOLD(StringBuilder sb, TreeNode<T> rootNode, int level)
-        //{
-        //    const string filler = "         ";
-        //    var tmp = new List<String>();
-        //    for (int i = 0; i < level; i++)
-        //    {
-        //        tmp.Add(filler);
-        //    }
-        //    var indentString = string.Join('|', tmp); 
-        //    if (!string.IsNullOrEmpty(indentString))
-        //    {
-        //        indentString = "|" + indentString;
-        //    }
-        //    foreach (var n in rootNode.Children)
-        //    {
-        //        var vis = GetVisual(n);
-        //        var line = indentString + "|--- " + vis;
-        //        sb.AppendLine(line);
-        //        DrawVisualRecursiveOLD(sb, n, (level + 1));
-        //    }
-        //}
-
-        private static string GetVisual(TreeNode<T> node)
+        private static string GetNodeDefaultTitle(TreeNode<T> node)
         {
             var nodeString = node.Data.ToString();
-            if(node.Data is ITreeNodeTitle)
+            if (node.Data is ITreeNodeTitle)
             {
                 nodeString = ((ITreeNodeTitle)node.Data).GetTitleString();
             }

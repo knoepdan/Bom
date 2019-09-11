@@ -13,9 +13,9 @@ using Ch.Knomes.Structure.Testing;
 
 namespace Bom.Core.Actions
 {
-    public class NodeChangesTests : IDisposable
+    public class NodeChangesTreeCheckTests : IDisposable
     {
-        public NodeChangesTests()
+        public NodeChangesTreeCheckTests()
         {
             this.Context = TestHelpers.GetModelContext(true);
             RootNode = TestDataFactory.CreateSampleNodes(MaxLevel, NofChildrenPerNode);
@@ -39,14 +39,8 @@ namespace Bom.Core.Actions
             MoveLeaveUp();
             MoveNoneLeaveUp();
             MoveNoneLeaveUpAndMoveChildren();
-           
-            // TODO test:  -> move leave to another branch (also as leave and not)
-            MoveNoneLeaveToAnotherBranch(); // TODO with or without children
-                                            // TODO test: Move non leave node up (with and without children) -> should work
 
-            // TODO test: move node down to another branch (with or without children) -> should work  (its same as moving to another branch.. maybe test not necessary) 
-            // TODO test: move node down with children: -> must fail
-            // TODO test: move node down without children: -> should work
+            // more tests would be possible but tests are more concise in when they are done differently
         }
 
         private void MoveLeaveUp()
@@ -75,15 +69,6 @@ namespace Bom.Core.Actions
             var movedPath = TestMoveNodePath(args);
         }
 
-        private void MoveNoneLeaveToAnotherBranch()
-        {
-            // TODO
-            //var leaveNode = RootNode.DescendantsAndI.GetChildrenByAbsoluteLevel(3).First(); // 1a-2a-3a
-            //var targetParent = RootNode.DescendantsAndI.GetChildrenByAbsoluteLevel(1).First(); // 1a
-            //var args = new TestMoveNodeArgs(leaveNode, targetParent, true);
-            //var movedPath = TestMoveNodePath(args);
-        }
-
 
         private Path TestMoveNodePath(TestMoveNodeArgs args)
         {
@@ -100,31 +85,74 @@ namespace Bom.Core.Actions
             {
                 throw new Exception($"Expected parentPath is not correct. Expected title: {args.NewParentNode.Data.Title}. Actual: {dbParentPath.Node.Title} / {dbParentPath.NodePathString}");
             }
-            if(args.NewParentNode.Root != args.ToMoveNode.Root)
+
+            // ## Test children of parent (must be the existing ones plus the moved one
             {
-                throw new Exception($"InMemory nodes do not have the same parents: {args.NewParentNode.Data.Title},  moved node root: {args.ToMoveNode.Data.Title}"); // check that both are in same tree
+                var expected = new List<TreeNode<SimpleNode>>(args.NewParentNode.Children);
+                var newChildren = this.Context.GetPaths().GetChildren(dbParentPath, 1);
+                CheckIfAreTheSameAndThrowIfNot(expected, newChildren, "checking children of parent");
             }
 
-            // compare string representation (once from inMemory, once from DB)
-            var inMemoryRoot = args.NewParentNode.Root;
-            var inMemoryTreeString = inMemoryRoot.VisualStringRepresentation(n => n.Data.Title);
-
-            var dbRoot = this.Context.GetPaths().First(p => p.Node.Title == inMemoryRoot.Data.Title);
-            var allNodes = this.Context.GetPaths().GetChildren(dbRoot, 9999).ToList(); // level so high we get all
-            allNodes.Insert(0, dbRoot);
-            var dbRootInMemory = TreeNodeUtils.CreateInMemoryModel(allNodes).First();
-            var dbTreeString = dbRootInMemory.VisualStringRepresentation(n => n.Data.Node.Title);
-           
-            // TODO make ordering the same..otherwise will fail  (idea: ordering strategies.. as argument??)
-
-            if(inMemoryTreeString != dbTreeString) // attention.. trees might be the same but if children are not ordered the same. this will fail
+            // ## Test children of moved node
             {
-                throw new Exception("visual tree reprentation do not match"); 
+                var newMovedChildren = this.Context.GetPaths().GetChildren(movedPath, 1).ToList();
+                if (args.MoveChildrenToo)
+                {
+                    CheckIfAreTheSameAndThrowIfNot(args.ToMoveNode.Children, newMovedChildren, "checking children of moved node");
+                }
+                else if (newMovedChildren.Count > 0)
+                {
+                    throw new Exception($"Moved path should not have any children as moving children was set to {args.MoveChildrenToo}, nof children {newMovedChildren.Count} ({string.Join(", ", newMovedChildren.Select(x => x.Node.Title))}");
+                }
+
+            }
+            // ## check all descendants of old parent
+            {
+                if (oldParent != null)
+                {
+                    var dbOldParentPath = this.Context.GetPaths().First(p => p.Node.Title == oldParent.Data.Title);
+                    var currentDescendants = this.Context.GetPaths().GetChildren(dbOldParentPath, 9999).ToList(); // level so hight we get all children and subchildren .. we just want to check all children here
+                    if (currentDescendants.Count != oldParent.Descendants.Count)
+                    {
+#if DEBUG
+                        var dbRoot = this.Context.GetPaths().First(p => p.Node.Title == "1a");
+                        var dbAllNodes = this.Context.GetPaths().GetChildren(dbRoot, 9999).ToList();
+                        dbAllNodes.Add(dbRoot);
+                        var inMemoryModel = TreeNodeUtils.CreateInMemoryModel(dbAllNodes);
+#endif
+                        // must be 2 less (the one that was moved and parent node itself may not be counted)
+                        throw new Exception($"The number of descendants does not mach the expected number. Expected: {(args.ToMoveNode.Parent.Descendants.Count)}, actual: {currentDescendants.Count }");
+                    }
+
+                    // check descendants
+                    CheckIfAreTheSameAndThrowIfNot(oldParent.Descendants, currentDescendants, "checking descendants of moved node");
+
+
+                    // check direct children
+                    foreach(var directChild in oldParent.Children)
+                    {
+                        if(!currentDescendants.Any(d => d.Node.Title == directChild.Data.Title && d.Level == directChild.Level))
+                        {
+                            throw new Exception($"Direct children not ok. '{directChild.Data.Title}' with level {directChild.Level} not found in db data");
+                        }
+                    }
+                }
             }
             return movedPath;
         }
 
-       
+        private void CheckIfAreTheSameAndThrowIfNot(IEnumerable<TreeNode<SimpleNode>> expected, IEnumerable<Path> actual, string additionalMsgInCaseOfError = "")
+        {
+            var expectedTitles = expected.Select(x => x.Data.Title).ToList();
+            var actualTitles = actual.Select(x => x.Node.Title).ToList();
+            ComparisonUtils.ThrowIfDuplicates(expectedTitles);
+            ComparisonUtils.ThrowIfDuplicates(actualTitles);
+            bool isResultAsExpected = ComparisonUtils.HasSameContent(actualTitles, expectedTitles); // possible improvment.. replace with simple foreach and also check level
+            if (!isResultAsExpected)
+            {
+                throw new Exception($"Titles of moved node are not as expected! Expected: {string.Join(", ", expectedTitles)} | actual :  {string.Join(", ", actualTitles)} | {additionalMsgInCaseOfError}");
+            }
+        }
 
         private Path MoveNodePath(string moveTitle, string newParentTitle, bool moveChildrenToo)
         {
@@ -149,22 +177,6 @@ namespace Bom.Core.Actions
 
         // private Path Get
 
-
-        //[Fact]
-        //public void Delete_root_with_children_will_throw()
-        //{
-        //    try
-        //    {
-        //        var root = EnsureSampleData(Context);
-        //        var prov = new PathNodeProvider(Context);
-        //        prov.DeletePath(root.PathId, true, null);
-        //        Assert.True(false); // make it fail
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("Expected error happened:" + ex);
-        //    }
-        //}
 
         private Bom.Core.Model.Path EnsureSampleData(Bom.Core.Data.ModelContext context)
         {

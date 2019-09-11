@@ -84,10 +84,25 @@ namespace Ch.Knomes.Structure.Testing
                     {
                         var node230 = node23.AddChild(new SimpleNode("Alligators"));
                         var node231 = node23.AddChild(new SimpleNode("Crocodiles"));
+                        {
+                            var node2310 = node231.AddChild(new SimpleNode("saltwater crocodile"));
+                            var node2311 = node231.AddChild(new SimpleNode("nile crocodile"));
+                            var node2312 = node231.AddChild(new SimpleNode("orinoco crocodile"));
+                            var node2313 = node231.AddChild(new SimpleNode("american crocodile"));
+                        }
                         var node232 = node23.AddChild(new SimpleNode("Gavial"));
                     }
                 }
                 var node3 = node2.AddChild(new SimpleNode("Amphibians"));
+                {
+                    var node32 = node3.AddChild(new SimpleNode("Frogs and Toads"));
+                    {
+                        var node320 = node32.AddChild(new SimpleNode("sugar cane toad"));
+                        var node321 = node32.AddChild(new SimpleNode("grasfrog"));
+                    }
+                    var node30 = node3.AddChild(new SimpleNode("Caecilian"));
+                    var node31 = node3.AddChild(new SimpleNode("Salamanders"));
+                }
             }
             return root;
         }
