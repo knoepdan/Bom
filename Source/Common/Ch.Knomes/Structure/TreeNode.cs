@@ -10,6 +10,9 @@ namespace Ch.Knomes.Structure
     {
         // https://stackoverflow.com/questions/66893/tree-data-structure-in-c-sharp
 
+        // TODO potential improvments: remove Child (by index or by object), copy method (flag for copying data also or just keep same data)
+
+
         public TreeNode(T data)
         {
             this.Data = data;
@@ -40,7 +43,6 @@ namespace Ch.Knomes.Structure
             {
                 throw new ArgumentException("Cannot move a node down to its own children.. would create an endless loop", nameof(newParent));
             }
-
 
             if (!moveChildrenToo)
             {
@@ -144,32 +146,36 @@ namespace Ch.Knomes.Structure
             }
         }
 
+        /// <summary>
+        /// Compares Data of tree node (beginning with this node and going down to all descendants) on equality using either passed compareMethod or Equals method
+        /// </summary>
         public bool AreDescendantsAndIEqual<TX>(TreeNode<TX> compareNode, Func<TreeNode<T>, TreeNode<TX>, bool> compareMethod = null)
         {
-            if(compareNode == null)
+            if (compareNode == null)
             {
                 throw new ArgumentNullException(nameof(compareNode));
             }
 
-            if (((compareMethod != null && compareMethod(this, compareNode))  || 
-                (compareMethod == null &&  this.Data.Equals(compareNode.Data) )) && this.Children.Count == compareNode.Children.Count)
+            if (((compareMethod != null && compareMethod(this, compareNode)) ||
+                (compareMethod == null && this.Data.Equals(compareNode.Data))) && this.Children.Count == compareNode.Children.Count)
             {
-                foreach(var child in this.Children)
+                foreach (var child in this.Children)
                 {
                     var alreadyComparedIndex = new List<int>(); // index to keep track if compareChild that already matched a child (otherwise could be true if all children are the same)
-                    for(int i = 0; i < compareNode.Children.Count; i++)
+                    for (int i = 0; i < compareNode.Children.Count; i++)
                     {
                         if (alreadyComparedIndex.Contains(i))
                         {
                             continue;
                         }
                         var childToCompare = compareNode.Children[i];
-                        var childAndDescendantsEqual = child.AreDescendantsAndIEqual( childToCompare, compareMethod);
+                        var childAndDescendantsEqual = child.AreDescendantsAndIEqual(childToCompare, compareMethod);
                         if (childAndDescendantsEqual)
                         {
                             alreadyComparedIndex.Add(i);
                             break;
-                        }else if(i == compareNode.Children.Count - 1)
+                        }
+                        else if (i == compareNode.Children.Count - 1)
                         {
                             return false; // we compared the last one and compare failed
                         }
@@ -177,15 +183,14 @@ namespace Ch.Knomes.Structure
                 }
                 return true;
             }
-
             return false;
         }
 
-      
+        public string VisualString => VisualStringRepresentation(null);
 
-        public string VisualStringRepresentation(Func<TreeNode<T>, string> getNodeTitleFunc = null, bool orderByTitle = false)
+        public string VisualStringRepresentation(Func<TreeNode<T>, string> getNodeTitleFunc = null)
         {
-            if(getNodeTitleFunc == null)
+            if (getNodeTitleFunc == null)
             {
                 getNodeTitleFunc = GetNodeDefaultTitle;
             }
@@ -195,7 +200,6 @@ namespace Ch.Knomes.Structure
             sb.AppendLine(getNodeTitleFunc(rootNode));
             DrawVisualRecursive(sb, rootNode, getNodeTitleFunc);
             return sb.ToString();
-
         }
 
         private static void DrawVisualRecursive(StringBuilder sb, TreeNode<T> rootNode, Func<TreeNode<T>, string> getNodeTitleFunc)
@@ -250,7 +254,6 @@ namespace Ch.Knomes.Structure
             return $"[{nodeString}]";
         }
 
-
         private void GetAllChildreRecursive(List<TreeNode<T>> list)
         {
             list.AddRange(this.Children);
@@ -260,7 +263,6 @@ namespace Ch.Knomes.Structure
             }
         }
         #endregion
-
 
         public override string ToString()
         {
