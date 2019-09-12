@@ -20,6 +20,25 @@ namespace Ch.Knomes.Structure
             return "" + this.Title;
         }
 
+        public override bool Equals(object obj)
+        {
+            var compareNode = obj as SimpleNode;
+            if(compareNode != null )
+            {
+                return (this.Title == compareNode.Title);
+            }
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            if(this.Title != null)
+            {
+                return this.Title.GetHashCode();
+            }
+            return base.GetHashCode();
+        }
+
         string ITreeNodeTitle.GetTitleString()
         {
             return this.Title;

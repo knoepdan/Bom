@@ -144,6 +144,45 @@ namespace Ch.Knomes.Structure
             }
         }
 
+        public bool AreDescendantsAndIEqual<TX>(TreeNode<TX> compareNode, Func<TreeNode<T>, TreeNode<TX>, bool> compareMethod = null)
+        {
+            if(compareNode == null)
+            {
+                throw new ArgumentNullException(nameof(compareNode));
+            }
+
+            if (((compareMethod != null && compareMethod(this, compareNode))  || 
+                (compareMethod == null &&  this.Data.Equals(compareNode.Data) )) && this.Children.Count == compareNode.Children.Count)
+            {
+                foreach(var child in this.Children)
+                {
+                    var alreadyComparedIndex = new List<int>(); // index to keep track if compareChild that already matched a child (otherwise could be true if all children are the same)
+                    for(int i = 0; i < compareNode.Children.Count; i++)
+                    {
+                        if (alreadyComparedIndex.Contains(i))
+                        {
+                            continue;
+                        }
+                        var childToCompare = compareNode.Children[i];
+                        var childAndDescendantsEqual = child.AreDescendantsAndIEqual( childToCompare, compareMethod);
+                        if (childAndDescendantsEqual)
+                        {
+                            alreadyComparedIndex.Add(i);
+                            break;
+                        }else if(i == compareNode.Children.Count - 1)
+                        {
+                            return false; // we compared the last one and compare failed
+                        }
+                    }
+                }
+                return true;
+            }
+
+            return false;
+        }
+
+      
+
         public string VisualStringRepresentation(Func<TreeNode<T>, string> getNodeTitleFunc = null, bool orderByTitle = false)
         {
             if(getNodeTitleFunc == null)

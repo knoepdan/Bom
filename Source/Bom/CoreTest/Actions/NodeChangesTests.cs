@@ -88,38 +88,41 @@ namespace Bom.Core.Actions
         private Path TestMoveNodePath(TestMoveNodeArgs args)
         {
             // remember some state before
-            TreeNode<SimpleNode> oldParent = args.ToMoveNode.Parent;
-            var siblings = args.ToMoveNode.Siblings;
+            var childrenBeforeMoving = args.ToMoveNode.Children.ToList();
 
             // do actual move
             var movedPath = MoveNodePath(args.ToMoveNode.Data.Title, args.NewParentNode.Data.Title, args.MoveChildrenToo);
 
-            // ## test if parent really is the new parent
-            var dbParentPath = this.Context.GetPaths().GetDirectParent(movedPath);
-            if (dbParentPath.Node.Title != args.NewParentNode.Data.Title)
-            {
-                throw new Exception($"Expected parentPath is not correct. Expected title: {args.NewParentNode.Data.Title}. Actual: {dbParentPath.Node.Title} / {dbParentPath.NodePathString}");
-            }
-            if(args.NewParentNode.Root != args.ToMoveNode.Root)
+            // ## perform some checks on inMemory node on expected values (afterwards we will check db nodes)
+            if (args.NewParentNode.Root != args.ToMoveNode.Root)
             {
                 throw new Exception($"InMemory nodes do not have the same parents: {args.NewParentNode.Data.Title},  moved node root: {args.ToMoveNode.Data.Title}"); // check that both are in same tree
             }
+            if (args.ToMoveNode.Parent.Data.Title != args.NewParentNode.Data.Title)
+            {
+                throw new Exception($"InMemory does not have the expected parent: {args.NewParentNode.Data.Title},  moved node parent: {args.ToMoveNode.Parent.Data.Title}");
+            }
 
-            // compare string representation (once from inMemory, once from DB)
+            // perform some other e
+            if (args.MoveChildrenToo )
+            {
+                CheckIfAreTheSameAndThrowIfNot(args.ToMoveNode.Children, childrenBeforeMoving);
+            }
+            else if (!args.MoveChildrenToo && args.ToMoveNode.Children.Count > 0)
+            {
+                throw new Exception($"InMemory moved node has  {args.ToMoveNode.Children.Count} children but shoulde have none "); // check that both are in same tree
+            }
+
+            // compare with DB node (not possible to compare string representation as order of children not the same)
             var inMemoryRoot = args.NewParentNode.Root;
-            var inMemoryTreeString = inMemoryRoot.VisualStringRepresentation(n => n.Data.Title);
-
             var dbRoot = this.Context.GetPaths().First(p => p.Node.Title == inMemoryRoot.Data.Title);
             var allNodes = this.Context.GetPaths().GetChildren(dbRoot, 9999).ToList(); // level so high we get all
             allNodes.Insert(0, dbRoot);
             var dbRootInMemory = TreeNodeUtils.CreateInMemoryModel(allNodes).First();
-            var dbTreeString = dbRootInMemory.VisualStringRepresentation(n => n.Data.Node.Title);
-           
-            // TODO make ordering the same..otherwise will fail  (idea: ordering strategies.. as argument??)
-
-            if(inMemoryTreeString != dbTreeString) // attention.. trees might be the same but if children are not ordered the same. this will fail
+            bool areEqual = dbRootInMemory.AreDescendantsAndIEqual(inMemoryRoot, (node, simpleNode) => { return node.Data.Node.Title == simpleNode.Data.Title; });
+            if(!areEqual)
             {
-                throw new Exception("visual tree reprentation do not match"); 
+                throw new Exception("Nodes do not match"); 
             }
             return movedPath;
         }
@@ -165,6 +168,19 @@ namespace Bom.Core.Actions
         //        Console.WriteLine("Expected error happened:" + ex);
         //    }
         //}
+
+        private void CheckIfAreTheSameAndThrowIfNot(IEnumerable<TreeNode<SimpleNode>> expected, IEnumerable<TreeNode<SimpleNode>> actual, string additionalMsgInCaseOfError = "")
+        {
+            var expectedTitles = expected.Select(x => x.Data.Title).ToList();
+            var actualTitles = actual.Select(x => x.Data.Title).ToList();
+            ComparisonUtils.ThrowIfDuplicates(expectedTitles);
+            ComparisonUtils.ThrowIfDuplicates(actualTitles);
+            bool isResultAsExpected = ComparisonUtils.HasSameContent(actualTitles, expectedTitles); // possible improvment.. replace with simple foreach and also check level
+            if (!isResultAsExpected)
+            {
+                throw new Exception($"Titles of moved node are not as expected! Expected: {string.Join(", ", expectedTitles)} | actual :  {string.Join(", ", actualTitles)} | {additionalMsgInCaseOfError}");
+            }
+        }
 
         private Bom.Core.Model.Path EnsureSampleData(Bom.Core.Data.ModelContext context)
         {
