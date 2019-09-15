@@ -35,6 +35,10 @@ BEGIN
 
 
 	-- possible improvment -> check that we dont create a loop (making a parent his own child) ... remark: check only necessary when we move children too
+	--IF @newParentPath.IsDescendantOf(@moveNodePath) THEN
+--THROW 'ssss'
+
+
 
 	BEGIN TRANSACTION;
     SAVE TRANSACTION MovePathSavePoint;
@@ -74,20 +78,41 @@ BEGIN
 
 			CLOSE db_cursor  
 			DEALLOCATE db_cursor 
+
+			-- move node that is childless now (we need to requery the paths because when we move a node down the paths of the new parents also change)
+			SELECT  @oldParentPath = NodePath.GetAncestor(1), @moveNodePath = NodePath FROM dbo.[Path] WHERE PathId = @pathId
+			SELECT @oldParentPathId = pp.PathId FROM dbo.[Path] pp  WHERE pp.NodePath = @oldParentPath
+			SELECT @newParentPath = pp.NodePath FROM dbo.[Path] pp  WHERE pp.PathId = @newParentPathId
+			print @moveNodePath.GetReparentedValue(@oldParentPath, @newParentPath).ToString()
+			UPDATE dbo.[Path] 
+			  SET NodePath = @moveNodePath.GetReparentedValue(@oldParentPath, @newParentPath).ToString()
+			WHERE PathId = @pathId
+
 		END
+		ELSE 
+		BEGIN
 
-		-- move node (including children... in case the didnt need to be moved, they would have hinged to the parent node already)
-		UPDATE dbo.[Path] 
-		SET NodePath = t.NewNodePath
-			FROM (
+			-- prevent moving a node down as this would create endless loops
+			IF @newParentPath.IsDescendantOf(@moveNodePath) = 1
+			BEGIN
+				print 'forbidden to move node down its own tree as this would cause an endless tree';
+				THROW 50221, 'forbidden to move node down its own tree as this would cause an endless tree', 1;
+			END
+
+			-- move node (including children... in case the didnt need to be moved, they would have hinged to the parent node already)
+			UPDATE dbo.[Path] 
+			SET NodePath = t.NewNodePath
+				FROM (
 			
-				SELECT PathId, NodePath.GetReparentedValue(@oldParentPath, @newParentPath).ToString() AS NewNodePath
-				FROM dbo.[Path] p
-				WHERE     p.PathId = @pathId OR p.NodePath.IsDescendantOf(@moveNodePath) = 1
-				) t
-				WHERE t.PathId = dbo.Path.PathId
+					SELECT PathId, NodePath.GetReparentedValue(@oldParentPath, @newParentPath).ToString() AS NewNodePath
+					FROM dbo.[Path] p
+					WHERE     p.PathId = @pathId OR p.NodePath.IsDescendantOf(@moveNodePath) = 1
+					) t
+					WHERE t.PathId = dbo.Path.PathId
 
-		-- no need to return changed node (besides.. this seemed not always to be correct)-> SELECT * FROM  [dbo].[Path] WHERE PathId = @pathId
+			-- no need to return changed node (besides.. this seemed not always to be correct)-> SELECT * FROM  [dbo].[Path] WHERE PathId = @pathId
+
+		END
 		COMMIT TRANSACTION
 	END TRY
     BEGIN CATCH

@@ -13,9 +13,9 @@ using Ch.Knomes.Structure.Testing;
 
 namespace Bom.Core.Actions
 {
-    public class NodeChangesTests : IDisposable
+    public class MoveNodeTests : IDisposable
     {
-        public NodeChangesTests()
+        public MoveNodeTests()
         {
             this.Context = TestHelpers.GetModelContext(true);
             RootNode = TestDataFactory.CreateSampleNodes(MaxLevel, NofChildrenPerNode);
@@ -35,18 +35,18 @@ namespace Bom.Core.Actions
         {
             EnsureSampleData(Context);
            
-            // tests
+            // Moving up the tree
             MoveLeaveUp();
             MoveNoneLeaveUp();
             MoveNoneLeaveUpAndMoveChildren();
            
-            // TODO test:  -> move leave to another branch (also as leave and not)
-            MoveNoneLeaveToAnotherBranch(); // TODO with or without children
-                                            // TODO test: Move non leave node up (with and without children) -> should work
+            // Moving to another branch
+            MoveNoneLeaveToAnotherBranch();
+            MoveNoneLeaveToAnotherBranchWithChildren();
 
-            // TODO test: move node down to another branch (with or without children) -> should work  (its same as moving to another branch.. maybe test not necessary) 
-            // TODO test: move node down with children: -> must fail
-            // TODO test: move node down without children: -> should work
+            // Moving down
+            MoveNodeDown(); // works because children are not moved
+            MoveNodeDownWithChildrenThrows(); // must fail because it would create a loop
         }
 
         private void MoveLeaveUp()
@@ -77,13 +77,48 @@ namespace Bom.Core.Actions
 
         private void MoveNoneLeaveToAnotherBranch()
         {
-            // TODO
-            //var leaveNode = RootNode.DescendantsAndI.GetChildrenByAbsoluteLevel(3).First(); // 1a-2a-3a
-            //var targetParent = RootNode.DescendantsAndI.GetChildrenByAbsoluteLevel(1).First(); // 1a
-            //var args = new TestMoveNodeArgs(leaveNode, targetParent, true);
-            //var movedPath = TestMoveNodePath(args);
+            var node = RootNode.DescendantsAndI.Where(n => n.Level == 4 && n.Children.Any()).First();
+            var targetParent = RootNode.DescendantsAndI.Where(n => n.Level == 3  && n.Parent != node.Ancestors.First(a => a.Level == 2)).First();
+            var args = new TestMoveNodeArgs(node, targetParent, false);
+            var movedPath = TestMoveNodePath(args);
         }
 
+        private void MoveNoneLeaveToAnotherBranchWithChildren()
+        {
+            var node = RootNode.DescendantsAndI.Where(n => n.Level == 4 && n.Children.Any()).First();
+            var targetParent = RootNode.DescendantsAndI.Where(n => n.Level == 3 && n.Parent != node.Ancestors.First(a => a.Level == 2)).First();
+            var args = new TestMoveNodeArgs(node, targetParent, true);
+            var movedPath = TestMoveNodePath(args);
+        }
+
+        private void MoveNodeDown()
+        {
+            var node = RootNode.DescendantsAndI.Where(n => n.Level == 2 && n.Children.Any()).First();
+            var targetParent = RootNode.DescendantsAndI.Where(n => n.Level == 4 && n.Ancestors.Any(a => a == node)).First();
+            var args = new TestMoveNodeArgs(node, targetParent, false);
+            var movedPath = TestMoveNodePath(args);
+        }
+
+        private void MoveNodeDownWithChildrenThrows()
+        {
+            // this must fail on the level of the database
+            var node = RootNode.DescendantsAndI.Where(n => n.Level == 2 && n.Children.Any()).First();
+            var targetParent = RootNode.DescendantsAndI.Where(n => n.Level == 4 && n.Ancestors.Any(a => a == node)).First();
+            var args = new TestMoveNodeArgs(node, targetParent, true);
+            try
+            {
+                var moveNode = Context.GetPaths().First(x => x.Node.Title == args.ToMoveNode.Data.Title);
+                var newParentNode = Context.GetPaths().First(x => x.Node.Title == args.NewParentNode.Data.Title);
+                var prov = new PathNodeProvider(Context);
+                var movedPath = prov.MovePathAndReload(moveNode.PathId, newParentNode.PathId, true);
+                Assert.True(1 == 2); // trigger assert fail
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Moving a node down its own children fails when calling provider as this is not allowed! Error: {ex}");
+                return;
+            }
+        }
 
         private Path TestMoveNodePath(TestMoveNodeArgs args)
         {
@@ -103,7 +138,7 @@ namespace Bom.Core.Actions
                 throw new Exception($"InMemory does not have the expected parent: {args.NewParentNode.Data.Title},  moved node parent: {args.ToMoveNode.Parent.Data.Title}");
             }
 
-            // perform some other e
+            // perform some other simple checks (relativly basic)
             if (args.MoveChildrenToo )
             {
                 CheckIfAreTheSameAndThrowIfNot(args.ToMoveNode.Children, childrenBeforeMoving);
@@ -113,7 +148,7 @@ namespace Bom.Core.Actions
                 throw new Exception($"InMemory moved node has  {args.ToMoveNode.Children.Count} children but shoulde have none "); // check that both are in same tree
             }
 
-            // compare with DB node (not possible to compare string representation as order of children not the same)
+            // compare with DB node (not possible to compare string representation as order of children is not guaranteed to be the same)
             var inMemoryRoot = args.NewParentNode.Root;
             var dbRoot = this.Context.GetPaths().First(p => p.Node.Title == inMemoryRoot.Data.Title);
             var allNodes = this.Context.GetPaths().GetChildren(dbRoot, 9999).ToList(); // level so high we get all

@@ -13,9 +13,9 @@ using Ch.Knomes.Structure.Testing;
 
 namespace Bom.Core.Actions
 {
-    public class NodeChangesTreeCheckTests : IDisposable
+    public class MoveNodeBasicTests : IDisposable
     {
-        public NodeChangesTreeCheckTests()
+        public MoveNodeBasicTests()
         {
             this.Context = TestHelpers.GetModelContext(true);
             RootNode = TestDataFactory.CreateSampleNodes(MaxLevel, NofChildrenPerNode);
@@ -39,6 +39,7 @@ namespace Bom.Core.Actions
             MoveLeaveUp();
             MoveNoneLeaveUp();
             MoveNoneLeaveUpAndMoveChildren();
+            MoveNoneLeaveToAnotherBranch();
 
             // more tests would be possible but tests are more concise in when they are done differently
         }
@@ -69,6 +70,13 @@ namespace Bom.Core.Actions
             var movedPath = TestMoveNodePath(args);
         }
 
+        private void MoveNoneLeaveToAnotherBranch()
+        {
+            var node = RootNode.DescendantsAndI.Where(n => n.Level == 4 && n.Children.Any()).First();
+            var targetParent = RootNode.DescendantsAndI.Where(n => n.Level == 3 && n.Parent != node.Ancestors.First(a => a.Level == 2)).First();
+            var args = new TestMoveNodeArgs(node, targetParent, false);
+            var movedPath = TestMoveNodePath(args);
+        }
 
         private Path TestMoveNodePath(TestMoveNodeArgs args)
         {
