@@ -19,6 +19,7 @@ namespace Bom.Core.Actions
         {
             this.Context = TestHelpers.GetModelContext(true);
             RootNode = TestDataFactory.CreateSampleNodes(MaxLevel, NofChildrenPerNode);
+            AnimalRootNode = TestDataFactory.CreateSampleAnimalNodes();
         }
 
         public const int MaxLevel = 5;
@@ -29,11 +30,13 @@ namespace Bom.Core.Actions
 
         private TreeNode<SimpleNode> RootNode { get; }
 
+        private TreeNode<SimpleNode> AnimalRootNode { get; }
+
 
         [Fact]
         public void Moving_path_works()
         {
-            EnsureSampleData(Context);
+            EnsureSampleData(Context, RootNode, true);
            
             // Moving up the tree
             MoveLeaveUp();
@@ -46,7 +49,18 @@ namespace Bom.Core.Actions
 
             // Moving down
             MoveNodeDown(); // works because children are not moved
-            MoveNodeDownWithChildrenThrows(); // must fail because it would create a loop
+            MoveNodeDownWithChildrenThrows(); // THROWS: must fail because it would create a loop
+
+            // 2 roots
+            EnsureSampleData(Context, this.AnimalRootNode, false);
+            MoveNodeToAnotherTree();
+            MoveNodeToAnotherTreeWithChildren();
+            MoveRootToAnotherTreeThrows(); // THROWS: moving a single root node is not allowed because all children would become roots themselves
+            MoveRootWithChildrenToAnotherTree();
+
+            // current inconsistency and room for improvment
+            // - it is possible to move a root node with its children to another tree (and therefore making origin tree "dissapear") but it is not possible to undo such an operation
+            // as it is not possible to move a node out of the tree and create a root node. (either allow newParent be set to null to create a new root or create a new stored procedure)
         }
 
         private void MoveLeaveUp()
@@ -99,6 +113,47 @@ namespace Bom.Core.Actions
             var movedPath = TestMoveNodePath(args);
         }
 
+        private void MoveNodeToAnotherTree()
+        {
+            var node = RootNode.DescendantsAndI.Where(n => n.Level == 2 && n.Children.Any()).First();
+            var targetParent = AnimalRootNode.DescendantsAndI.Where(n => n.Level == 2).Skip(1).First();
+            var args = new TestMoveNodeArgs(node, targetParent, false);
+            var movedPath = TestMoveNodePath(args);
+        }
+
+        private void MoveNodeToAnotherTreeWithChildren()
+        {
+            var node = RootNode.DescendantsAndI.Where(n => n.Level == 2 && n.Children.Any()).First();
+            var targetParent = AnimalRootNode.DescendantsAndI.Where(n => n.Level == 2).Skip(1).First();
+            var args = new TestMoveNodeArgs(node, targetParent, true);
+            var movedPath = TestMoveNodePath(args);
+        }
+
+        private void MoveRootToAnotherTreeThrows()
+        {
+            var node = RootNode;
+            var targetParent = AnimalRootNode.DescendantsAndI.Where(n => n.Level == 2).First();
+            var args = new TestMoveNodeArgs(node, targetParent, false);
+            try
+            {
+                var movedPath = TestMoveNodePath(args);
+                Assert.True(1 == 2); // trigger assert fail
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Moving a root node to another tree without moving children is not allow as all the children would become root nodes! Error: {ex}");
+                return;
+            }
+        }
+
+        private void MoveRootWithChildrenToAnotherTree()
+        {
+            var node = RootNode;
+            var targetParent = AnimalRootNode.DescendantsAndI.Where(n => n.Level == 2).First();
+            var args = new TestMoveNodeArgs(node, targetParent, true);
+            var movedPath = TestMoveNodePath(args);
+        }
+
         private void MoveNodeDownWithChildrenThrows()
         {
             // this must fail on the level of the database
@@ -123,6 +178,7 @@ namespace Bom.Core.Actions
         private Path TestMoveNodePath(TestMoveNodeArgs args)
         {
             // remember some state before
+            var rootBeforeMoving = args.ToMoveNode.Root;
             var childrenBeforeMoving = args.ToMoveNode.Children.ToList();
 
             // do actual move
@@ -159,10 +215,36 @@ namespace Bom.Core.Actions
             {
                 throw new Exception("Nodes do not match"); 
             }
+
+            // checked if moved from one tree to another
+            if(rootBeforeMoving.Data.Title != args.ToMoveNode.Root.Data.Title) 
+            {
+                // we need to check the tree also
+                var origTreeRoot = this.Context.GetPaths().First(p => p.Node.Title == rootBeforeMoving.Data.Title);
+                var allOrigNodes = this.Context.GetPaths().GetChildren(origTreeRoot, 9999).ToList(); // level so high we get all
+                allOrigNodes.Add(origTreeRoot);
+
+                // compare count
+                var allPathsCount = this.Context.GetPaths().Count();
+                int inMemoryCount = inMemoryRoot.DescendantsAndI.Count() + allOrigNodes.Count;
+                if(rootBeforeMoving == args.ToMoveNode)
+                {
+                    inMemoryCount = inMemoryRoot.DescendantsAndI.Count(); // when we moved the root, allOrigNodes is part of the new tree too and may not be counted
+                }
+                if (allPathsCount != inMemoryCount)
+                {
+                    throw new Exception($"Counts do not match. Total number of paths: {allPathsCount}, Orig-Tree: {allOrigNodes.Count}, Target-Tree: {inMemoryRoot.DescendantsAndI.Count()}");
+                }
+
+                var dbRootOrigInMemory = TreeNodeUtils.CreateInMemoryModel(allOrigNodes).First();
+                bool areOrigNodesEqual = dbRootOrigInMemory.AreDescendantsAndIEqual(rootBeforeMoving, (node, simpleNode) => { return node.Data.Node.Title == simpleNode.Data.Title; });
+                if (!areOrigNodesEqual)
+                {
+                    throw new Exception("Original tree nodes do not match");
+                }
+            }
             return movedPath;
         }
-
-       
 
         private Path MoveNodePath(string moveTitle, string newParentTitle, bool moveChildrenToo)
         {
@@ -175,7 +257,11 @@ namespace Bom.Core.Actions
 
             // keep in memory construct in sync
             var inMemoryMoveNode = this.RootNode.DescendantsAndI.First(n => n.Data.Title == moveTitle);
-            var inMemoryNewParentNode = this.RootNode.DescendantsAndI.First(n => n.Data.Title == newParentTitle);
+            var inMemoryNewParentNode = this.RootNode.DescendantsAndI.FirstOrDefault(n => n.Data.Title == newParentTitle);
+            if(inMemoryNewParentNode == null) // null means maybe we move it to another tree
+            {
+                inMemoryNewParentNode = this.AnimalRootNode.DescendantsAndI.FirstOrDefault(n => n.Data.Title == newParentTitle);
+            }
             inMemoryMoveNode.MoveToNewParent(inMemoryNewParentNode, moveChildrenToo);
 
             // new context otherwise we might get wrong data (important)
@@ -184,25 +270,6 @@ namespace Bom.Core.Actions
 
             return movedPath;
         }
-
-        // private Path Get
-
-
-        //[Fact]
-        //public void Delete_root_with_children_will_throw()
-        //{
-        //    try
-        //    {
-        //        var root = EnsureSampleData(Context);
-        //        var prov = new PathNodeProvider(Context);
-        //        prov.DeletePath(root.PathId, true, null);
-        //        Assert.True(false); // make it fail
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("Expected error happened:" + ex);
-        //    }
-        //}
 
         private void CheckIfAreTheSameAndThrowIfNot(IEnumerable<TreeNode<SimpleNode>> expected, IEnumerable<TreeNode<SimpleNode>> actual, string additionalMsgInCaseOfError = "")
         {
@@ -217,10 +284,10 @@ namespace Bom.Core.Actions
             }
         }
 
-        private Bom.Core.Model.Path EnsureSampleData(Bom.Core.Data.ModelContext context)
+        private static Bom.Core.Model.Path EnsureSampleData(Bom.Core.Data.ModelContext context, TreeNode<SimpleNode> rootNode, bool cleanDatabase)
         {
             var preparer = new TestDataPreparer(context);
-            var dbRootNode = preparer.CreateTestData(RootNode);
+            var dbRootNode = preparer.CreateTestData(rootNode, cleanDatabase);
             return dbRootNode;
         }
 

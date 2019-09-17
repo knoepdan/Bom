@@ -35,9 +35,12 @@ namespace Bom.Core.Testing
             //}
         }
 
-        public Path CreateTestData(TreeNode<SimpleNode> rootNode)
+        public Path CreateTestData(TreeNode<SimpleNode> rootNode, bool cleanDatabase = true)
         {
-            CleanTestDatabase();
+            if (cleanDatabase)
+            {
+                CleanTestDatabase();
+            }
 
             // insert data
             return InsertNodeAndAllChildren(rootNode, null);

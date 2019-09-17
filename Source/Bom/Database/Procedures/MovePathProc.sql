@@ -33,13 +33,6 @@ BEGIN
 	--SET @newParentPathId = 4
 	----
 
-
-	-- possible improvment -> check that we dont create a loop (making a parent his own child) ... remark: check only necessary when we move children too
-	--IF @newParentPath.IsDescendantOf(@moveNodePath) THEN
---THROW 'ssss'
-
-
-
 	BEGIN TRANSACTION;
     SAVE TRANSACTION MovePathSavePoint;
 	BEGIN TRY

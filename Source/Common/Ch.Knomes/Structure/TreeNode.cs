@@ -55,7 +55,10 @@ namespace Ch.Knomes.Structure
             }
 
             // clear
-            this.Parent._children.Remove(this);
+            if (this.Parent != null)
+            {
+                this.Parent._children.Remove(this);
+            }
             this.Parent = null;
 
             // set new parent // -> we don't use newParent.AddChild(..) because that would create a new instance of TreeNode
