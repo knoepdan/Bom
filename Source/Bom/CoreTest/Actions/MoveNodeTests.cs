@@ -56,11 +56,12 @@ namespace Bom.Core.Actions
             MoveNodeToAnotherTree();
             MoveNodeToAnotherTreeWithChildren();
             MoveRootToAnotherTreeThrows(); // THROWS: moving a single root node is not allowed because all children would become roots themselves
-            MoveRootWithChildrenToAnotherTree();
+            MoveRootWithChildrenToAnotherTree(); // will result in one single tree
 
-            // current inconsistency and room for improvment
-            // - it is possible to move a root node with its children to another tree (and therefore making origin tree "dissapear") but it is not possible to undo such an operation
-            // as it is not possible to move a node out of the tree and create a root node. (either allow newParent be set to null to create a new root or create a new stored procedure)
+            // 2. create new roots (is allowed because we also allow to merge trees, without this, it would not be possible to undo this action)
+            MakeSubNodeANewRoot();
+            MakeSubNodeWithChildrenANewRoot();
+            // TODO: move root to root - must throw as it makes no sense
         }
 
         private void MoveLeaveUp()
@@ -175,6 +176,88 @@ namespace Bom.Core.Actions
             }
         }
 
+        private void MakeSubNodeANewRoot()
+        {
+            var node = RootNode.DescendantsAndI.Where(n => n.Level == RootNode.Level + 1 && n.Children.Any()).First();
+            var args = new TestMoveNodeArgs(node, null, false); // target is null 
+            TestMakeNewRoot(args);
+        }
+
+        private void MakeSubNodeWithChildrenANewRoot()
+        {
+            var node = RootNode.DescendantsAndI.Where(n => n.Level == RootNode.Level + 1 && n.Children.Any()).First();
+            var args = new TestMoveNodeArgs(node, null, true); // target is null 
+            TestMakeNewRoot(args);
+        }
+
+        private void TestMakeNewRoot(TestMoveNodeArgs args)
+        {
+            if(args.NewParentNode != null)
+            {
+                throw new ArgumentException("The new parent path must be null", nameof(args));
+            }
+
+            // make new root
+            var childrenBeforeMoving = args.ToMoveNode.Children.ToList();
+            var movedPathAsRoot = MoveNodePath(args.ToMoveNode.Data.Title, null, args.MoveChildrenToo);
+
+            // quick checks
+            if (args.MoveChildrenToo)
+            {
+                CheckIfAreTheSameAndThrowIfNot(args.ToMoveNode.Children, childrenBeforeMoving);
+            }
+            else if (!args.MoveChildrenToo && args.ToMoveNode.Children.Count > 0)
+            {
+                throw new Exception($"InMemory moved node has  {args.ToMoveNode.Children.Count} children but shoulde have none "); // check that both are in same tree
+            }
+            if(args.ToMoveNode.Parent != null)
+            {
+                throw new Exception("Inmemory nood is expected to be root and may not have a parent");
+            }
+            if (args.ToMoveNode.Parent != null)
+            {
+                throw new Exception("Inmemory nood is expected to be root and may not have a parent");
+            }
+            if (!movedPathAsRoot.IsRoot())
+            {
+                throw new Exception("Db path is expected to be root but is not. Path: " + movedPathAsRoot.NodePathString);
+            }
+
+            //  no check all nodes in db an in memory.. all the trees must be equal
+            var allNodes = this.Context.GetPaths().ToList(); // level so high we get all
+            var dbRoots = TreeNodeUtils.CreateInMemoryModel(allNodes);
+            var memRoots = new List<TreeNode<SimpleNode>>();
+            memRoots.Add(this.RootNode.Root);
+            if(memRoots.All(x => x != this.AnimalRootNode.Root)){
+                memRoots.Add(this.AnimalRootNode.Root);
+            }
+            if (memRoots.All(x => x != args.ToMoveNode)){
+                memRoots.Add(args.ToMoveNode);
+            }
+            if(!memRoots.Any(x => x == args.ToMoveNode))
+            {
+                throw new Exception("Moved does not seem to be a in memory root node"); // we kind of checked this before when we checked if parent was null
+            }
+            if(memRoots.Count != dbRoots.Count)
+            {
+                throw new Exception($"The number of roots in database {dbRoots.Count} and inMemory {memRoots.Count} are not equal!");
+            }
+            foreach (var dbRoot in dbRoots)
+            {
+                var inMemoryRoot = memRoots.FirstOrDefault(x => x.Data.Title == dbRoot.Data.Node.Title);
+                if(inMemoryRoot == null)
+                {
+                    throw new Exception("Could not find in memory root with title: " + dbRoot.Data.Node.Title);
+                }
+                bool areOrigNodesEqual = inMemoryRoot.AreDescendantsAndIEqual(dbRoot, (node, simpleNode) => { return node.Data.Title == simpleNode.Data.Node.Title; });
+                if (!areOrigNodesEqual)
+                {
+                    throw new Exception($"Trees are not equal (Root: {inMemoryRoot.Data.Title})");
+                }
+            }
+        }
+
+
         private Path TestMoveNodePath(TestMoveNodeArgs args)
         {
             // remember some state before
@@ -249,9 +332,9 @@ namespace Bom.Core.Actions
         private Path MoveNodePath(string moveTitle, string newParentTitle, bool moveChildrenToo)
         {
             var moveNode = Context.GetPaths().First(x => x.Node.Title == moveTitle);
-            var newParentNode = Context.GetPaths().First(x => x.Node.Title == newParentTitle);
+            var newParentNode = Context.GetPaths().FirstOrDefault(x => x.Node.Title == newParentTitle);
             var prov = new PathNodeProvider(Context);
-            var movedPath = prov.MovePathAndReload(moveNode.PathId, newParentNode.PathId, moveChildrenToo);
+            var movedPath = prov.MovePathAndReload(moveNode.PathId, newParentNode == null ? 0 : newParentNode.PathId, moveChildrenToo);
             //this.Context.SaveChanges(); not necessary.. is saved because of stored procedure!
             System.Diagnostics.Debug.WriteLine($"Moved node {moveTitle} to new parent {newParentTitle}   (old pathId: {moveNode.PathId} new pathId: {movedPath.PathId})");
 
@@ -262,7 +345,24 @@ namespace Bom.Core.Actions
             {
                 inMemoryNewParentNode = this.AnimalRootNode.DescendantsAndI.FirstOrDefault(n => n.Data.Title == newParentTitle);
             }
-            inMemoryMoveNode.MoveToNewParent(inMemoryNewParentNode, moveChildrenToo);
+            if (inMemoryNewParentNode != null)
+            {
+                inMemoryMoveNode.MoveToNewParent(inMemoryNewParentNode, moveChildrenToo);
+            }else if(newParentTitle == null)
+            {
+                if (!moveChildrenToo)
+                {
+                    inMemoryMoveNode.TearNodeOfTree();
+                }
+                else
+                {
+                    inMemoryMoveNode.Parent.RemoveChild(inMemoryMoveNode);
+                }
+            }
+            else
+            {
+                throw new Exception($"Could not find new parent path in in memory node for node title {newParentTitle}"); // error in test setup
+            }
 
             // new context otherwise we might get wrong data (important)
             this.Context.Dispose();

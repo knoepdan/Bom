@@ -31,6 +31,48 @@ namespace Ch.Knomes.Structure
             return childNode;
         }
 
+        /// <summary>
+        /// Will remove node from the tree completly. (children will be moved up to its parent, or become roots themselves if this is the parent already)
+        /// </summary>
+        public void TearNodeOfTree()
+        {
+            var childList = this._children.ToList();
+            if (this.Parent != null)
+            {
+                foreach (var child in childList)
+                {
+                    child.MoveToNewParent(this.Parent, true);
+                }
+                this.Parent.RemoveChild(this);
+            }
+            else
+            {
+                // children will all become root nodes
+                foreach (var child in childList)
+                {
+                    child.Parent = null;
+                }
+                this._children.Clear();
+            }
+            this.Parent = null;
+        }
+
+
+        public void RemoveChild(TreeNode<T> childToRemove)
+        {
+            if(childToRemove == null)
+            {
+                throw new ArgumentNullException(nameof(childToRemove));
+            }
+            var foundChild = this._children.FirstOrDefault(x => x == childToRemove);
+            if(foundChild == null)
+            {
+                throw new ArgumentException("Passed node is not a child of this node", nameof(childToRemove));
+            }
+            this._children.Remove(foundChild);
+            foundChild.Parent = null;
+        }
+
         public void MoveToNewParent(TreeNode<T> newParent, bool moveChildrenToo = true)
         {
             if (newParent == null)
@@ -201,11 +243,11 @@ namespace Ch.Knomes.Structure
             var rootNode = this;
             var sb = new StringBuilder();
             sb.AppendLine(getNodeTitleFunc(rootNode));
-            DrawVisualRecursive(sb, rootNode, getNodeTitleFunc);
+            DrawVisualRecursive(sb, rootNode, getNodeTitleFunc, true);
             return sb.ToString();
         }
 
-        private static void DrawVisualRecursive(StringBuilder sb, TreeNode<T> rootNode, Func<TreeNode<T>, string> getNodeTitleFunc)
+        private static void DrawVisualRecursive(StringBuilder sb, TreeNode<T> rootNode, Func<TreeNode<T>, string> getNodeTitleFunc, bool treatAsRootNode = false)
         {
             string indentString = "";
             const string filler = "         ";
@@ -213,7 +255,7 @@ namespace Ch.Knomes.Structure
             // collect info if "|" has to be drawn in indent string
             var nodeToCheck = rootNode;
             var hasChildList = new List<bool>();
-            while (nodeToCheck.Parent != null)
+            while (nodeToCheck.Parent != null && !treatAsRootNode)
             {
                 var newNodeToCheck = nodeToCheck.Parent;
                 var orderedChildren = newNodeToCheck._children;

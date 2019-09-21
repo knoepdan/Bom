@@ -115,7 +115,7 @@ namespace Bom.Core.Data
 
         public static bool IsRoot(this Path path)
         {
-            if(path.Level == 0)
+            if(path.Level <= 1)
             {
                 return true;
             }

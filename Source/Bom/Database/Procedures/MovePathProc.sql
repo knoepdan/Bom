@@ -13,7 +13,7 @@ BEGIN
 	END
 	IF (@newParentPathId IS NULL)
 	BEGIN
-		print 'passed param @@newParentPathId may not be NULL';
+		print 'passed param @@newParentPathId may not be NULL (value 0 is allowed to create a new root node!)';
 		THROW 50201, 'passed param @@newParentPathId may not be NULL', 1;
 	END
 	IF (@moveChildrenToo IS NULL)
@@ -77,10 +77,18 @@ BEGIN
 			SELECT @oldParentPathId = pp.PathId FROM dbo.[Path] pp  WHERE pp.NodePath = @oldParentPath
 			SELECT @newParentPath = pp.NodePath FROM dbo.[Path] pp  WHERE pp.PathId = @newParentPathId
 			print @moveNodePath.GetReparentedValue(@oldParentPath, @newParentPath).ToString()
-			UPDATE dbo.[Path] 
-			  SET NodePath = @moveNodePath.GetReparentedValue(@oldParentPath, @newParentPath).ToString()
-			WHERE PathId = @pathId
 
+			IF @newParentPathId > 0  
+				UPDATE dbo.[Path] 
+					SET NodePath = @moveNodePath.GetReparentedValue(@oldParentPath, @newParentPath).ToString()
+					WHERE PathId = @pathId
+			ELSE
+				BEGIN
+				print 'path ' + CAST(@pathId AS NVARCHAR(MAX)) + ' is set as a new root';
+				UPDATE dbo.[Path] 
+					SET NodePath = '/' + CAST(NodeId AS NVARCHAR(MAX)) + '/'
+					WHERE PathId = @pathId
+				END
 		END
 		ELSE 
 		BEGIN
