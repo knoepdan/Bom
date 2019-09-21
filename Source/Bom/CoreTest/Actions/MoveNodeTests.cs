@@ -59,9 +59,19 @@ namespace Bom.Core.Actions
             MoveRootWithChildrenToAnotherTree(); // will result in one single tree
 
             // 2. create new roots (is allowed because we also allow to merge trees, without this, it would not be possible to undo this action)
-            MakeSubNodeANewRoot();
-            MakeSubNodeWithChildrenANewRoot();
-            // TODO: move root to root - must throw as it makes no sense
+            var createdRoot = MakeSubNodeANewRoot();
+            var anotherRootNode = MakeSubNodeWithChildrenANewRoot(createdRoot);
+            MakeNodeRootNodeThatIsAlreadyRootThrows(createdRoot, anotherRootNode);
+
+            // final test
+            this.Context.Dispose();
+            this.Context = TestHelpers.GetModelContext(true);
+            var rootNodes = new List<TreeNode<SimpleNode>>();
+            rootNodes.Add(this.AnimalRootNode.Root);
+            rootNodes.Add(this.RootNode.Root);
+            rootNodes.Add(createdRoot);
+            rootNodes.Add(anotherRootNode);
+            this.CompareAllInMemoryAndAllDbNodes(rootNodes); // method handles duplicates
         }
 
         private void MoveLeaveUp()
@@ -176,21 +186,49 @@ namespace Bom.Core.Actions
             }
         }
 
-        private void MakeSubNodeANewRoot()
+        private TreeNode<SimpleNode> MakeSubNodeANewRoot()
         {
             var node = RootNode.DescendantsAndI.Where(n => n.Level == RootNode.Level + 1 && n.Children.Any()).First();
             var args = new TestMoveNodeArgs(node, null, false); // target is null 
             TestMakeNewRoot(args);
+            return args.ToMoveNode;
         }
 
-        private void MakeSubNodeWithChildrenANewRoot()
+        private TreeNode<SimpleNode> MakeSubNodeWithChildrenANewRoot(params TreeNode<SimpleNode>[] additionalRootNodes)
         {
             var node = RootNode.DescendantsAndI.Where(n => n.Level == RootNode.Level + 1 && n.Children.Any()).First();
             var args = new TestMoveNodeArgs(node, null, true); // target is null 
-            TestMakeNewRoot(args);
+            TestMakeNewRoot(args, additionalRootNodes);
+            return args.ToMoveNode;
         }
 
-        private void TestMakeNewRoot(TestMoveNodeArgs args)
+        private void MakeNodeRootNodeThatIsAlreadyRootThrows(params TreeNode<SimpleNode>[] additionalRootNodes)
+        {
+            var node = RootNode.Root;
+            try
+            {
+                var args = new TestMoveNodeArgs(node, null, false); // target is null 
+                TestMakeNewRoot(args, additionalRootNodes);
+                Assert.True(1 == 2); // trigger assert fail
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Making a root not of a node that is already root triggers error! Error: {ex}");
+            }
+
+            try
+            {
+                var args = new TestMoveNodeArgs(node, null, true); // target is null 
+                TestMakeNewRoot(args, additionalRootNodes);
+                Assert.True(1 == 2); // trigger assert fail
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Making a root not of a node that is already root triggers error! (with children) Error: {ex}");
+            }
+        }
+
+        private void TestMakeNewRoot(TestMoveNodeArgs args, params TreeNode<SimpleNode>[] additionalRootNodes)
         {
             if(args.NewParentNode != null)
             {
@@ -223,29 +261,37 @@ namespace Bom.Core.Actions
                 throw new Exception("Db path is expected to be root but is not. Path: " + movedPathAsRoot.NodePathString);
             }
 
-            //  no check all nodes in db an in memory.. all the trees must be equal
-            var allNodes = this.Context.GetPaths().ToList(); // level so high we get all
-            var dbRoots = TreeNodeUtils.CreateInMemoryModel(allNodes);
-            var memRoots = new List<TreeNode<SimpleNode>>();
-            memRoots.Add(this.RootNode.Root);
-            if(memRoots.All(x => x != this.AnimalRootNode.Root)){
-                memRoots.Add(this.AnimalRootNode.Root);
+
+            // compare all roots
+            var rootNodes = new List<TreeNode<SimpleNode>>();
+            rootNodes.Add(this.AnimalRootNode.Root);
+            rootNodes.Add(this.RootNode.Root);
+            rootNodes.Add(args.ToMoveNode); // new root node
+            if (additionalRootNodes != null)
+            {
+                rootNodes.AddRange(additionalRootNodes);
             }
-            if (memRoots.All(x => x != args.ToMoveNode)){
-                memRoots.Add(args.ToMoveNode);
-            }
-            if(!memRoots.Any(x => x == args.ToMoveNode))
+            this.CompareAllInMemoryAndAllDbNodes(rootNodes); // method handles duplicates
+            if (!rootNodes.Any(x => x == args.ToMoveNode))
             {
                 throw new Exception("Moved does not seem to be a in memory root node"); // we kind of checked this before when we checked if parent was null
             }
-            if(memRoots.Count != dbRoots.Count)
+        }
+
+        private void CompareAllInMemoryAndAllDbNodes(IEnumerable<TreeNode<SimpleNode>> rootNodes)
+        {
+            //  no check all nodes in db an in memory.. all the trees must be equal
+            var allNodes = this.Context.GetPaths().ToList(); // level so high we get all
+            var dbRoots = TreeNodeUtils.CreateInMemoryModel(allNodes);
+            var memRoots = new List<TreeNode<SimpleNode>>(rootNodes.Distinct());
+            if (memRoots.Count != dbRoots.Count)
             {
                 throw new Exception($"The number of roots in database {dbRoots.Count} and inMemory {memRoots.Count} are not equal!");
             }
             foreach (var dbRoot in dbRoots)
             {
                 var inMemoryRoot = memRoots.FirstOrDefault(x => x.Data.Title == dbRoot.Data.Node.Title);
-                if(inMemoryRoot == null)
+                if (inMemoryRoot == null)
                 {
                     throw new Exception("Could not find in memory root with title: " + dbRoot.Data.Node.Title);
                 }
@@ -352,7 +398,7 @@ namespace Bom.Core.Actions
             {
                 if (!moveChildrenToo)
                 {
-                    inMemoryMoveNode.TearNodeOfTree();
+                    inMemoryMoveNode.ExtractNodeFromTree();
                 }
                 else
                 {

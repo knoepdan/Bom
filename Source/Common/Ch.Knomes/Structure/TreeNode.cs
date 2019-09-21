@@ -32,9 +32,9 @@ namespace Ch.Knomes.Structure
         }
 
         /// <summary>
-        /// Will remove node from the tree completly. (children will be moved up to its parent, or become roots themselves if this is the parent already)
+        /// Will remove node from the tree completly. (children will be moved up to its parent, or become roots themselves)
         /// </summary>
-        public void TearNodeOfTree()
+        public void ExtractNodeFromTree()
         {
             var childList = this._children.ToList();
             if (this.Parent != null)

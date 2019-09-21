@@ -101,15 +101,21 @@ BEGIN
 			END
 
 			-- move node (including children... in case the didnt need to be moved, they would have hinged to the parent node already)
+			IF @newParentPathId <= 0  
+			BEGIN
+				print 'path ' + CAST(@pathId AS NVARCHAR(MAX)) + ' is set as a new root (including children)';
+				SELECT @newParentPath = '/' FROM dbo.[Path] WHERE PathId = @pathId
+			END
+
 			UPDATE dbo.[Path] 
 			SET NodePath = t.NewNodePath
-				FROM (
+					FROM (
 			
-					SELECT PathId, NodePath.GetReparentedValue(@oldParentPath, @newParentPath).ToString() AS NewNodePath
-					FROM dbo.[Path] p
-					WHERE     p.PathId = @pathId OR p.NodePath.IsDescendantOf(@moveNodePath) = 1
-					) t
-					WHERE t.PathId = dbo.Path.PathId
+						SELECT PathId, NodePath.GetReparentedValue(@oldParentPath, @newParentPath).ToString() AS NewNodePath
+						FROM dbo.[Path] p
+						WHERE     p.PathId = @pathId OR p.NodePath.IsDescendantOf(@moveNodePath) = 1
+						) t
+						WHERE t.PathId = dbo.[Path].PathId
 
 			-- no need to return changed node (besides.. this seemed not always to be correct)-> SELECT * FROM  [dbo].[Path] WHERE PathId = @pathId
 
