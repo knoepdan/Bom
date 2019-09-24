@@ -36,7 +36,7 @@ namespace Bom.Core.Data
             }
 
             var spParams = new object[] { nodeTitle, parentPathString };
-            var createdPath = ModelContext.Paths.FromSql("AddNodeWithParentPathProc  @p0, @p1", spParams).Single();
+            var createdPath = ModelContext.Paths.FromSql("AddNodeWithPathProc  @p0, @p1", spParams).Single();
             return createdPath;
         }
 
