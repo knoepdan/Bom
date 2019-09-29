@@ -36,42 +36,45 @@ namespace Bom.Core.Actions
         [Fact]
         public void Moving_path_works()
         {
-            EnsureSampleData(Context, RootNode, true);
-           
-            // Moving up the tree
-            MoveLeaveUp();
-            MoveNoneLeaveUp();
-            MoveNoneLeaveUpAndMoveChildren();
-           
-            // Moving to another branch
-            MoveNoneLeaveToAnotherBranch();
-            MoveNoneLeaveToAnotherBranchWithChildren();
+            lock (DbLockers.DbLock)
+            {
+                EnsureSampleData(Context, RootNode, true);
 
-            // Moving down
-            MoveNodeDown(); // works because children are not moved
-            MoveNodeDownWithChildrenThrows(); // THROWS: must fail because it would create a loop
+                // Moving up the tree
+                MoveLeaveUp();
+                MoveNoneLeaveUp();
+                MoveNoneLeaveUpAndMoveChildren();
 
-            // 2 roots
-            EnsureSampleData(Context, this.AnimalRootNode, false);
-            MoveNodeToAnotherTree();
-            MoveNodeToAnotherTreeWithChildren();
-            MoveRootToAnotherTreeThrows(); // THROWS: moving a single root node is not allowed because all children would become roots themselves
-            MoveRootWithChildrenToAnotherTree(); // will result in one single tree
+                // Moving to another branch
+                MoveNoneLeaveToAnotherBranch();
+                MoveNoneLeaveToAnotherBranchWithChildren();
 
-            // 2. create new roots (is allowed because we also allow to merge trees, without this, it would not be possible to undo this action)
-            var createdRoot = MakeSubNodeANewRoot();
-            var anotherRootNode = MakeSubNodeWithChildrenANewRoot(createdRoot);
-            MakeNodeRootNodeThatIsAlreadyRootThrows(createdRoot, anotherRootNode);
+                // Moving down
+                MoveNodeDown(); // works because children are not moved
+                MoveNodeDownWithChildrenThrows(); // THROWS: must fail because it would create a loop
 
-            // final test
-            this.Context.Dispose();
-            this.Context = TestHelpers.GetModelContext(true);
-            var rootNodes = new List<TreeNode<SimpleNode>>();
-            rootNodes.Add(this.AnimalRootNode.Root);
-            rootNodes.Add(this.RootNode.Root);
-            rootNodes.Add(createdRoot);
-            rootNodes.Add(anotherRootNode);
-            this.CompareAllInMemoryAndAllDbNodes(rootNodes); // method handles duplicates
+                // 2 roots
+                EnsureSampleData(Context, this.AnimalRootNode, false);
+                MoveNodeToAnotherTree();
+                MoveNodeToAnotherTreeWithChildren();
+                MoveRootToAnotherTreeThrows(); // THROWS: moving a single root node is not allowed because all children would become roots themselves
+                MoveRootWithChildrenToAnotherTree(); // will result in one single tree
+
+                // 2. create new roots (is allowed because we also allow to merge trees, without this, it would not be possible to undo this action)
+                var createdRoot = MakeSubNodeANewRoot();
+                var anotherRootNode = MakeSubNodeWithChildrenANewRoot(createdRoot);
+                MakeNodeRootNodeThatIsAlreadyRootThrows(createdRoot, anotherRootNode);
+
+                // final test
+                this.Context.Dispose();
+                this.Context = TestHelpers.GetModelContext(true);
+                var rootNodes = new List<TreeNode<SimpleNode>>();
+                rootNodes.Add(this.AnimalRootNode.Root);
+                rootNodes.Add(this.RootNode.Root);
+                rootNodes.Add(createdRoot);
+                rootNodes.Add(anotherRootNode);
+                this.CompareAllInMemoryAndAllDbNodes(rootNodes); // method handles duplicates
+            }
         }
 
         private void MoveLeaveUp()
@@ -148,13 +151,15 @@ namespace Bom.Core.Actions
             try
             {
                 var movedPath = TestMoveNodePath(args);
-                Assert.True(1 == 2); // trigger assert fail
             }
             catch(Exception ex)
             {
                 Console.WriteLine($"Moving a root node to another tree without moving children is not allow as all the children would become root nodes! Error: {ex}");
                 return;
             }
+
+            // was not in catch if we reach this code
+            Assert.True(1 == 2); // trigger assert fail
         }
 
         private void MoveRootWithChildrenToAnotherTree()
@@ -177,13 +182,15 @@ namespace Bom.Core.Actions
                 var newParentNode = Context.GetPaths().First(x => x.Node.Title == args.NewParentNode.Data.Title);
                 var prov = new PathNodeProvider(Context);
                 var movedPath = prov.MovePathAndReload(moveNode.PathId, newParentNode.PathId, true);
-                Assert.True(1 == 2); // trigger assert fail
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Moving a node down its own children fails when calling provider as this is not allowed! Error: {ex}");
                 return;
             }
+
+            // was not in catch if we reach this code
+            Assert.True(1 == 2); // trigger assert fail
         }
 
         private TreeNode<SimpleNode> MakeSubNodeANewRoot()

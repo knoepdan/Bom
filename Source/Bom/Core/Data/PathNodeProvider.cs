@@ -67,29 +67,54 @@ namespace Bom.Core.Data
             //CREATE PROCEDURE dbo.[MoveNodeProc]   @pathId INT NULL,	@newParentPathId INT NULL,	@moveChildrenToo BIT NULL
         }
 
-        public void DeletePath(Path pathToDelete, bool alsoDeleteNode, int? newMainPathId)
+        public void DeletePath(Path pathToDelete, bool alsoDeleteNode, bool alsoDeleteSubTree = false)
         {
-            DeletePath(pathToDelete.PathId, alsoDeleteNode, newMainPathId);
+            DeletePath(pathToDelete.PathId, alsoDeleteNode, alsoDeleteSubTree);
         }
 
-        public void DeletePath(int pathIdToDelete, bool alsoDeleteNode, int? newMainPathId)
+        public void DeletePath(int pathIdToDelete, bool alsoDeleteNode, bool alsoDeleteSubTree)
         {
             object[] spParams;
             var p0 = new System.Data.SqlClient.SqlParameter("@p0", pathIdToDelete);
             var p1 = new System.Data.SqlClient.SqlParameter("@p1", alsoDeleteNode);
-            if (newMainPathId.HasValue)
-            {
-                spParams = new object[] { p0, p1, new System.Data.SqlClient.SqlParameter("@p2", newMainPathId.Value) };
-                this.ModelContext.ExecuteRawSql("EXEC DeletePathProc @p0, @p1, @p2", spParams);
-            }
-            else
-            {
-                spParams = new object[] { p0, p1 };
-                this.ModelContext.ExecuteRawSql("EXEC DeletePathProc @p0, @p1", spParams);
-            }
+            var p2 = new System.Data.SqlClient.SqlParameter("@p2", alsoDeleteSubTree);
+
+            spParams = new object[] { p0, p1, p2 };
+            this.ModelContext.ExecuteRawSql("EXEC DeletePathProc @p0, @p1, @p2", spParams);
 
             // SP
-            //CREATE PROCEDURE dbo.[DeletePathProc] @pathId INT NULL, @newMainPathId INT NULL, @alsoDeleteNode BIT  NULL
+            //CREATE PROCEDURE dbo.[DeletePathProc] @pathId INT NULL, @deleteSubTree AS BIT = 0, @alsoDeleteNode AS BIT = 0
         }
+
+
+
+        #region old outcommented
+
+        //public void DeletePath(Path pathToDelete, bool alsoDeleteNode, int? newMainPathId)
+        //{
+        //    DeletePath(pathToDelete.PathId, alsoDeleteNode, newMainPathId);
+        //}
+
+        //public void DeletePath(int pathIdToDelete, bool alsoDeleteNode, int? newMainPathId)
+        //{
+        //    object[] spParams;
+        //    var p0 = new System.Data.SqlClient.SqlParameter("@p0", pathIdToDelete);
+        //    var p1 = new System.Data.SqlClient.SqlParameter("@p1", alsoDeleteNode);
+        //    if (newMainPathId.HasValue)
+        //    {
+        //        spParams = new object[] { p0, p1, new System.Data.SqlClient.SqlParameter("@p2", newMainPathId.Value) };
+        //        this.ModelContext.ExecuteRawSql("EXEC DeletePathProc @p0, @p1, @p2", spParams);
+        //    }
+        //    else
+        //    {
+        //        spParams = new object[] { p0, p1 };
+        //        this.ModelContext.ExecuteRawSql("EXEC DeletePathProc @p0, @p1", spParams);
+        //    }
+
+        //    // SP
+        //    //CREATE PROCEDURE dbo.[DeletePathProc] @pathId INT NULL, @newMainPathId INT NULL, @alsoDeleteNode BIT  NULL
+        //}
+
+        #endregion
     }
 }

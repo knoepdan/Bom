@@ -33,15 +33,18 @@ namespace Bom.Core.Actions
         [Fact]
         public void Moving_path_works()
         {
-            EnsureSampleData(Context);
-           
-            // tests
-            MoveLeaveUp();
-            MoveNoneLeaveUp();
-            MoveNoneLeaveUpAndMoveChildren();
-            MoveNoneLeaveToAnotherBranch();
+            lock (DbLockers.DbLock)
+            {
+                EnsureSampleData(Context);
 
-            // more tests would be possible but tests are more concise in when they are done differently
+                // tests
+                MoveLeaveUp();
+                MoveNoneLeaveUp();
+                MoveNoneLeaveUpAndMoveChildren();
+                MoveNoneLeaveToAnotherBranch();
+
+                // more tests would be possible but tests are more concise in when they are done differently
+            }
         }
 
         private void MoveLeaveUp()
@@ -182,9 +185,6 @@ namespace Bom.Core.Actions
 
             return movedPath;
         }
-
-        // private Path Get
-
 
         private Bom.Core.Model.Path EnsureSampleData(Bom.Core.Data.ModelContext context)
         {

@@ -14,27 +14,17 @@ namespace Bom.Core.Actions.Utils
 {
     public class TestDeleteNodeArgs
     {
-        public TestDeleteNodeArgs(TreeNode<SimpleNode> deleteNode, bool alsoDeleteNode, string newMainNodeTitle)
+        public TestDeleteNodeArgs(TreeNode<SimpleNode> deleteNode, bool alsoDeleteNode = false, bool deleteChildrenToo = false)
         {
+            ToDeleteNode = deleteNode;
             AlsoDeleteNode = alsoDeleteNode;
-            AlsoDeleteNode = alsoDeleteNode;
-            NewMainNodeTitle = newMainNodeTitle;
-        }
-
-        public TestDeleteNodeArgs(TreeNode<SimpleNode> deleteNode, bool alsoDeleteNode, TreeNode<SimpleNode> newMainNode)
-        {
-            AlsoDeleteNode = alsoDeleteNode;
-            AlsoDeleteNode = alsoDeleteNode;
-            if (newMainNode != null)
-            {
-                NewMainNodeTitle = newMainNode.Data.Title;
-            }
+            DeleteChildrenToo = deleteChildrenToo;
         }
 
         public bool AlsoDeleteNode { get; set; }
 
-        public TreeNode<SimpleNode> ToDeleteNode { get; set; }
+        public bool DeleteChildrenToo { get; set; }
 
-        public string NewMainNodeTitle { get; set; }
+        public TreeNode<SimpleNode> ToDeleteNode { get; set; }
     }
 }

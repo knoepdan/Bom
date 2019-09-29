@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE dbo.[DeletePathXXProc]
+﻿CREATE PROCEDURE dbo.[DeletePathWithMainPathLogicOldProc]
 	@pathId AS INT NULL,
 	@alsoDeleteNode AS BIT  NULL,
 	@newMainPathId AS INT NULL = NULL

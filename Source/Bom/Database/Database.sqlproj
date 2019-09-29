@@ -72,7 +72,7 @@
     <Build Include="Tables\DbPicture.sql" />
     <Build Include="Tables\BlobData.sql" />
     <Build Include="Procedures\MovePathProc.sql" />
-    <Build Include="Procedures\DeletePathXXProc.sql" />
+    <Build Include="Procedures\DeletePathWithMainPathLogicOldProc.sql" />
     <Build Include="Tables\Setting.sql" />
     <Build Include="Procedures\ClearDatabaseProc.sql" />
     <Build Include="Views\NodePathView.sql" />

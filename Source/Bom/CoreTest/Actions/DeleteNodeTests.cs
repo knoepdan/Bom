@@ -19,7 +19,6 @@ namespace Bom.Core.Actions
         {
             this.Context = TestHelpers.GetModelContext(true);
             RootNode = TestDataFactory.CreateSampleNodes(MaxLevel, NofChildrenPerNode);
-        //    AnimalRootNode = TestDataFactory.CreateSampleAnimalNodes();
         }
 
         public const int MaxLevel = 5;
@@ -30,28 +29,119 @@ namespace Bom.Core.Actions
 
         private TreeNode<SimpleNode> RootNode { get; }
 
-  //      private TreeNode<SimpleNode> AnimalRootNode { get; }
-
-
         [Fact]
-        public void Deleteing_path_works()
+        public void Deleting_path_works()
         {
-            EnsureSampleData(Context, RootNode, true);
-          
+            lock (DbLockers.DbLock)
+            {
+                var rootNodes = new List<TreeNode<SimpleNode>>();
+                rootNodes.Add(this.RootNode.Root);
 
-            // final test
-            this.Context.Dispose();
-            this.Context = TestHelpers.GetModelContext(true);
-            var rootNodes = new List<TreeNode<SimpleNode>>();
-            rootNodes.Add(this.RootNode.Root);
-            //     rootNodes.Add(this.AnimalRootNode.Root);
-            //     rootNodes.Add(createdRoot);
-            //     rootNodes.Add(anotherRootNode);
-            this.CompareAllInMemoryAndAllDbNodes(rootNodes); // method handles duplicates
+                EnsureSampleData(Context, RootNode, true);
+
+                // tests
+                DeletingRootThrows();
+                DeleteSinglePathWorks();
+                DeleteSubTreeWorks();
+
+                // test entire graph
+                this.Context.Dispose();
+                this.Context = TestHelpers.GetModelContext(true);
+                this.CompareAllInMemoryAndAllDbNodes(rootNodes); // method handles duplicates
+
+                // delete root
+                DeleteRootWithNoChildrenWorks();
+            }
+        }
+
+        private void DeleteSinglePathWorks()
+        {
+            var node = RootNode.DescendantsAndI.Where(n => n.Level == 3).First(); // 1a-2a-3a
+            var args = new TestDeleteNodeArgs(node, true, false);
+            TestDeleteNodePath(args);
+
+            node = RootNode.DescendantsAndI.Where(n => n.Level == 3).First(); // 1a-2a-3a
+            args = new TestDeleteNodeArgs(node, false, false);
+            TestDeleteNodePath(args);
+        }
+
+        private void DeleteSubTreeWorks()
+        {
+            var node = RootNode.DescendantsAndI.Where(n => n.Level == 3).First(); // 1a-2a-3a
+            var args = new TestDeleteNodeArgs(node, true, true);
+            TestDeleteNodePath(args);
+
+            node = RootNode.DescendantsAndI.Where(n => n.Level == 3).First(); // 1a-2a-3a
+            args = new TestDeleteNodeArgs(node, false, true);
+            TestDeleteNodePath(args);
+        }
+
+        private void DeleteRootWithNoChildrenWorks()
+        {
+            // step 1 remove all children
+            foreach(var c in RootNode.Children.ToList())
+            {
+                var cArgs = new TestDeleteNodeArgs(c, true, true);
+                TestDeleteNodePath(cArgs);
+            }
+
+            // delete root
+            var args = new TestDeleteNodeArgs(RootNode, false, false);
+            DeleteNodePath(args);
+            Assert.True(this.Context.GetPaths().Count() == 0);
         }
 
 
-     
+        private void DeletingRootThrows()
+        {
+            if (!RootNode.Children.Any())
+            {
+                throw new Exception("Root not is expected to have children");
+            }
+
+            // has 2 throw each time (possible to improve clumsy approach)
+            int exCounter = 0;
+            try
+            {
+                var args = new TestDeleteNodeArgs(RootNode, false, false);
+                DeleteNodePath(args);
+            }
+            catch
+            {
+                exCounter++;
+            }
+
+            try
+            {
+                var args = new TestDeleteNodeArgs(RootNode, false, true);
+                DeleteNodePath(args);
+            }
+            catch
+            {
+                exCounter++;
+            }
+
+            try
+            {
+                var args = new TestDeleteNodeArgs(RootNode, true, false);
+                DeleteNodePath(args);
+            }
+            catch
+            {
+                exCounter++;
+            }
+
+            try
+            {
+                var args = new TestDeleteNodeArgs(RootNode, true, true);
+                DeleteNodePath(args);
+            }
+            catch
+            {
+                exCounter++;
+            }
+            Assert.True(exCounter == 4);
+        }
 
         private void CompareAllInMemoryAndAllDbNodes(IEnumerable<TreeNode<SimpleNode>> rootNodes)
         {
@@ -78,24 +168,83 @@ namespace Bom.Core.Actions
             }
         }
 
+        private void TestDeleteNodePath(TestDeleteNodeArgs args)
+        {
+            var rootCount = this.RootNode.DescendantsAndI.Count();
+            var fromDeleteNode = args.ToDeleteNode;
+            Assert.Contains(RootNode.DescendantsAndI, x => x.Data.Title == fromDeleteNode.Data.Title);// toDeleteNode is part of RootNode
+
+            var allDbNodes = this.Context.GetNodes().ToList();
+            var allNodesDownFromDelNode = allDbNodes.Where(n => fromDeleteNode.DescendantsAndI.Any(x => x.Data.Title == n.Title)).ToList(); // assumption: nodes for same path all have the same title
+
+            // execute action
+            DeleteNodePath(args);
+
+            // basic tests (mainly on in memory)
+            if (args.DeleteChildrenToo)
+            {
+                Assert.True(rootCount - fromDeleteNode.DescendantsAndI.Count() == RootNode.DescendantsAndI.Count());
+                Assert.True(RootNode.DescendantsAndI.All(x => !fromDeleteNode.DescendantsAndI.Any(d => d.Data.Title == x.Data.Title))); // no longer there
+            }
+            else
+            {
+                Assert.True(rootCount - 1 == RootNode.DescendantsAndI.Count());
+                Assert.True(RootNode.DescendantsAndI.All(x => x.Data.Title != fromDeleteNode.Data.Title)); // no longer there
+            }
+
+            // ultimate test comparing in memory and db paths
+            var rootNodes = new List<TreeNode<SimpleNode>>();
+            rootNodes.Add(this.RootNode.Root);
+            this.CompareAllInMemoryAndAllDbNodes(rootNodes); // method handles duplicates
+
+            // comparing nodes
+            var newDbNodes = this.Context.GetNodes().ToList();
+            if (!args.AlsoDeleteNode)
+            {
+                Assert.True(newDbNodes.Count == allDbNodes.Count); // no changes
+            }
+            else
+            {
+                // nodes must have been deleted
+                Assert.True(newDbNodes.Count < allDbNodes.Count);
+                Assert.True(newDbNodes.All(x => x.Title != fromDeleteNode.Data.Title));
+                if (args.DeleteChildrenToo)
+                {
+                    Assert.True(newDbNodes.Count == allDbNodes.Count - allNodesDownFromDelNode.Count);
+                    foreach (var desc in fromDeleteNode.Descendants)
+                    {
+                        Assert.True(newDbNodes.All(x => x.Title != desc.Data.Title)); // deleted
+                    }
+                }
+                else
+                {
+                    Assert.True(newDbNodes.Count == allDbNodes.Count - allDbNodes.Where(x => x.Title == args.ToDeleteNode.Data.Title).Count()); // assumption : nodes always have the same title
+                    foreach (var desc in fromDeleteNode.Descendants)
+                    {
+                        Assert.Contains(newDbNodes, x => x.Title == desc.Data.Title); // must still be there
+                    }
+                }
+            }
+        }
 
         private void DeleteNodePath(TestDeleteNodeArgs args)
         {
             var deleteNode = Context.GetPaths().First(x => x.Node.Title == args.ToDeleteNode.Data.Title);
-            int? newNodeMainPathId = null;
-            if (!string.IsNullOrEmpty(args.NewMainNodeTitle))
-            {
-                var newMainPath = Context.GetPaths().First(x => x.Node.Title == args.NewMainNodeTitle);
-                newNodeMainPathId = newMainPath.PathId;
-            }
             var prov = new PathNodeProvider(Context);
-            prov.DeletePath(deleteNode, args.AlsoDeleteNode, newNodeMainPathId);
+            prov.DeletePath(deleteNode, args.AlsoDeleteNode, args.DeleteChildrenToo);
             //this.Context.SaveChanges(); not necessary.. is saved because of stored procedure!
-            System.Diagnostics.Debug.WriteLine($"Node {args.ToDeleteNode.Data.Title} was deleted   (also deleteNode: {args.AlsoDeleteNode} new mainPath: {args.NewMainNodeTitle})");
+            System.Diagnostics.Debug.WriteLine($"Node {args.ToDeleteNode.Data.Title} was deleted   (also deleteNode: {args.AlsoDeleteNode}, delete children too: {args.DeleteChildrenToo})");
 
             // keep in memory construct in sync
             var inMemoryDeleteNode = args.ToDeleteNode;
-            inMemoryDeleteNode.ExtractNodeFromTree();
+            if (args.DeleteChildrenToo)
+            {
+                inMemoryDeleteNode.Parent.RemoveChild(inMemoryDeleteNode);
+            }
+            else
+            {
+                inMemoryDeleteNode.ExtractNodeFromTree();
+            }
 
             // new context otherwise we might get wrong data (important)
             this.Context.Dispose();

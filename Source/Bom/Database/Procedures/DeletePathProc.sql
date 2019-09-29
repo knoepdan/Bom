@@ -1,8 +1,7 @@
 ﻿CREATE PROCEDURE dbo.[DeletePathProc]
 	@pathId AS INT NULL,
+	@alsoDeleteNode AS BIT = 0,
 	@deleteSubTree AS BIT  = 0
---	,@alsoDeleteNode AS BIT  NULL
---	,@newMainPathId AS INT NULL = NULL
 AS
 BEGIN
 
@@ -12,12 +11,7 @@ BEGIN
 		print 'passed param @pathId may not be NULL';
 		THROW 50001, 'passed param @pathId may not be NULL', 1;
 	END
-	--IF (@alsoDeleteNode IS NULL)
-	--BEGIN
-	--	print 'passed param @@alsoDeleteNode may not be NULL';
-	--	THROW 50002, 'passed param @@alsoDeleteNode may not be NULL', 1;
-	--END
-	-- end params checking
+
 
 	BEGIN TRANSACTION;
     SAVE TRANSACTION DeletePathSavePoint;
@@ -26,40 +20,7 @@ BEGIN
 		DECLARE @nodeId INT
 		SELECT  @nodeId = NodeId FROM dbo.[Path] WHERE PathId = @pathId
 
-		-- ## 1. Set mainPath Node
-		--IF NOT @newMainPathId IS NULL 
-		--BEGIN
-		--	IF NOT EXISTS (SELECT PathId FROM dbo.[Path] WHERE PathId = @newMainPathId AND NodeId = @nodeId)
-		--	BEGIN
-		--		print 'error 1. execution aborted';
-		--		THROW 50101, 'passed replacement pathId does not exist or does not belong to node', 1;
-		--	END
-
-		--	UPDATE dbo.[Node]
-		--		SET MainPathId = @newMainPathId
-		--		WHERE NodeId = @nodeId AND MainPathId = @pathId
-		--END
-		--ELSE
-		--BEGIN
-		--	DECLARE @otherPathId INT
-		--	SET @otherPathId = 0
-		--	SELECT @otherPathId = PathId FROM dbo.[Path] WHERE PathId <> pathId AND NodeId = @nodeId
-
-		--	IF @otherPathId > 0 
-		--		UPDATE dbo.[Node] SET MainPathId = @otherPathId WHERE NodeId = @nodeId AND MainPathId = @pathId
-		--	ELSE
-		--		IF @alsoDeleteNode = 0 
-		--		BEGIN
-		--			print 'error 2. execution aborted';
-		--			THROW 50104, 'No replacement for main path id found and node is not to be deleted.. will not work', 1;
-		--		END
-		--		-- set to null
-		--		UPDATE dbo.[Node] SET MainPathId = NULL WHERE NodeId = @nodeId AND MainPathId = @pathId
-
-		--END
-
 		-- ## 2. Move all the children to parent
-		-- TODO - check what children would become new root paths
 		DECLARE @currentPath HIERARCHYID
 		DECLARE @parentPath HIERARCHYID
 		DECLARE @parentPathId INT
@@ -97,18 +58,44 @@ BEGIN
 			DEALLOCATE db_cursor 
 	
 			-- ## 3. Delete Path (and node)
+			UPDATE dbo.[Node] SET MainPathId = NULL WHERE MainPathId = @pathId
+
 			DELETE FROM [dbo].[Path] WHERE PathId = @pathId
+
+			IF @alsoDeleteNode = 1
+				BEGIN
+					DELETE FROM dbo.[Node] WHERE NodeId = @nodeId
+				END
+
 		END
 		ELSE
 		BEGIN
 			-- DELETE all descendants too
-			DELETE FROM [dbo].[Path] WHERE  NodePath.IsDescendantOf(@currentPath) = 1 
-			DELETE FROM [dbo].[Path] WHERE PathId = @pathId
+			UPDATE dbo.[Node] SET MainPathId = NULL WHERE  MainPathId = @pathId 
+								OR MainPathId IN (SELECT PathID FROM [dbo].[Path] WHERE  NodePath.IsDescendantOf(@currentPath) = 1 ) 
+
+			IF @alsoDeleteNode = 1
+			BEGIN
+
+				-- save nodes to delete in a temporary table
+				CREATE TABLE #Temp 	(TempNodeId  INT);
+				INSERT INTO #Temp  (TempNodeId)
+					SELECT NodeId FROM dbo.[Node] WHERE NodeId IN (SELECT NodeId FROM [dbo].[Path] WHERE PathId = @pathId OR  NodePath.IsDescendantOf(@currentPath) = 1 ) 
+
+				-- delete path
+				DELETE FROM [dbo].[Path] WHERE  NodePath.IsDescendantOf(@currentPath) = 1 OR  PathId = @pathId
+
+				-- delete node
+				DELETE FROM dbo.[Node] WHERE NodeId IN (SELECT TempNodeId FROM  #Temp )
+
+				DROP TABLE #Temp;
+			END
+			ELSE 
+			BEGIN
+				-- just delete path
+				DELETE FROM [dbo].[Path] WHERE  NodePath.IsDescendantOf(@currentPath) = 1 OR  PathId = @pathId
+			END
 		END
-		--IF @alsoDeleteNode = 0 
-		--BEGIN
-		--	DELETE FROM dbo.[Node] WHERE NodeId = @nodeId
-		--END
 
 		COMMIT TRANSACTION 
     END TRY
