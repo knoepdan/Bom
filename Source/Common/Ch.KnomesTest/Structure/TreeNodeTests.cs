@@ -84,9 +84,8 @@ namespace Ch.Knomes.Structure
             try
             {
                 node.MoveToNewParent(targetParent, true);
-                Assert.True(1 == 2); // trigger fail
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 var formerChildren = node.Children.ToList();
                 var formerParent = node.Parent;
@@ -96,7 +95,11 @@ namespace Ch.Knomes.Structure
                 {
                     Assert.Contains(formerParent.Children, c => c == formerChild);
                 }
+                return;
             }
+
+            // if code reaches here, we have an error
+            Assert.True(1 == 2); // trigger fail
         }
     }
 }

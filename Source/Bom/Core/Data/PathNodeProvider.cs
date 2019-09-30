@@ -36,7 +36,12 @@ namespace Bom.Core.Data
             }
 
             var spParams = new object[] { nodeTitle, parentPathString };
-            var createdPath = ModelContext.Paths.FromSql("AddNodeWithPathProc  @p0, @p1", spParams).Single();
+            // var createdPath = ModelContext.Paths.FromSql("AddNodeWithPathProc  @p0, @p1", spParams).Single();
+            //  this.ModelContext.ExecuteRawSql("EXEC AddNodeWithPathProc @p0, @p1", spParams);
+            var createdPath = ModelContext.Paths.FromSqlRaw("EXEC AddNodeWithPathProc @p0, @p1", spParams).Single();
+
+
+        //    var createdPath = ModelContext.Paths.FromSql("AddNodeWithPathProc  @p0, @p1", spParams).Single();
             return createdPath;
         }
 
@@ -75,10 +80,13 @@ namespace Bom.Core.Data
         public void DeletePath(int pathIdToDelete, bool alsoDeleteNode, bool alsoDeleteSubTree)
         {
             object[] spParams;
-            var p0 = new System.Data.SqlClient.SqlParameter("@p0", pathIdToDelete);
-            var p1 = new System.Data.SqlClient.SqlParameter("@p1", alsoDeleteNode);
-            var p2 = new System.Data.SqlClient.SqlParameter("@p2", alsoDeleteSubTree);
 
+            //var p0 = new System.Data.SqlClient.SqlParameter("@p0", pathIdToDelete);
+            //var p1 = new System.Data.SqlClient.SqlParameter("@p1", alsoDeleteNode);
+            //var p2 = new System.Data.SqlClient.SqlParameter("@p2", alsoDeleteSubTree);
+            var p0 = pathIdToDelete; // new System.Data.SqlClient.SqlParameter("@p0", pathIdToDelete);
+            var p1 = alsoDeleteNode; // new System.Data.SqlClient.SqlParameter("@p1", alsoDeleteNode);
+            var p2 = alsoDeleteSubTree; // new System.Data.SqlClient.SqlParameter("@p2", alsoDeleteSubTree);
             spParams = new object[] { p0, p1, p2 };
             this.ModelContext.ExecuteRawSql("EXEC DeletePathProc @p0, @p1, @p2", spParams);
 

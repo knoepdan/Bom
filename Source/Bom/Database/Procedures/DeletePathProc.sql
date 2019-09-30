@@ -72,7 +72,7 @@ BEGIN
 		BEGIN
 			-- DELETE all descendants too
 			UPDATE dbo.[Node] SET MainPathId = NULL WHERE  MainPathId = @pathId 
-								OR MainPathId IN (SELECT PathID FROM [dbo].[Path] WHERE  NodePath.IsDescendantOf(@currentPath) = 1 ) 
+								OR MainPathId IN (SELECT PathId FROM [dbo].[Path] WHERE  NodePath.IsDescendantOf(@currentPath) = 1 ) 
 
 			IF @alsoDeleteNode = 1
 			BEGIN

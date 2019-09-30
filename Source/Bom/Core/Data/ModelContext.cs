@@ -63,7 +63,7 @@ namespace Bom.Core.Data
             return cmd;
         }
 
-        protected internal void ExecuteRawSql(RawSqlString sql, params object[] parameters)
+        protected internal void ExecuteRawSql(string sql, params object[] parameters)
         {
             // https://www.learnentityframeworkcore.com/raw-sql
             this.Database.ExecuteSqlCommand(sql, parameters);
