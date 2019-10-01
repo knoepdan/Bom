@@ -37,11 +37,43 @@ namespace Bom.Core.Data
 
             var spParams = new object[] { nodeTitle, parentPathString };
             // var createdPath = ModelContext.Paths.FromSql("AddNodeWithPathProc  @p0, @p1", spParams).Single();
-            //  this.ModelContext.ExecuteRawSql("EXEC AddNodeWithPathProc @p0, @p1", spParams);
-            var createdPath = ModelContext.Paths.FromSqlRaw("EXEC AddNodeWithPathProc @p0, @p1", spParams).Single();
+         //    this.ModelContext.ExecuteRawSql("EXEC AddNodeWithPathProc @p0, @p1", spParams); -> works but no return value
+            //      var createdPath = ModelContext.Paths.FromSqlRaw("AddNodeWithPathProc @p0, @p1", spParams).Single();
 
 
-        //    var createdPath = ModelContext.Paths.FromSql("AddNodeWithPathProc  @p0, @p1", spParams).Single();
+
+
+            var p0 = new System.Data.SqlClient.SqlParameter("@title", nodeTitle);
+          //  p0.Value = nodeTitle;
+            var p1 = new System.Data.SqlClient.SqlParameter("@parentPath", parentPathString);
+            //p1.Value = "asdfsdf";
+            //    var createdPath =   ModelContext.Paths.FromSqlRaw("EXEC AddNodeWithPathProc @title, @parentPath", p0, p1).Single();
+
+            Path createdPath = null;
+            try
+            {
+                createdPath = ModelContext.Paths.FromSqlRaw("EXECUTE AddNodeWithPathProc {0}, {1}", nodeTitle, parentPathString).Single();
+//                exec sp_executesql N'SELECT TOP(2) [p].[PathId], [p].[Level], [p].[NodeId], [p].[NodePath], [p].[NodePathString]
+//FROM(
+//    EXEC AddNodeWithPathProc @p0, @p1
+//) AS[p]',N'@p0 nvarchar(4000),@p1 nvarchar(4000)',@p0=N'1a',@p1=N''
+
+
+            }
+            catch (Exception exxx)
+            {
+                try
+                {
+                    // will fail bfore sending query to database
+                    createdPath = ModelContext.Paths.FromSqlRaw("EXECUTE AddNodeWithPathProc {0}, {1}", p0, p1).Single();
+                }catch(Exception xxxxx)
+                {
+                    // will fail too (and send query to db)
+                    createdPath = ModelContext.Paths.FromSqlRaw("AddNodeWithPathProc @p0, @p1", spParams).Single();
+                }
+            }
+
+            //    var createdPath = ModelContext.Paths.FromSql("AddNodeWithPathProc  @p0, @p1", spParams).Single();
             return createdPath;
         }
 

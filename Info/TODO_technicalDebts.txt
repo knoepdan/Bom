@@ -1,0 +1,4 @@
+
+
+
+Reference to dotMorten.Microsoft.SqlServer.Types  (instead of Microsoft.SqlServerTypes as this is not yet compatible with .net core 3.0)

@@ -66,7 +66,7 @@ namespace Bom.Core.Data
         protected internal void ExecuteRawSql(string sql, params object[] parameters)
         {
             // https://www.learnentityframeworkcore.com/raw-sql
-            this.Database.ExecuteSqlCommand(sql, parameters);
+            this.Database.ExecuteSqlRaw(sql, parameters); // previously but now deprecated:  this.Database.ExecuteSqlCommand(sql, parameters);
         }
 
         #region not used
