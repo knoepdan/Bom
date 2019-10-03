@@ -100,7 +100,7 @@ namespace Bom.Core.Actions
             // ## Test children of parent (must be the existing ones plus the moved one
             {
                 var expected = new List<TreeNode<SimpleNode>>(args.NewParentNode.Children);
-                var newChildren = this.Context.GetPaths().GetChildren(dbParentPath, 1);
+                var newChildren = this.Context.GetPaths().GetChildren(dbParentPath, 1).ToList();
                 CheckIfAreTheSameAndThrowIfNot(expected, newChildren, "checking children of parent");
             }
 

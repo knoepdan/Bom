@@ -17,7 +17,6 @@ namespace Bom.Core.Data.ModelMapping
             builder.ToTable(nameof(Path));
             builder.HasKey(x => x.PathId);
 
-            builder.Property(x => x.NodePath);
             builder.Property(x => x.Level).ValueGeneratedNever();// calculated column
             builder.Property(x => x.NodePathString).ValueGeneratedNever();// calculated column
 
@@ -27,6 +26,7 @@ namespace Bom.Core.Data.ModelMapping
 
             builder.Ignore(x => x.AllRawNodeIds);
             builder.Ignore(x => x.NofFragments);
+            //builder.Property(x => x.NodePath); -> outcommented because not working in .net core 3.0
         }
     }
 

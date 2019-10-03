@@ -5,7 +5,6 @@ using System.Text;
 using Bom.Utils.Math;
 using Bom.Core.Data;
 using Microsoft.SqlServer.Server;
-using Microsoft.SqlServer.Types;
 using Bom.Core.Utils;
 using Ch.Knomes.Structure;
 
@@ -17,8 +16,6 @@ namespace Bom.Core.Model
 
         public int PathId { get; protected set; }
 
-        internal SqlHierarchyId NodePath { get; set; }
-
         public short Level { get; protected set; }
 
         public string NodePathString { get; protected set; }
@@ -26,6 +23,10 @@ namespace Bom.Core.Model
         public int NodeId { get; internal set; }
 
         public virtual Node Node { get; internal set; }
+
+        
+        /// -> outcommented because not working in .net core 3.0 
+        //internal Microsoft.SqlServer.Types.SqlHierarchyId NodePath { get; set; }
 
         #region calculated values
 
