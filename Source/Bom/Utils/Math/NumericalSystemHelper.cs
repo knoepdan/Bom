@@ -95,12 +95,14 @@ namespace Bom.Utils.Math
                     break;
                 }
 
+#pragma warning disable CA1307 // Specify StringComparison
                 int digit = Digits.IndexOf(c);
+#pragma warning restore CA1307 // Specify StringComparison
                 if (digit == -1)
                 {
                     throw new ArgumentException(
                         "Invalid character in the arbitrary numeral system number",
-                        "number");
+                        nameof(number));
                 }
                 result += digit * multiplier;
                 multiplier *= Radix;

@@ -24,7 +24,6 @@ namespace Ch.Knomes.Drawing
 
         public static bool IsImage(string fullFilePath)
         {
-
             if (fullFilePath == null)
             {
                 throw new ArgumentNullException(nameof(fullFilePath));
@@ -40,8 +39,8 @@ namespace Ch.Knomes.Drawing
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine("Expected ex in IsImage: " + ex.Message);
+                return false;
             }
-            return false;
         }
 
         public static string GetMimeContentString(ImageFormat format)
@@ -68,17 +67,17 @@ namespace Ch.Knomes.Drawing
             ImageFormat? foundFormat = null;
             if (Path.HasExtension(fileName))
             {
-                var ext = Path.GetExtension(fileName).Trim().ToLowerInvariant().TrimStart('.');
+                var ext = Path.GetExtension(fileName).Trim().ToUpperInvariant().TrimStart('.');
                 switch (ext)
                 {
-                    case "jpg":
-                    case "jpeg":
+                    case "JPG":
+                    case "JPEG":
                         foundFormat = ImageFormat.Jpeg;
                         break;
-                    case "png":
+                    case "PNG":
                         foundFormat = ImageFormat.Png;
                         break;
-                    case "gif":
+                    case "GIF":
                         foundFormat = ImageFormat.Gif;
                         break;
                     default:

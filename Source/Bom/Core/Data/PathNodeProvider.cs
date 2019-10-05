@@ -68,6 +68,10 @@ namespace Bom.Core.Data
 
         public void DeletePath(Path pathToDelete, bool alsoDeleteNode, bool alsoDeleteSubTree = false)
         {
+            if(pathToDelete == null)
+            {
+                throw new ArgumentNullException(nameof(pathToDelete));
+            }
             DeletePath(pathToDelete.PathId, alsoDeleteNode, alsoDeleteSubTree);
         }
 

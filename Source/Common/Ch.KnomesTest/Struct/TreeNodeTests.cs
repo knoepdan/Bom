@@ -2,9 +2,9 @@ using System;
 using System.Linq;
 using Xunit;
 
-using Ch.Knomes.Structure.Testing;
+using Ch.Knomes.Struct.Testing;
 
-namespace Ch.Knomes.Structure
+namespace Ch.Knomes.Struct
 {
     public class TreeNodeTests
     {

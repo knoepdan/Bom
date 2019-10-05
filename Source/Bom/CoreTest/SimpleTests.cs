@@ -3,7 +3,7 @@ using System.Linq;
 using Xunit;
 using Bom.Core.TestUtils;
 using Bom.Core.Testing;
-using Ch.Knomes.Structure.Testing;
+using Ch.Knomes.Struct.Testing;
 
 namespace Bom.Core
 {

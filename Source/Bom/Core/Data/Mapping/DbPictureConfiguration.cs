@@ -14,6 +14,10 @@ namespace Bom.Core.Data.ModelMapping
     {
         public void Configure(EntityTypeBuilder<DbPicture> builder)
         {
+            if (builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
             builder.ToTable(nameof(DbPicture));
             builder.HasKey(x => x.DbPictureId);
 

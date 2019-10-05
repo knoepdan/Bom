@@ -29,12 +29,11 @@ namespace Bom.Web.Controllers
         /// </remarks>
         public const char SeparatorChar = ':';
 
-
         /// <summary>
         /// Codes for clientside textes (siehe InlineUplad.de.js etc.)
         /// </summary>
         /// <remarks>must always comply with codes in js/ts file</remarks>
-        public static class LocalizationCodes
+        internal static class LocalizationCodes
         {
             // ReSharper disable UnusedMember.Global
             public const string MessageInvalidFileType = "messageInvalidFileType";
@@ -46,8 +45,9 @@ namespace Bom.Web.Controllers
 
         #region configuration
 
-
+#pragma warning disable CA1810 // Initialize reference type static fields inline
         static UploadController()
+#pragma warning restore CA1810 // Initialize reference type static fields inline
         {
             // static constructor, ensures that upload folder exists
             var tempPath = Path.GetTempPath();
@@ -223,7 +223,7 @@ namespace Bom.Web.Controllers
 
                     var fullFilePath = Path.Combine(guidFolderPhysicalPath, fileName);
                     string newFullfilePath = UploadPostSaveTreatment.TreatUploadAfterSaveHandler(fullFilePath, Request, imageRequested);
-                    if (newFullfilePath.ToLowerInvariant() != fullFilePath.ToLowerInvariant())
+                    if (newFullfilePath.ToUpperInvariant() != fullFilePath.ToUpperInvariant())
                     {
                         // a) ensure File is still in same folder
                         if (Path.GetDirectoryName(fullFilePath) != Path.GetDirectoryName(newFullfilePath))
@@ -461,7 +461,7 @@ namespace Bom.Web.Controllers
         /// </remarks>
         public static string StreamToFile(Stream fileStream, string targetDir, string requestedFileName)
         {
-            if (fileStream == null) throw new ArgumentNullException("fileStream");
+            if (fileStream == null) throw new ArgumentNullException(nameof(fileStream));
 
             // Dateinamen gültig machen:
             var finalFileName = requestedFileName;

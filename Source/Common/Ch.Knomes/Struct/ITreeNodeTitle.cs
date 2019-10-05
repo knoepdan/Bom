@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Ch.Knomes.Structure
+namespace Ch.Knomes.Struct
 {
     public interface ITreeNodeTitle
     {

@@ -12,8 +12,8 @@ using Bom.Web.Lib.Infrastructure;
 using Bom.Core.Testing;
 using System.Web;
 using Bom.Core.Utils;
-using Ch.Knomes.Structure;
-using Ch.Knomes.Structure.Testing;
+using Ch.Knomes.Struct;
+using Ch.Knomes.Struct.Testing;
 
 namespace Bom.Web.Areas.Testing.Controllers
 {
@@ -41,10 +41,10 @@ namespace Bom.Web.Areas.Testing.Controllers
         public IActionResult ClearAndFillDatabase(string? typeOfData = null)
         {
             TreeNode<SimpleNode> rootNode;
-            typeOfData = typeOfData?.ToLowerInvariant();
+            typeOfData = typeOfData?.ToUpperInvariant();
             switch (typeOfData)
             {
-                case "animals":
+                case "ANIMALS":
                     rootNode = TestDataFactory.CreateSampleAnimalNodes();
                     break;
                 default:

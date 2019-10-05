@@ -14,7 +14,9 @@ namespace Bom.Core.Model
         public int BlobDataId { get; private set; }
 
         [Required]
-        public byte[] Data { get; set; } = new byte[0];
+#pragma warning disable CA1819 // Properties should not return arrays
+        public byte[] Data { get; set; } = Array.Empty<byte>();
+#pragma warning restore CA1819 // Properties should not return arrays
 
     }
 }

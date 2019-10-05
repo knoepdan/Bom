@@ -1,0 +1,7 @@
+﻿[*.cs]
+
+# CA1303: Do not pass literals as localized parameters
+dotnet_diagnostic.CA1303.severity = none
+
+# CA1716: Rename namespace Bom.Core.Error so that it no longer conflicts with the reserved language keyword 'Error'. Using a reserved keyword as ...
+dotnet_diagnostic.CA1716.severity = none

@@ -9,6 +9,10 @@
     <RootNamespace>Bom.Utils</RootNamespace>
 
     <AssemblyName>BomUtilsTest</AssemblyName>
+
+    <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
+
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
   <ItemGroup>

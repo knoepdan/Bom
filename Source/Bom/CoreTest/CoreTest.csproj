@@ -9,6 +9,10 @@
     <AssemblyName>BomCoreTest</AssemblyName>
 
     <RootNamespace>Bom.Core</RootNamespace>
+
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+
+    <RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
   </PropertyGroup>
 
   <ItemGroup>

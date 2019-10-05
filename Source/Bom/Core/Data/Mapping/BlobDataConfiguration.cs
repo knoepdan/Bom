@@ -14,6 +14,10 @@ namespace Bom.Core.Data.ModelMapping
     {
         public void Configure(EntityTypeBuilder<BlobData> builder)
         {
+            if(builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
             builder.ToTable(nameof(BlobData));
             builder.HasKey(x => x.BlobDataId);
             builder.Property(x => x.Data);

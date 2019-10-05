@@ -25,20 +25,23 @@ namespace Bom.Web.Test
             using (var httpClient = HttpClientFactory.CreateHttpClient())
             {
                 var client = new TreeClient(ConfigUtils.BaseUrl, httpClient);
-                var rootNode = client.GetRootNodes().Result.First();
-
+                var rootNode = client.GetRootNodes().Result.FirstOrDefault();
+                if (rootNode == null)
+                {
+                    return; //  nothing to query (test is to be improved)
+                }
                 var input = new TreeFilterInput();
                 input.BasePathId = rootNode.PathId;
                 input.ChildDepth = 44;
                 var response = client.GetNodes(input);
                 var result = response.Result;
-                foreach(var r in result)
+                foreach (var r in result)
                 {
                     Console.WriteLine($"{r.NodeId}  {r.Title}");
                 }
                 // second serch
                 var baseNode = result.FirstOrDefault(x => x.Depth > 2);
-                if(baseNode != null)
+                if (baseNode != null)
                 {
                     input = new TreeFilterInput();
                     input.BasePathId = baseNode.PathId;
@@ -54,8 +57,11 @@ namespace Bom.Web.Test
             using (var httpClient = HttpClientFactory.CreateHttpClient())
             {
                 var client = new TreeClient(ConfigUtils.BaseUrl, httpClient);
-                var rootNode = client.GetRootNodes().Result.First();
-
+                var rootNode = client.GetRootNodes().Result.FirstOrDefault();
+                if (rootNode == null)
+                {
+                    return; //  nothing to query (test is to be improved)
+                }
                 var input = new TreeFilterInput();
                 input.BasePathId = rootNode.PathId;
                 input.ChildDepth = 44;
@@ -88,6 +94,5 @@ namespace Bom.Web.Test
                 var node2 = client.GetNodeByPathId(1);
             }
         }
-
     }
 }

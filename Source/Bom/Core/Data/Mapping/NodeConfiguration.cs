@@ -13,6 +13,10 @@ namespace Bom.Core.Data.ModelMapping
     {
         public void Configure(EntityTypeBuilder<Node> builder)
         {
+            if(builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
             builder.ToTable(nameof(Node));
             builder.HasKey(x => x.NodeId);
 

@@ -6,7 +6,7 @@ using Bom.Utils.Math;
 using Bom.Core.Data;
 using Microsoft.SqlServer.Server;
 using Bom.Core.Utils;
-using Ch.Knomes.Structure;
+using Ch.Knomes.Struct;
 
 namespace Bom.Core.Model
 {
@@ -42,7 +42,9 @@ namespace Bom.Core.Model
 
         #endregion
 
+#pragma warning disable CA1033 // Interface methods should be callable by child types
         string ITreeNodeTitle.GetTitleString()
+#pragma warning restore CA1033 // Interface methods should be callable by child types
         {
             var node = $"{PathId} '{string.Join(Path.Separator, this.AllNodeIds)}'";
 #if DEBUG

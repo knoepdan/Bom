@@ -26,12 +26,16 @@ namespace Ch.Knomes.IO
         /// sie z.B. den Pfadtrenner "/" oder das Wildcard-Token "*" zulässt (und weitere)
         /// <see cref="StripInvalidFilenameCharacters"/>.
         /// </remarks>
-        public static string StripInvalidPathCharacters(string path, string replaceWith = "")
+        public static string StripInvalidPathCharacters(string? path, string replaceWith = "")
         {
+            if (path == null)
+            {
+                return "";
+            }
             var invalid = System.IO.Path.GetInvalidPathChars(); //new ArrayList(System.IO.Path.GetInvalidPathChars());
             foreach (char c in invalid)
             {
-                path = path.Replace(c.ToString(CultureInfo.InvariantCulture), replaceWith);
+                path = path.Replace(c.ToString(CultureInfo.InvariantCulture), replaceWith, StringComparison.InvariantCulture);
             }
             return path;
         }
@@ -41,12 +45,16 @@ namespace Ch.Knomes.IO
         /// </summary>
         /// <param name="path">Der zu überprüfende Pfad</param>
         /// <param name="replaceWith">Ungültige Zeichen werden hiermit ersetzt</param>
-        public static string StripInvalidFilenameCharacters(string path, string replaceWith = "")
+        public static string StripInvalidFilenameCharacters(string? path, string replaceWith = "")
         {
+            if(path == null)
+            {
+                return "";
+            }
             var invalid = System.IO.Path.GetInvalidFileNameChars();//new ArrayList(System.IO.Path.GetInvalidFileNameChars());
             foreach (char c in invalid)
             {
-                path = path.Replace(c.ToString(CultureInfo.InvariantCulture), replaceWith);
+                path = path.Replace(c.ToString(CultureInfo.InvariantCulture), replaceWith, StringComparison.InvariantCulture);
             }
             return path;
         }

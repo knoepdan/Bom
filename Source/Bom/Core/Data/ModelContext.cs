@@ -39,13 +39,19 @@ namespace Bom.Core.Data
         {
             if(this.Paths == null)
             {
+#pragma warning disable CA2007 // Consider calling ConfigureAwait on the awaited task
                 return await Task.FromResult<Path?>(null);
+#pragma warning restore CA2007 // Consider calling ConfigureAwait on the awaited task
             }
             return await this.Paths.FindAsync(keyValues);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            if(modelBuilder == null)
+            {
+                throw new ArgumentNullException(nameof(modelBuilder));
+            }
 
             // to have more control and still not add still have a generic way, one could tr
             //   https://stackoverflow.com/questions/1003023/cast-to-generic-type-in-c-sharp
@@ -54,15 +60,6 @@ namespace Bom.Core.Data
 
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ModelMapping.NodeConfiguration).Assembly);
-        }
-
-
-        protected internal System.Data.Common.DbCommand GetStoredProcedureCommand(string storedProcName)
-        {
-            var cmd = this.Database.GetDbConnection().CreateCommand();
-            cmd.CommandText = storedProcName;
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
-            return cmd;
         }
 
         protected internal void ExecuteRawSql(string sql, params object[] parameters)
@@ -78,6 +75,14 @@ namespace Bom.Core.Data
         //{
         //  not needed in a webapplication -> maybe for a future development
         //    optionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["BloggingDatabase"].ConnectionString);
+        //}
+
+        //protected internal System.Data.Common.DbCommand GetStoredProcedureCommand(string storedProcName)
+        //{
+        //    var cmd = this.Database.GetDbConnection().CreateCommand();
+        //    cmd.CommandText = storedProcName;
+        //    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+        //    return cmd;
         //}
 
         #endregion

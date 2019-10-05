@@ -1,0 +1,19 @@
+﻿[*.cs]
+
+# CA1303: Do not pass literals as localized parameters
+dotnet_diagnostic.CA1303.severity = none
+
+# CA1062: Validate arguments of public methods
+dotnet_diagnostic.CA1062.severity = none
+
+# CA1031: Do not catch general exception types
+dotnet_diagnostic.CA1031.severity = none
+
+# CA1716: Rename namespace Bom.Web.Lib.Infrastructure.ErrorHandling so that it no longer conflicts with the reserved language keyword 'Lib'. Using a reserved keyword as the name of a namespace makes it harder for consumers in other languages to use the namespac
+dotnet_diagnostic.CA1716.severity = none
+
+# CA2007: Consider calling ConfigureAwait on the awaited task
+dotnet_diagnostic.CA2007.severity = silent
+
+# CA2235: Mark all non-serializable fields
+dotnet_diagnostic.CA2235.severity = silent

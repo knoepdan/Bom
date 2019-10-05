@@ -12,11 +12,16 @@ namespace Bom.Core.Data
 
         public static IEnumerable<string> GetParentPathFragments(this Path path, int stepsToGoUp)
         {
+            if(path == null)
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+
             // 35/36/45/46/47/48
             // steps to go up == 2 ->  35/36/45/46
             if (path.IsRoot())
             {
-                return new string[0]; // there is nothing above
+                return Array.Empty<string>(); // there is nothing above
             }
             var tmp = path.AllRawNodeIds;
             var steps = stepsToGoUp + 1; // as current node is also in path
@@ -35,6 +40,10 @@ namespace Bom.Core.Data
 
         public static IEnumerable<string> GetAllParentPaths(this Path path, int? stepsToGoUp)
         {
+            if(path == null)
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
             if (path.IsRoot())
             {
                 return new List<string>(); // root
@@ -91,7 +100,7 @@ namespace Bom.Core.Data
         {
             if (pathValues != null)
             {
-                var val = pathValues.Select(x => (long.Parse(x)));//pathValues.Select(x => NumericalSystemHelper.ArbitraryToDecimalSystem(x));
+                var val = pathValues.Select(x => (long.Parse(x, System.Globalization.CultureInfo.InvariantCulture)));//pathValues.Select(x => NumericalSystemHelper.ArbitraryToDecimalSystem(x));
                 return val;
             }
             return new List<long>();
@@ -104,7 +113,7 @@ namespace Bom.Core.Data
                 var tmp = pathString.Split(Path.Separator, StringSplitOptions.RemoveEmptyEntries);
                 return tmp;
             }
-            return new string[0];
+            return Array.Empty<string>();
         }
 
         private static string CreatePathFromFragments(IEnumerable<string> pathValues)
@@ -115,6 +124,10 @@ namespace Bom.Core.Data
 
         public static bool IsRoot(this Path path)
         {
+            if(path == null)
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
             if(path.Level <= 1)
             {
                 return true;

@@ -2,11 +2,10 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
-using Ch.Knomes.Structure;
 
-namespace Ch.Knomes.Structure
+namespace Ch.Knomes.Struct
 {
-    public class SimpleNode : ITreeNodeTitle
+    public sealed class SimpleNode : ITreeNodeTitle
     {
         public SimpleNode(string title)
         {
@@ -34,7 +33,7 @@ namespace Ch.Knomes.Structure
         {
             if(this.Title != null)
             {
-                return this.Title.GetHashCode();
+                return this.Title.GetHashCode(StringComparison.InvariantCulture);
             }
             return base.GetHashCode();
         }

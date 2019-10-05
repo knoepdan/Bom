@@ -39,6 +39,10 @@ namespace Bom.Web.Areas.Main.Controllers
         public async Task<ActionResult<IEnumerable<NodeVm>>> GetNodes(TreeFilterInput filter)
         {
             var paths = _context.GetPaths();
+            if(paths == null)
+            {
+                return NotFound();
+            }
             var basePath = await paths.FirstOrDefaultAsync(x => x.PathId == filter.BasePathId);
             if (basePath == null)
             {

@@ -9,11 +9,15 @@ using Newtonsoft.Json;
 
 namespace Bom.Web.Lib.Infrastructure.ErrorHandling
 {
-    public class ErrorUtility
+    public static class ErrorUtility
     {
 
         public static async Task SetErrorResponse(HttpContext context)
         {
+            if(context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
             // set defaults
             context.Response.ContentType = "application/json"; // "text/html";
             var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();

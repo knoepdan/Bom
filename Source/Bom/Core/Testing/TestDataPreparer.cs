@@ -5,7 +5,7 @@ using System.Text;
 using Bom.Core.Data;
 using Bom.Core.Model;
 using Bom.Core.Utils;
-using Ch.Knomes.Structure;
+using Ch.Knomes.Struct;
 
 namespace Bom.Core.Testing
 {
@@ -37,6 +37,10 @@ namespace Bom.Core.Testing
 
         public Path CreateTestData(TreeNode<SimpleNode> rootNode, bool cleanDatabase = true)
         {
+            if(rootNode == null)
+            {
+                throw new ArgumentNullException(nameof(rootNode));
+            }
             if (cleanDatabase)
             {
                 CleanTestDatabase();

@@ -12,8 +12,8 @@ namespace Ch.Knomes.Drawing
         /// </summary>
         public static Size ShrinkToFit(Size size, Size maxSize)
         {
-            if (size.Width < 0 || size.Height < 0) throw new ArgumentException("Fläche muss nichtleer sein", "size");
-            if (maxSize.Width < 0 || maxSize.Height < 0) throw new ArgumentException("Maximale Fläche muss nichtleer sein", "maxSize");
+            if (size.Width < 0 || size.Height < 0) throw new ArgumentException("area may not be empty", nameof(size));
+            if (maxSize.Width < 0 || maxSize.Height < 0) throw new ArgumentException("maximum area may not be empty", nameof(maxSize));
 
             var newSize = Size.Empty;
             if (size.Width > maxSize.Width || size.Height > maxSize.Height)

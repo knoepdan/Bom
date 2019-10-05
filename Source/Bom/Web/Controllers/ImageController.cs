@@ -17,7 +17,7 @@ namespace Bom.Web.Controllers
     [ApiController]
     public class ImageController : BomBaseController
     {
-        private static readonly ImageFormat FallBackFormat = ImageFormat.Jpeg;
+        private const ImageFormat FallBackFormat = ImageFormat.Jpeg;
 
         private readonly ModelContext _context;
 
@@ -28,10 +28,10 @@ namespace Bom.Web.Controllers
         }
 
         [HttpGet]
-        [ResponseCache(VaryByQueryKeys = new[] {"uid"}, Duration = 99000, Location = ResponseCacheLocation.Client)]
+        [ResponseCache(VaryByQueryKeys = new[] { "uid" }, Duration = 99000, Location = ResponseCacheLocation.Client)]
         public ActionResult Orig(string uid)
         {
-     // maybe response caching has to be activated during startup   https://docs.microsoft.com/en-us/aspnet/core/performance/caching/middleware?view=aspnetcore-2.2
+            // maybe response caching has to be activated during startup   https://docs.microsoft.com/en-us/aspnet/core/performance/caching/middleware?view=aspnetcore-2.2
 
             var emptySize = new Size();
             var result = GetImage(uid, emptySize);
@@ -64,7 +64,7 @@ namespace Bom.Web.Controllers
                 if (pic == null)
                 {
                     return NotFound();
-                  //  return new HttpNotFoundResult(""); // Response.StatusCode = 404;
+                    //  return new HttpNotFoundResult(""); // Response.StatusCode = 404;
                 }
                 imageBlob = new ImageCacheDto(pic);
                 if (size != null && !size.IsEmpty)
@@ -98,11 +98,12 @@ namespace Bom.Web.Controllers
             var origSize = new Size(dbPic.Width, dbPic.Height);
             var targetSize = GeometryUtility.ShrinkToFit(origSize, maxSize);
             var imgFormat = PictureUtility.GetImageFormatFromName(dbPic.Name, FallBackFormat);
-            if(dbPic.BlobData == null || dbPic.BlobData.Data == null)
+            if (dbPic.BlobData == null || dbPic.BlobData.Data == null)
             {
-                return new byte[0];
+                return Array.Empty<byte>();
             }
-            using (var origImage = new System.IO.MemoryStream(dbPic.BlobData.Data)){
+            using (var origImage = new System.IO.MemoryStream(dbPic.BlobData.Data))
+            {
                 using (var resizedImage = PictureUtility.ResizeImage(origImage, targetSize, imgFormat))
                 {
                     var resizedByteArray = resizedImage.ToArray();
@@ -115,7 +116,7 @@ namespace Bom.Web.Controllers
 
         private ImageCacheDto? GetFromCache(string? picId, Size targetSize)
         {
-            Utils.Dev.Todo("Implement cache for pics");
+            Utils.Dev.Todo($"Implement cache for pics. Passed id: {picId}, size: {targetSize}  (contr: {this})");
             // https://www.c-sharpcorner.com/article/asp-net-core-2-0-caching/ 
             return null;
             //string key = GetKey(picId, targetSize);
@@ -126,7 +127,8 @@ namespace Bom.Web.Controllers
         private void StoreInCache(string picId, Size targetSize, ImageCacheDto dto)
         {
             string key = GetKey(picId, targetSize);
-          //  HttpContext.Cache[key] = dto;
+            Utils.Dev.Todo($"Implement cache store for pics. Passed id: {picId}, size: {targetSize}, dto: {dto} (contr: {this})");
+            //  HttpContext.Cache[key] = dto;
         }
 
         private static string GetKey(string picId, Size targetSize)
@@ -139,7 +141,7 @@ namespace Bom.Web.Controllers
             return key;
         }
         [Serializable]
-        public class ImageCacheDto
+        internal class ImageCacheDto
         {
             public ImageCacheDto() { }
             public ImageCacheDto(DbPicture pic)
@@ -153,13 +155,17 @@ namespace Bom.Web.Controllers
             }
 
             public string ImageName { get; set; } = "";
-            public byte[] ImageBytes { get; set; } = new byte[0];
+
+#pragma warning disable CA1819 // Properties should not return arrays
+            public byte[] ImageBytes { get; set; } = Array.Empty<byte>();
+#pragma warning restore CA1819 // Properties should not return arrays
 
             public string Uid { get; set; } = "";
         }
 
         public static void SetDefaultImageHeaders(HttpResponse response)
         {
+            Utils.Dev.Todo($"{nameof(SetDefaultImageHeaders)} is not implemented .. needed for caching! response is set: {response != null}");
             // to be set like this
             //response.Headers["Expires"] = "23"
 

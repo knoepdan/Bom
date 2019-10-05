@@ -1,5 +1,6 @@
 
 
-###### HierarchyId type 
-Reference to dotMorten.Microsoft.SqlServer.Types  (instead of Microsoft.SqlServerTypes as this is not yet compatible with .net core 3.0)
-according to blog, it should be supported natively: https://devblogs.microsoft.com/dotnet/announcing-ef-core-3-0-and-ef-6-3-general-availability/
+###### HierarchyId type  -> at the moment only working in database  (minor as we only use it in db)
+Reference to dotMorten.Microsoft.SqlServer.Types: compiles in .net core 3.0 but cannot load in .net
+Microsoft.SqlServerTypes worked in .net core 2.0 but no longer in 3.0
+ - https://devblogs.microsoft.com/dotnet/announcing-ef-core-3-0-and-ef-6-3-general-availability/

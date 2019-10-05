@@ -8,7 +8,7 @@ using Bom.Core.Testing;
 using Bom.Core.Data;
 using Bom.Core.Model;
 using Bom.Core.Utils;
-using Ch.Knomes.Structure;
+using Ch.Knomes.Struct;
 
 namespace Bom.Core.Actions.Utils
 {

@@ -17,7 +17,7 @@ namespace Ch.Knomes.Drawing
     /// <summary>
     /// Simplifies Access to the most common Image Metadata 
     /// </summary>
-    public class PictureMetadata : IDisposable
+    public sealed class PictureMetadata : IDisposable
     {
 
         // Image useing ImageSharp
@@ -128,7 +128,6 @@ namespace Ch.Knomes.Drawing
 
         private static DateTime? GetDateTaken(ImageMetaData metaData, SixLabors.ImageSharp.MetaData.Profiles.Exif.ExifTag dateField)
         {
-
             try
             {
                 var dField = metaData.ExifProfile.GetValue(dateField);
@@ -139,18 +138,18 @@ namespace Ch.Knomes.Drawing
 
                 //Convert date taken metadata to a DateTime object
                 string sdate = ((string)dField.Value).Trim();//propItem.Value;///Encoding.UTF8.GetString(propItem.Value).Trim();
-                string secondhalf = sdate.Substring(sdate.IndexOf(" "), (sdate.Length - sdate.IndexOf(" ")));
+                string secondhalf = sdate.Substring(sdate.IndexOf(" ", StringComparison.InvariantCulture), (sdate.Length - sdate.IndexOf(" ", StringComparison.InvariantCulture)));
                 string firsthalf = sdate.Substring(0, 10);
-                firsthalf = firsthalf.Replace(":", "-");
+                firsthalf = firsthalf.Replace(":", "-", StringComparison.InvariantCulture);
                 sdate = firsthalf + secondhalf;
-                var dateTaken = DateTime.Parse(sdate);
+                var dateTaken = DateTime.Parse(sdate, System.Globalization.CultureInfo.InvariantCulture);
                 return dateTaken;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message); ///dtaken = DateTime.Parse("1956-01-01 00:00:00.000");
+                return null;
             }
-            return null;
         }
 
         public void Dispose()

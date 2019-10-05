@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Ch.Knomes.Structure
+namespace Ch.Knomes.Struct
 {
     public class TreeNode<T> where T: notnull
     {

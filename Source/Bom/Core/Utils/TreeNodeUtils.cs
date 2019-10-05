@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using Bom.Core.Model;
-using Ch.Knomes.Structure;
+using Ch.Knomes.Struct;
 
 namespace Bom.Core.Utils
 {
@@ -50,7 +50,7 @@ namespace Bom.Core.Utils
         private static void AddChildNodesRecursive(TreeNode<Path> baseNode, IList<Path> paths, HashSet<Path> checkedPaths )
         {
             var p = baseNode.Data;
-            var children = paths.Where(x => x.NodePathString.StartsWith(p.NodePathString) && x.Level == (p.Level + 1) && !checkedPaths.Contains(x));
+            var children = paths.Where(x => x.NodePathString.StartsWith(p.NodePathString, StringComparison.InvariantCulture) && x.Level == (p.Level + 1) && !checkedPaths.Contains(x));
             foreach (var child in children)
             {
                 var childNode = baseNode.AddChild(child);

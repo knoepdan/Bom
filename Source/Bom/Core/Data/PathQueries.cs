@@ -17,7 +17,13 @@ namespace Bom.Core.Data
             {
                 throw new ArgumentNullException(nameof(list));
             }
+            if (basePath == null)
+            {
+                throw new ArgumentNullException(nameof(basePath));
+            }
+#pragma warning disable CA1307 // Specify StringComparison
             list = list.Where(x => x.NodePathString.StartsWith(basePath.NodePathString) && x.Level > basePath.Level);
+#pragma warning restore CA1307 // Specify StringComparison
             if (childDepth.HasValue)
             {
                 // limit depth (example: basePath.Depth is 4, childDepth 2 then depth as big as 6
@@ -47,7 +53,9 @@ namespace Bom.Core.Data
             else
             {
                 var pathOfDirectParent = basePath.GetParentPath(1);
+#pragma warning disable CA1307 // Specify StringComparison
                 list = list.Where(x => x.NodePathString.StartsWith(pathOfDirectParent) && x.Level == basePath.Level);
+#pragma warning restore CA1307 // Specify StringComparison
             }
             return list;
         }
@@ -66,7 +74,9 @@ namespace Bom.Core.Data
 
             // actual search for parent
             var pathOfDirectParent = basePath.GetParentPath(1);
+#pragma warning disable CA1307 // Specify StringComparison
             var parent = list.FirstOrDefault(x => x.NodePathString.StartsWith(pathOfDirectParent) && x.Level < basePath.Level);
+#pragma warning restore CA1307 // Specify StringComparison
             return parent;
         }
 

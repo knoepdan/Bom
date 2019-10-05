@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
-using Ch.Knomes.Structure;
 
-namespace Ch.Knomes.Structure.Testing
+namespace Ch.Knomes.Struct.Testing
 {
     public static class TestDataFactory
     {
@@ -40,6 +39,10 @@ namespace Ch.Knomes.Structure.Testing
 
         public static void AddSampleNodesRecursive(TreeNode<SimpleNode> parent, int nofLevels, int nofPos)
         {
+            if(parent == null)
+            {
+                throw new ArgumentNullException(nameof(parent));
+            }
             int level = parent.GetLevel();
             for (int pos = 0; pos < nofPos; pos++)
             {
@@ -143,7 +146,7 @@ namespace Ch.Knomes.Structure.Testing
                     }
                 }
                 var levelPart = sb.ToString();
-                var level = int.Parse(levelPart); // will throw if does not comply to convention
+                var level = int.Parse(levelPart, System.Globalization.CultureInfo.InvariantCulture); // will throw if does not comply to convention
                 return level;
             }
             return 0;
