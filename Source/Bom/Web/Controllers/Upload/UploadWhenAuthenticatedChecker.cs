@@ -8,15 +8,15 @@ namespace Bom.Web.Controllers.Upload
 {
     public class UploadOnlyWhenAuthenticated : IUploadChecker
     {
-        public bool CanPerformUpload(string passedFileName, HttpRequest request, System.Security.Principal.IPrincipal currentUser, bool isImage)
+        public bool CanPerformUpload(string passedFileName, HttpRequest request, System.Security.Principal.IPrincipal? currentUser, bool isImage)
         {
-            bool ok = (currentUser != null && currentUser.Identity.IsAuthenticated);
+            bool ok = (currentUser != null && currentUser.Identity != null && currentUser.Identity.IsAuthenticated);
             return ok;
         }
 
-        public bool CanSeeTempUpload(string passedFileName, HttpRequest request, System.Security.Principal.IPrincipal currentUser, bool isImage)
+        public bool CanSeeTempUpload(string passedFileName, HttpRequest request, System.Security.Principal.IPrincipal? currentUser, bool isImage)
         {
-            bool ok = (currentUser != null && currentUser.Identity.IsAuthenticated);
+            bool ok = (currentUser != null && currentUser.Identity != null && currentUser.Identity.IsAuthenticated);
             return ok;
         }
     }

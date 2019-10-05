@@ -25,7 +25,7 @@ namespace Bom.Utils
         }
 
         [System.Diagnostics.Conditional("DEBUG")]
-        public static void Todo(string msg = null, Urgency urgency = Urgency.Undefined)
+        public static void Todo(string? msg = null, Urgency urgency = Urgency.Undefined)
         {
             var toWriteMsg = "Todo called";
             if (string.IsNullOrWhiteSpace(msg))
@@ -40,7 +40,7 @@ namespace Bom.Utils
         }
 
         [System.Diagnostics.Conditional("DEBUG")]
-        public static void PossibleImprovment(string msg = null, ImproveArea improveArea = ImproveArea.Undefined, Urgency urgency = Urgency.Undefined)
+        public static void PossibleImprovment(string? msg = null, ImproveArea improveArea = ImproveArea.Undefined, Urgency urgency = Urgency.Undefined)
         {
             var toWriteMsg = "Improvment!";
             if (string.IsNullOrWhiteSpace(msg))

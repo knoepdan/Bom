@@ -10,12 +10,11 @@ using Bom.Core.Model;
 using Bom.Core.Utils;
 using Ch.Knomes.Structure;
 
-
 namespace Bom.Core.Actions.Utils
 {
     public class TestMoveNodeArgs
     {
-        public TestMoveNodeArgs(TreeNode<SimpleNode> moveNode, TreeNode<SimpleNode> newParentNode, bool moveChildrenToo = false)
+        public TestMoveNodeArgs(TreeNode<SimpleNode> moveNode, TreeNode<SimpleNode>? newParentNode, bool moveChildrenToo = false)
         {
             ToMoveNode = moveNode;
             NewParentNode = newParentNode;
@@ -26,7 +25,7 @@ namespace Bom.Core.Actions.Utils
 
         public TreeNode<SimpleNode> ToMoveNode { get; set; }
 
-        public TreeNode<SimpleNode> NewParentNode { get; set; }
+        public TreeNode<SimpleNode>? NewParentNode { get; set; }
 
     }
 }

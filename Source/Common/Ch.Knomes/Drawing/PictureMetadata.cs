@@ -86,8 +86,8 @@ namespace Ch.Knomes.Drawing
                 if (posField != null && posField.IsArray && posField.DataType == SixLabors.ImageSharp.MetaData.Profiles.Exif.ExifDataType.Rational)
                 {
                     var posValues = (SixLabors.ImageSharp.Primitives.Rational[])posField.Value;
-                    var refField = metaData.ExifProfile.GetValue(positionRefField);
-                    string metaRefVal = refField != null && refField.DataType == SixLabors.ImageSharp.MetaData.Profiles.Exif.ExifDataType.Ascii ? refField.Value as string : "";
+                    SixLabors.ImageSharp.MetaData.Profiles.Exif.ExifValue? refField = metaData.ExifProfile.GetValue(positionRefField);
+                    string? metaRefVal = refField != null && refField.DataType == SixLabors.ImageSharp.MetaData.Profiles.Exif.ExifDataType.Ascii ? refField.Value as string : "";
                     var floatVal = ExifGpsToFloat(posValues, metaRefVal);
                     return floatVal;
                 }
@@ -100,7 +100,7 @@ namespace Ch.Knomes.Drawing
             }
         }
 
-        private static float ExifGpsToFloat(SixLabors.ImageSharp.Primitives.Rational[] propItem, string propItemRef)
+        private static float ExifGpsToFloat(SixLabors.ImageSharp.Primitives.Rational[] propItem, string? propItemRef)
         {
             uint degreesNumerator = propItem[0].Numerator;//BitConverter.ToUInt32(propItem.Value, 0);
             uint degreesDenominator = propItem[0].Denominator;//BitConverter.ToUInt32(propItem.Value, 4);

@@ -25,7 +25,7 @@ namespace Bom.Web.Lib.Infrastructure.ErrorHandling
             await context.Response.WriteAsync(json, System.Text.Encoding.UTF8);
         }
 
-        private static int GetHttpStatusCodeFromException(Exception ex)
+        private static int GetHttpStatusCodeFromException(Exception? ex)
         {
             if (ex == null)
             {
@@ -76,7 +76,7 @@ namespace Bom.Web.Lib.Infrastructure.ErrorHandling
             return sb.ToString();
         }
 
-        private static ErrorInfo GetErrorInfo(Exception ex, string path)
+        private static ErrorInfo GetErrorInfo(Exception? ex, string? path)
         {
             var info = new ErrorInfo();
             info.Message = $"Error in path {path}, ex: {ex?.GetType()?.Name}";
@@ -91,7 +91,7 @@ namespace Bom.Web.Lib.Infrastructure.ErrorHandling
             return info;
         }
 
-        private static Core.Error.BomException GetAppException(Exception ex)
+        private static Core.Error.BomException? GetAppException(Exception? ex)
         {
             while (ex != null)
             {

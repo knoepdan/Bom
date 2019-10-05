@@ -175,11 +175,10 @@ namespace Bom.Core.Actions
             // this must fail on the level of the database
             var node = RootNode.DescendantsAndI.Where(n => n.Level == 2 && n.Children.Any()).First();
             var targetParent = RootNode.DescendantsAndI.Where(n => n.Level == 4 && n.Ancestors.Any(a => a == node)).First();
-            var args = new TestMoveNodeArgs(node, targetParent, true);
             try
             {
-                var moveNode = Context.GetPaths().First(x => x.Node.Title == args.ToMoveNode.Data.Title);
-                var newParentNode = Context.GetPaths().First(x => x.Node.Title == args.NewParentNode.Data.Title);
+                var moveNode = Context.GetPaths().First(x => x.Node != null && x.Node.Title == node.Data.Title);
+                var newParentNode = Context.GetPaths().First(x => x.Node != null && x.Node.Title == targetParent.Data.Title);
                 var prov = new PathNodeProvider(Context);
                 var movedPath = prov.MovePathAndReload(moveNode.PathId, newParentNode.PathId, true);
             }
@@ -297,12 +296,12 @@ namespace Bom.Core.Actions
             }
             foreach (var dbRoot in dbRoots)
             {
-                var inMemoryRoot = memRoots.FirstOrDefault(x => x.Data.Title == dbRoot.Data.Node.Title);
+                var inMemoryRoot = memRoots.FirstOrDefault(x => x.Data.Title == dbRoot.Data.Node?.Title);
                 if (inMemoryRoot == null)
                 {
-                    throw new Exception("Could not find in memory root with title: " + dbRoot.Data.Node.Title);
+                    throw new Exception("Could not find in memory root with title: " + dbRoot.Data.Node?.Title);
                 }
-                bool areOrigNodesEqual = inMemoryRoot.AreDescendantsAndIEqual(dbRoot, (node, simpleNode) => { return node.Data.Title == simpleNode.Data.Node.Title; });
+                bool areOrigNodesEqual = inMemoryRoot.AreDescendantsAndIEqual(dbRoot, (node, simpleNode) => { return node.Data.Title == simpleNode.Data.Node?.Title; });
                 if (!areOrigNodesEqual)
                 {
                     throw new Exception($"Trees are not equal (Root: {inMemoryRoot.Data.Title})");
@@ -313,50 +312,61 @@ namespace Bom.Core.Actions
 
         private Path TestMoveNodePath(TestMoveNodeArgs args)
         {
+            if (args.ToMoveNode == null)
+            {
+                throw new ArgumentException($"{nameof(args.ToMoveNode)} may not be null", nameof(args));
+            }
+            if (args.NewParentNode == null)
+            {
+                throw new ArgumentException($"{nameof(args.NewParentNode)} may not be null", nameof(args));
+            }
+            var toMoveNode = args.ToMoveNode;
+            var newParentNode = args.NewParentNode;
+
             // remember some state before
             var rootBeforeMoving = args.ToMoveNode.Root;
             var childrenBeforeMoving = args.ToMoveNode.Children.ToList();
 
             // do actual move
-            var movedPath = MoveNodePath(args.ToMoveNode.Data.Title, args.NewParentNode.Data.Title, args.MoveChildrenToo);
+            var movedPath = MoveNodePath(toMoveNode.Data.Title, newParentNode.Data?.Title, args.MoveChildrenToo);
 
             // ## perform some checks on inMemory node on expected values (afterwards we will check db nodes)
             if (args.NewParentNode.Root != args.ToMoveNode.Root)
             {
-                throw new Exception($"InMemory nodes do not have the same parents: {args.NewParentNode.Data.Title},  moved node root: {args.ToMoveNode.Data.Title}"); // check that both are in same tree
+                throw new Exception($"InMemory nodes do not have the same parents: {args.NewParentNode.Data.Title},  moved node root: {toMoveNode.Data.Title}"); // check that both are in same tree
             }
-            if (args.ToMoveNode.Parent.Data.Title != args.NewParentNode.Data.Title)
+            if (args.ToMoveNode?.Parent?.Data.Title != args.NewParentNode?.Data?.Title)
             {
-                throw new Exception($"InMemory does not have the expected parent: {args.NewParentNode.Data.Title},  moved node parent: {args.ToMoveNode.Parent.Data.Title}");
+                throw new Exception($"InMemory does not have the expected parent: {newParentNode?.Data?.Title},  moved node parent: {toMoveNode?.Parent?.Data.Title}");
             }
 
             // perform some other simple checks (relativly basic)
             if (args.MoveChildrenToo )
             {
-                CheckIfAreTheSameAndThrowIfNot(args.ToMoveNode.Children, childrenBeforeMoving);
+                CheckIfAreTheSameAndThrowIfNot(toMoveNode.Children, childrenBeforeMoving);
             }
-            else if (!args.MoveChildrenToo && args.ToMoveNode.Children.Count > 0)
+            else if (!args.MoveChildrenToo && toMoveNode.Children.Count > 0)
             {
-                throw new Exception($"InMemory moved node has  {args.ToMoveNode.Children.Count} children but shoulde have none "); // check that both are in same tree
+                throw new Exception($"InMemory moved node has  {toMoveNode.Children.Count} children but shoulde have none "); // check that both are in same tree
             }
 
             // compare with DB node (not possible to compare string representation as order of children is not guaranteed to be the same)
-            var inMemoryRoot = args.NewParentNode.Root;
-            var dbRoot = this.Context.GetPaths().First(p => p.Node.Title == inMemoryRoot.Data.Title);
+            var inMemoryRoot = newParentNode.Root;
+            var dbRoot = this.Context.GetPaths().First(p => p.Node != null && p.Node.Title == inMemoryRoot.Data.Title);
             var allNodes = this.Context.GetPaths().GetChildren(dbRoot, 9999).ToList(); // level so high we get all
             allNodes.Insert(0, dbRoot);
             var dbRootInMemory = TreeNodeUtils.CreateInMemoryModel(allNodes).First();
-            bool areEqual = dbRootInMemory.AreDescendantsAndIEqual(inMemoryRoot, (node, simpleNode) => { return node.Data.Node.Title == simpleNode.Data.Title; });
+            bool areEqual = dbRootInMemory.AreDescendantsAndIEqual(inMemoryRoot, (node, simpleNode) => { return node.Data.Node?.Title == simpleNode.Data.Title; });
             if(!areEqual)
             {
                 throw new Exception("Nodes do not match"); 
             }
 
             // checked if moved from one tree to another
-            if(rootBeforeMoving.Data.Title != args.ToMoveNode.Root.Data.Title) 
+            if(rootBeforeMoving.Data.Title != toMoveNode.Root.Data.Title) 
             {
                 // we need to check the tree also
-                var origTreeRoot = this.Context.GetPaths().First(p => p.Node.Title == rootBeforeMoving.Data.Title);
+                var origTreeRoot = this.Context.GetPaths().First(p => p.Node != null && p.Node.Title == rootBeforeMoving.Data.Title);
                 var allOrigNodes = this.Context.GetPaths().GetChildren(origTreeRoot, 9999).ToList(); // level so high we get all
                 allOrigNodes.Add(origTreeRoot);
 
@@ -373,7 +383,7 @@ namespace Bom.Core.Actions
                 }
 
                 var dbRootOrigInMemory = TreeNodeUtils.CreateInMemoryModel(allOrigNodes).First();
-                bool areOrigNodesEqual = dbRootOrigInMemory.AreDescendantsAndIEqual(rootBeforeMoving, (node, simpleNode) => { return node.Data.Node.Title == simpleNode.Data.Title; });
+                bool areOrigNodesEqual = dbRootOrigInMemory.AreDescendantsAndIEqual(rootBeforeMoving, (node, simpleNode) => { return node.Data.Node?.Title == simpleNode.Data.Title; });
                 if (!areOrigNodesEqual)
                 {
                     throw new Exception("Original tree nodes do not match");
@@ -382,10 +392,10 @@ namespace Bom.Core.Actions
             return movedPath;
         }
 
-        private Path MoveNodePath(string moveTitle, string newParentTitle, bool moveChildrenToo)
+        private Path MoveNodePath(string moveTitle, string? newParentTitle, bool moveChildrenToo)
         {
-            var moveNode = Context.GetPaths().First(x => x.Node.Title == moveTitle);
-            var newParentNode = Context.GetPaths().FirstOrDefault(x => x.Node.Title == newParentTitle);
+            var moveNode = Context.GetPaths().First(x => x.Node != null && x.Node.Title == moveTitle);
+            var newParentNode = Context.GetPaths().FirstOrDefault(x => x.Node != null && x.Node.Title == newParentTitle);
             var prov = new PathNodeProvider(Context);
             var movedPath = prov.MovePathAndReload(moveNode.PathId, newParentNode == null ? 0 : newParentNode.PathId, moveChildrenToo);
             //this.Context.SaveChanges(); not necessary.. is saved because of stored procedure!
@@ -409,6 +419,10 @@ namespace Bom.Core.Actions
                 }
                 else
                 {
+                    if(inMemoryMoveNode.Parent == null)
+                    {
+                        throw new Exception($"{nameof(inMemoryMoveNode)} parent is null!" );
+                    }
                     inMemoryMoveNode.Parent.RemoveChild(inMemoryMoveNode);
                 }
             }

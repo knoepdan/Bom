@@ -11,8 +11,12 @@ namespace Bom.Core.Data
     public static class PathQueries
     {
 
-        public static IQueryable<Path> GetChildren(this IQueryable<Path> list, Path basePath, int? childDepth = null)
+        public static IQueryable<Path> GetChildren(this IQueryable<Path>? list, Path basePath, int? childDepth = null)
         {
+            if (list == null)
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
             list = list.Where(x => x.NodePathString.StartsWith(basePath.NodePathString) && x.Level > basePath.Level);
             if (childDepth.HasValue)
             {
@@ -26,6 +30,10 @@ namespace Bom.Core.Data
 
         public static IQueryable<Path> GetSiblings(this IQueryable<Path> list, Path basePath)
         {
+            if (list == null)
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
             if (basePath.IsRoot())
             {
                 // is root
@@ -44,8 +52,12 @@ namespace Bom.Core.Data
             return list;
         }
 
-        public static Path GetDirectParent(this IQueryable<Path> list, Path basePath)
+        public static Path? GetDirectParent(this IQueryable<Path>? list, Path basePath)
         {
+            if (list == null)
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
             if (basePath.IsRoot())
             {
                 // root
@@ -58,8 +70,12 @@ namespace Bom.Core.Data
             return parent;
         }
 
-        public static IQueryable<Path> GetParents(this IQueryable<Path> list, Path basePath, int? stepsToGoUp = null, bool orderByDepth = true)
+        public static IQueryable<Path> GetParents(this IQueryable<Path>? list, Path basePath, int? stepsToGoUp = null, bool orderByDepth = true)
         {
+            if (list == null)
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
             if (basePath.IsRoot())
             {
                 // root
@@ -77,8 +93,13 @@ namespace Bom.Core.Data
             return list;
         }
 
-        public static IQueryable<Path> GetRootElements(this IQueryable<Path> list)
+        public static IQueryable<Path> GetRootElements(this IQueryable<Path>? list)
         {
+            if(list == null)
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
+
             var rootElements = list.Where(x => x.Level == 1);
             return rootElements;
         }

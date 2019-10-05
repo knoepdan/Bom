@@ -93,6 +93,10 @@ namespace Ch.Knomes.Structure
                 Assert.True(node.Children.Count == 0); // no children as they have not been moved (but were moved to parent)
                 foreach (var formerChild in formerChildren)
                 {
+                    if(formerParent == null)
+                    {
+                        throw new Exception($"Former parent may not be null! ({formerChild})");
+                    }
                     Assert.Contains(formerParent.Children, c => c == formerChild);
                 }
                 return;

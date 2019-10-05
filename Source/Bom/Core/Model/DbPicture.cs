@@ -42,10 +42,10 @@ namespace Bom.Core.Model
         public int DbPictureId { get; private set; }
 
         [StringLength(50)]
-        public string PictureUid { get; set; }
+        public string PictureUid { get; set; } = "";
 
         [StringLength(255)]
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
 
         /// <summary>
         /// DateTime when Picture was taken (UTC)
@@ -61,7 +61,7 @@ namespace Bom.Core.Model
         /// </summary>
         /// <remarks>Additional to Longitude/Latitude (for example name of the city, or nationalpark xxx), could be used for grouping etc.</remarks>
         [StringLength(255)]
-        public string Place { get; set; }
+        public string Place { get; set; } = "";
 
         public int Height { get; set; }
 
@@ -86,7 +86,7 @@ namespace Bom.Core.Model
         /// Actual Blob 
         /// </summary>
         [Required]
-        public virtual BlobData BlobData { get; set; }
+        public virtual BlobData? BlobData { get; set; }
 
 
         public override string ToString()

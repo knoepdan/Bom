@@ -11,6 +11,6 @@ namespace Bom.Web.Lib.Infrastructure.ErrorHandling
         public int ErrorCode { get; set; } = (int)Core.Error.ErrorCode.UnexpectedError;
         public string Message { get; set; } = "Error has occured";
 
-        public string UserMessage { get; set; }
+        public string UserMessage { get; set; } = "";
     }
 }

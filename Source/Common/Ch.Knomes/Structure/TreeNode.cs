@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Ch.Knomes.Structure
 {
-    public class TreeNode<T>
+    public class TreeNode<T> where T: notnull
     {
         // https://stackoverflow.com/questions/66893/tree-data-structure-in-c-sharp
 
@@ -19,7 +19,7 @@ namespace Ch.Knomes.Structure
         }
 
         public T Data { get; set; }
-        public TreeNode<T> Parent { get; private set; }
+        public TreeNode<T>? Parent { get; private set; }
 
         private List<TreeNode<T>> _children = new List<TreeNode<T>>();
         public IReadOnlyList<TreeNode<T>> Children => this._children;
@@ -92,6 +92,10 @@ namespace Ch.Knomes.Structure
                 var currentChildren = this._children.ToList();
                 foreach (var child in currentChildren)
                 {
+                    if(this.Parent == null)
+                    {
+                        throw new InvalidOperationException("Parent must be set for children"); // cannot happen
+                    }
                     child.MoveToNewParent(this.Parent, true);
                 }
             }
@@ -194,7 +198,7 @@ namespace Ch.Knomes.Structure
         /// <summary>
         /// Compares Data of tree node (beginning with this node and going down to all descendants) on equality using either passed compareMethod or Equals method
         /// </summary>
-        public bool AreDescendantsAndIEqual<TX>(TreeNode<TX> compareNode, Func<TreeNode<T>, TreeNode<TX>, bool> compareMethod = null)
+        public bool AreDescendantsAndIEqual<TX>(TreeNode<TX> compareNode, Func<TreeNode<T>, TreeNode<TX>, bool>? compareMethod = null) where TX : notnull
         {
             if (compareNode == null)
             {
@@ -202,7 +206,7 @@ namespace Ch.Knomes.Structure
             }
 
             if (((compareMethod != null && compareMethod(this, compareNode)) ||
-                (compareMethod == null && this.Data.Equals(compareNode.Data))) && this.Children.Count == compareNode.Children.Count)
+                (compareMethod == null && Data != null && Data.Equals(compareNode.Data))) && this.Children.Count == compareNode.Children.Count)
             {
                 foreach (var child in this.Children)
                 {
@@ -233,7 +237,7 @@ namespace Ch.Knomes.Structure
 
         public string VisualString => VisualStringRepresentation(null);
 
-        public string VisualStringRepresentation(Func<TreeNode<T>, string> getNodeTitleFunc = null)
+        public string VisualStringRepresentation(Func<TreeNode<T>, string>? getNodeTitleFunc = null)
         {
             if (getNodeTitleFunc == null)
             {
@@ -291,7 +295,7 @@ namespace Ch.Knomes.Structure
 
         private static string GetNodeDefaultTitle(TreeNode<T> node)
         {
-            var nodeString = node.Data.ToString();
+            var nodeString = node.Data?.ToString();
             if (node.Data is ITreeNodeTitle)
             {
                 nodeString = ((ITreeNodeTitle)node.Data).GetTitleString();

@@ -14,10 +14,10 @@ namespace Bom.Core.Model
 
         [Required]
         [StringLength(255)]
-        public string Key { get; set; }
+        public string? Key { get; set; } 
 
         [Required]
         [StringLength(255)]
-        public string Value { get; set; }
+        public string? Value { get; set; }
     }
 }

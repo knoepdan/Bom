@@ -6,7 +6,7 @@ namespace Bom.Core.Error
 {
     public class BomException : Exception
     {
-        public BomException(ErrorCode errorCode, string message = "", Exception innerException = null, string userMessage = "") : base(message, innerException)
+        public BomException(ErrorCode errorCode, string message = "", Exception? innerException = null, string userMessage = "") : base(message, innerException)
         {
             ErrorCode = errorCode;
             UserMessage = userMessage;

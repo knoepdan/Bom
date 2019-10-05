@@ -155,12 +155,12 @@ namespace Bom.Core.Actions
             }
             foreach (var dbRoot in dbRoots)
             {
-                var inMemoryRoot = memRoots.FirstOrDefault(x => x.Data.Title == dbRoot.Data.Node.Title);
+                var inMemoryRoot = memRoots.FirstOrDefault(x => x.Data.Title == dbRoot.Data.Node?.Title);
                 if (inMemoryRoot == null)
                 {
-                    throw new Exception("Could not find in memory root with title: " + dbRoot.Data.Node.Title);
+                    throw new Exception("Could not find in memory root with title: " + dbRoot.Data.Node?.Title);
                 }
-                bool areOrigNodesEqual = inMemoryRoot.AreDescendantsAndIEqual(dbRoot, (node, simpleNode) => { return node.Data.Title == simpleNode.Data.Node.Title; });
+                bool areOrigNodesEqual = inMemoryRoot.AreDescendantsAndIEqual(dbRoot, (node, simpleNode) => { return node.Data.Title == simpleNode.Data.Node?.Title; });
                 if (!areOrigNodesEqual)
                 {
                     throw new Exception($"Trees are not equal (Root: {inMemoryRoot.Data.Title})");
@@ -229,7 +229,7 @@ namespace Bom.Core.Actions
 
         private void DeleteNodePath(TestDeleteNodeArgs args)
         {
-            var deleteNode = Context.GetPaths().First(x => x.Node.Title == args.ToDeleteNode.Data.Title);
+            var deleteNode = Context.GetPaths().First(x => x.Node != null && x.Node.Title == args.ToDeleteNode.Data.Title);
             var prov = new PathNodeProvider(Context);
             prov.DeletePath(deleteNode, args.AlsoDeleteNode, args.DeleteChildrenToo);
             //this.Context.SaveChanges(); not necessary.. is saved because of stored procedure!
@@ -239,6 +239,10 @@ namespace Bom.Core.Actions
             var inMemoryDeleteNode = args.ToDeleteNode;
             if (args.DeleteChildrenToo)
             {
+                if(inMemoryDeleteNode.Parent == null)
+                {
+                    throw new Exception($"{nameof(inMemoryDeleteNode)} does not have a parent!");
+                }
                 inMemoryDeleteNode.Parent.RemoveChild(inMemoryDeleteNode);
             }
             else

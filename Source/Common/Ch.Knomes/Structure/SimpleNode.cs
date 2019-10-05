@@ -20,10 +20,10 @@ namespace Ch.Knomes.Structure
             return "" + this.Title;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             var compareNode = obj as SimpleNode;
-            if(compareNode != null )
+            if(compareNode != null)
             {
                 return (this.Title == compareNode.Title);
             }

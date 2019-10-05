@@ -38,7 +38,7 @@ namespace Bom.Web.Areas.Testing.Controllers
         }
 
         [HttpPost("clearAndFillDatabase")]
-        public IActionResult ClearAndFillDatabase(string typeOfData = null)
+        public IActionResult ClearAndFillDatabase(string? typeOfData = null)
         {
             TreeNode<SimpleNode> rootNode;
             typeOfData = typeOfData?.ToLowerInvariant();

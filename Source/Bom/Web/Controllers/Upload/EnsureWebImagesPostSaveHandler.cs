@@ -19,7 +19,8 @@ namespace Bom.Web.Controllers.Upload
 
         public string TreatUploadAfterSaveHandler(string fullFilePath, HttpRequest request, bool isImage)
         {
-            string folderPath = Path.GetDirectoryName(fullFilePath);
+            var dirName = Path.GetDirectoryName(fullFilePath);
+            string folderPath = dirName != null ? dirName : "";
             //string fileName = Ch.Knomes.Drawing.PictureMetadata.ResizeImage(fullFilePath, folderPath, ImageMaxWith, ImageMaxHeight, KeepMetadata); // converts to web-image (example: tiff -> jpeg, and slightly adapts ending in some cases)
 
             Utils.Dev.Todo("Keep metadata is not yet supported", Utils.Dev.Urgency.Middle);

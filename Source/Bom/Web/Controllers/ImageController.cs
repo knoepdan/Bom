@@ -57,7 +57,7 @@ namespace Bom.Web.Controllers
             //{
             //    return new HttpNotFoundResult(""); // Response.StatusCode = 404;
             //}
-            ImageCacheDto imageBlob = GetFromCache(uid, size);
+            ImageCacheDto? imageBlob = GetFromCache(uid, size);
             if (imageBlob == null)
             {
                 DbPicture pic = this._context.GetDbPictures().SingleOrDefault(x => x.PictureUid == uid);
@@ -98,6 +98,10 @@ namespace Bom.Web.Controllers
             var origSize = new Size(dbPic.Width, dbPic.Height);
             var targetSize = GeometryUtility.ShrinkToFit(origSize, maxSize);
             var imgFormat = PictureUtility.GetImageFormatFromName(dbPic.Name, FallBackFormat);
+            if(dbPic.BlobData == null || dbPic.BlobData.Data == null)
+            {
+                return new byte[0];
+            }
             using (var origImage = new System.IO.MemoryStream(dbPic.BlobData.Data)){
                 using (var resizedImage = PictureUtility.ResizeImage(origImage, targetSize, imgFormat))
                 {
@@ -109,7 +113,7 @@ namespace Bom.Web.Controllers
 
         #region cache (not finished... TODO)
 
-        private ImageCacheDto GetFromCache(string picId, Size targetSize)
+        private ImageCacheDto? GetFromCache(string? picId, Size targetSize)
         {
             Utils.Dev.Todo("Implement cache for pics");
             // https://www.c-sharpcorner.com/article/asp-net-core-2-0-caching/ 
@@ -142,13 +146,16 @@ namespace Bom.Web.Controllers
             {
                 ImageName = pic.Name;
                 Uid = pic.PictureUid;
-                ImageBytes = pic.BlobData.Data;
+                if (pic.BlobData != null && pic.BlobData.Data != null)
+                {
+                    ImageBytes = pic.BlobData.Data;
+                }
             }
 
-            public string ImageName { get; set; }
-            public byte[] ImageBytes { get; set; }
+            public string ImageName { get; set; } = "";
+            public byte[] ImageBytes { get; set; } = new byte[0];
 
-            public string Uid { get; set; }
+            public string Uid { get; set; } = "";
         }
 
         public static void SetDefaultImageHeaders(HttpResponse response)

@@ -80,15 +80,15 @@ namespace Bom.Web.Controllers
         private static bool DefaultCanClearUploadsUponSessionEnd = true;
 
 
-        private static IUploadChecker DefaultUploadChecker = null;
+        private static IUploadChecker? DefaultUploadChecker = null;
 
-        private static IPostSaveHandler DefaultUploadPostSaveTreatment = null;
+        private static IPostSaveHandler? DefaultUploadPostSaveTreatment = null;
 
         /// <summary>
         /// Only to be called upon application start (global.asax)
         /// </summary>
         /// <remarks>if not called default values apply</remarks>
-        public static void Configure(string tmpUploadPath, IUploadChecker uploadChecker = null, IPostSaveHandler postSaveHandler = null, bool canClearUploadsUponSessionEnd = true)
+        public static void Configure(string tmpUploadPath, IUploadChecker? uploadChecker = null, IPostSaveHandler? postSaveHandler = null, bool canClearUploadsUponSessionEnd = true)
         {
             // upload folder
             if (!string.IsNullOrWhiteSpace(tmpUploadPath))
@@ -131,7 +131,7 @@ namespace Bom.Web.Controllers
         ///  Check if upload is allowed or not
         /// </summary>
         /// <remarks>if not overridden will use Default</remarks>
-        public virtual IUploadChecker UploadChecker
+        public virtual IUploadChecker? UploadChecker
         {
             get { return DefaultUploadChecker; }
         }
@@ -140,7 +140,7 @@ namespace Bom.Web.Controllers
         ///  post upload treatment (example: resize images etc.)
         /// </summary>
         /// <remarks>if not overridden will use Default</remarks>
-        public virtual IPostSaveHandler UploadPostSaveTreatment
+        public virtual IPostSaveHandler? UploadPostSaveTreatment
         {
             get { return DefaultUploadPostSaveTreatment; }
         }
@@ -228,7 +228,8 @@ namespace Bom.Web.Controllers
                         // a) ensure File is still in same folder
                         if (Path.GetDirectoryName(fullFilePath) != Path.GetDirectoryName(newFullfilePath))
                         {
-                            var destinationPath = Path.Combine(Path.GetDirectoryName(fullFilePath), Path.GetFileName(newFullfilePath));
+                            var dirName = Path.GetDirectoryName(fullFilePath);
+                            var destinationPath = Path.Combine(dirName != null ? dirName : "", Path.GetFileName(newFullfilePath));
                             System.IO.File.Copy(newFullfilePath, destinationPath);
                             System.IO.File.Delete(newFullfilePath);
                             newFullfilePath = destinationPath;

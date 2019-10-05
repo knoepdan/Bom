@@ -14,7 +14,7 @@ namespace Bom.Core.Model
         public int BlobDataId { get; private set; }
 
         [Required]
-        public byte[] Data { get; set; }
+        public byte[] Data { get; set; } = new byte[0];
 
     }
 }

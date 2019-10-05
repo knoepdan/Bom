@@ -18,11 +18,11 @@ namespace Bom.Core.Model
 
         public short Level { get; protected set; }
 
-        public string NodePathString { get; protected set; }
+        public string NodePathString { get; protected set; } = "";
 
         public int NodeId { get; internal set; }
 
-        public virtual Node Node { get; internal set; }
+        public virtual Node? Node { get; internal set; }
 
         
         /// -> outcommented because not working in .net core 3.0 

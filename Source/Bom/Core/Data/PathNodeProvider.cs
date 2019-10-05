@@ -23,7 +23,7 @@ namespace Bom.Core.Data
             this.ModelContext = context;
         }
 
-        public Path AddNodeWithPath(Path parentPath, string nodeTitle)
+        public Path AddNodeWithPath(Path? parentPath, string nodeTitle)
         {
             // related question
             // https://stackoverflow.com/questions/58207182/how-to-call-a-stored-procedure-in-ef-core-3-0-via-fromsqlraw

@@ -84,22 +84,30 @@ namespace Bom.Core.Actions
         private Path TestMoveNodePath(TestMoveNodeArgs args)
         {
             // remember some state before
-            TreeNode<SimpleNode> oldParent = args.ToMoveNode.Parent;
+            TreeNode<SimpleNode>? oldParent = args.ToMoveNode.Parent;
             var siblings = args.ToMoveNode.Siblings;
 
             // do actual move
-            var movedPath = MoveNodePath(args.ToMoveNode.Data.Title, args.NewParentNode.Data.Title, args.MoveChildrenToo);
+            var movedPath = MoveNodePath(args.ToMoveNode.Data.Title, args.NewParentNode?.Data?.Title, args.MoveChildrenToo);
 
             // ## test if parent really is the new parent
             var dbParentPath = this.Context.GetPaths().GetDirectParent(movedPath);
-            if (dbParentPath.Node.Title != args.NewParentNode.Data.Title)
+            if (dbParentPath == null || dbParentPath.Node == null)
             {
-                throw new Exception($"Expected parentPath is not correct. Expected title: {args.NewParentNode.Data.Title}. Actual: {dbParentPath.Node.Title} / {dbParentPath.NodePathString}");
+                throw new Exception($"{nameof(dbParentPath)} is null or its node is null! ({dbParentPath == null})");
+            }
+            if (dbParentPath.Node?.Title != args.NewParentNode?.Data?.Title)
+            {
+                throw new Exception($"Expected parentPath is not correct. Expected title: {args.NewParentNode?.Data?.Title}. Actual: {dbParentPath?.Node?.Title} / {dbParentPath?.NodePathString}");
             }
 
             // ## Test children of parent (must be the existing ones plus the moved one
             {
-                var expected = new List<TreeNode<SimpleNode>>(args.NewParentNode.Children);
+                var expected = new List<TreeNode<SimpleNode>>();
+                if (args.NewParentNode != null)
+                {
+                    expected.AddRange(args.NewParentNode.Children);
+                }
                 var newChildren = this.Context.GetPaths().GetChildren(dbParentPath, 1).ToList();
                 CheckIfAreTheSameAndThrowIfNot(expected, newChildren, "checking children of parent");
             }
@@ -113,7 +121,7 @@ namespace Bom.Core.Actions
                 }
                 else if (newMovedChildren.Count > 0)
                 {
-                    throw new Exception($"Moved path should not have any children as moving children was set to {args.MoveChildrenToo}, nof children {newMovedChildren.Count} ({string.Join(", ", newMovedChildren.Select(x => x.Node.Title))}");
+                    throw new Exception($"Moved path should not have any children as moving children was set to {args.MoveChildrenToo}, nof children {newMovedChildren.Count} ({string.Join(", ", newMovedChildren.Select(x => x.Node?.Title))}");
                 }
 
             }
@@ -121,18 +129,18 @@ namespace Bom.Core.Actions
             {
                 if (oldParent != null)
                 {
-                    var dbOldParentPath = this.Context.GetPaths().First(p => p.Node.Title == oldParent.Data.Title);
+                    var dbOldParentPath = this.Context.GetPaths().First(p => p.Node != null && p.Node.Title == oldParent.Data.Title);
                     var currentDescendants = this.Context.GetPaths().GetChildren(dbOldParentPath, 9999).ToList(); // level so hight we get all children and subchildren .. we just want to check all children here
                     if (currentDescendants.Count != oldParent.Descendants.Count)
                     {
 #if DEBUG
-                        var dbRoot = this.Context.GetPaths().First(p => p.Node.Title == "1a");
+                        var dbRoot = this.Context.GetPaths().First(p => p.Node != null && p.Node.Title == "1a");
                         var dbAllNodes = this.Context.GetPaths().GetChildren(dbRoot, 9999).ToList();
                         dbAllNodes.Add(dbRoot);
                         var inMemoryModel = TreeNodeUtils.CreateInMemoryModel(dbAllNodes);
 #endif
                         // must be 2 less (the one that was moved and parent node itself may not be counted)
-                        throw new Exception($"The number of descendants does not mach the expected number. Expected: {(args.ToMoveNode.Parent.Descendants.Count)}, actual: {currentDescendants.Count }");
+                        throw new Exception($"The number of descendants does not mach the expected number. Expected: {(args.ToMoveNode?.Parent?.Descendants.Count)}, actual: {currentDescendants.Count }");
                     }
 
                     // check descendants
@@ -140,9 +148,9 @@ namespace Bom.Core.Actions
 
 
                     // check direct children
-                    foreach(var directChild in oldParent.Children)
+                    foreach (var directChild in oldParent.Children)
                     {
-                        if(!currentDescendants.Any(d => d.Node.Title == directChild.Data.Title && d.Level == directChild.Level))
+                        if (!currentDescendants.Any(d => d.Node != null && d.Node.Title == directChild.Data.Title && d.Level == directChild.Level))
                         {
                             throw new Exception($"Direct children not ok. '{directChild.Data.Title}' with level {directChild.Level} not found in db data");
                         }
@@ -155,7 +163,7 @@ namespace Bom.Core.Actions
         private void CheckIfAreTheSameAndThrowIfNot(IEnumerable<TreeNode<SimpleNode>> expected, IEnumerable<Path> actual, string additionalMsgInCaseOfError = "")
         {
             var expectedTitles = expected.Select(x => x.Data.Title).ToList();
-            var actualTitles = actual.Select(x => x.Node.Title).ToList();
+            var actualTitles = actual.Where(x => x.Node != null).Select(x => x.Node?.Title != null ? x.Node.Title : "").ToList();
             ComparisonUtils.ThrowIfDuplicates(expectedTitles);
             ComparisonUtils.ThrowIfDuplicates(actualTitles);
             bool isResultAsExpected = ComparisonUtils.HasSameContent(actualTitles, expectedTitles); // possible improvment.. replace with simple foreach and also check level
@@ -165,10 +173,10 @@ namespace Bom.Core.Actions
             }
         }
 
-        private Path MoveNodePath(string moveTitle, string newParentTitle, bool moveChildrenToo)
+        private Path MoveNodePath(string moveTitle, string? newParentTitle, bool moveChildrenToo)
         {
-            var moveNode = Context.GetPaths().First(x => x.Node.Title == moveTitle);
-            var newParentNode = Context.GetPaths().First(x => x.Node.Title == newParentTitle);
+            var moveNode = Context.GetPaths().First(x => x.Node != null && x.Node.Title == moveTitle);
+            var newParentNode = Context.GetPaths().First(x => x.Node != null && x.Node.Title == newParentTitle);
             var prov = new PathNodeProvider(Context);
             var movedPath = prov.MovePathAndReload(moveNode.PathId, newParentNode.PathId, moveChildrenToo);
             //this.Context.SaveChanges(); not necessary.. is saved because of stored procedure!

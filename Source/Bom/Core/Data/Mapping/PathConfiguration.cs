@@ -32,7 +32,7 @@ namespace Bom.Core.Data.ModelMapping
 
     internal static class PathBuilderExtension
     {
-        public static void AddNodeForeignKey(this EntityTypeBuilder<Path> builder, Expression<Func<Path, Node>> navigationExpression, string foreignKeyProp)
+        public static void AddNodeForeignKey(this EntityTypeBuilder<Path> builder, Expression<Func<Path, Node?>> navigationExpression, string foreignKeyProp)
         {
             builder.HasOne(navigationExpression).WithOne().HasForeignKey(typeof(Path), foreignKeyProp);
         }

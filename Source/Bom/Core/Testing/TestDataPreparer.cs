@@ -46,7 +46,7 @@ namespace Bom.Core.Testing
             return InsertNodeAndAllChildren(rootNode, null);
         }
 
-        private Path InsertNodeAndAllChildren(TreeNode<SimpleNode> rootNode, Path dbParentPath = null)
+        private Path InsertNodeAndAllChildren(TreeNode<SimpleNode> rootNode, Path? dbParentPath = null)
         {
             var rootPath = AddNode(rootNode.Data.Title, dbParentPath);
             foreach (var child in rootNode.Children)
@@ -56,7 +56,7 @@ namespace Bom.Core.Testing
             return rootPath;
         }
 
-        private Path AddNode(string nodeTitle, Path parentPath, bool saveOnAdd = true)
+        private Path AddNode(string nodeTitle, Path? parentPath, bool saveOnAdd = true)
         {
             var path = this._pathNodeProvider.AddNodeWithPath(parentPath, nodeTitle);
             if (saveOnAdd)

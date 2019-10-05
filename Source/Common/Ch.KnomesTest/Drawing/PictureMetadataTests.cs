@@ -26,7 +26,7 @@ namespace Ch.Knomes.Drawing
             Assert.NotNull(latitude);
             Assert.True(longitude != latitude);
             Assert.NotNull(date);
-            Assert.True(date.Value > new DateTime(1990, 2, 4));
+            Assert.True(date.HasValue && date.Value > new DateTime(1990, 2, 4));
         }
     }
 }

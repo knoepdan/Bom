@@ -9,12 +9,12 @@ namespace Bom.Core.Model
     {
         public int NodeId { get; private set; }
 
-     //   [StringLength(255)]
-        public string Title { get; set; }
+        //   [StringLength(255)]
+        public string Title { get; set; } = "";
 
         public int? MainPathId { get; set; }
 
-        public virtual Path MainPath { get; set; }
+        public virtual Path? MainPath { get; set; }
 
 
         public override string ToString()
