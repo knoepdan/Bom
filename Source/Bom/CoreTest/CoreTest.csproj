@@ -48,10 +48,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Queries\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Common\Ch.Knomes\Ch.Knomes.csproj" />
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Utils\Utils.csproj" />

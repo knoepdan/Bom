@@ -27,7 +27,7 @@ namespace Bom.Web.Areas.Main.Controllers
         [HttpGet("root")]
         public async Task<ActionResult<IEnumerable<NodeVm>>> GetRootNodes()
         {
-            var result = await _context.GetPaths().GetRootElements()
+            var result = await _context.GetPaths().AllRootPaths()
                 .Include(x => x.Node)
                 .Select(x => new NodeVm(x))
                 .ToListAsync();
@@ -53,12 +53,12 @@ namespace Bom.Web.Areas.Main.Controllers
             var searchResult = new List<NodeVm>();
             if (filter.ParentDepth > 0)
             {
-                var parents = paths.GetParents(basePath, filter.ParentDepth).Include(x => x.Node);
+                var parents = paths.Ancestors(basePath, filter.ParentDepth).Include(x => x.Node);
                 searchResult.AddRange(parents.Select(x => new NodeVm(x)));
             }
             if (filter.ChildDepth > 0)
             {
-                var children = paths.GetChildren(basePath, filter.ChildDepth).Include(x => x.Node);
+                var children = paths.Descendants(basePath, filter.ChildDepth).Include(x => x.Node);
                 searchResult.AddRange(children.Select(x => new NodeVm(x)));
             }
             return searchResult;

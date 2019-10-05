@@ -11,7 +11,7 @@ namespace Bom.Core.Data
     public static class PathQueries
     {
 
-        public static IQueryable<Path> GetChildren(this IQueryable<Path>? list, Path basePath, int? childDepth = null)
+        public static IQueryable<Path> Descendants(this IQueryable<Path>? list, Path basePath, int? childDepth = null)
         {
             if (list == null)
             {
@@ -34,7 +34,7 @@ namespace Bom.Core.Data
             return list;
         }
 
-        public static IQueryable<Path> GetSiblings(this IQueryable<Path> list, Path basePath)
+        public static IQueryable<Path> Siblings(this IQueryable<Path>? list, Path basePath)
         {
             if (list == null)
             {
@@ -48,19 +48,19 @@ namespace Bom.Core.Data
                     throw new ArgumentException($"path has no PathValues but an unexpected depth {basePath.Level}"); // data inconsistency (should not happen.. maybe solve on a different level)
                 }
 
-                list = list.GetRootElements();// Where(x => string.IsNullOrEmpty(x.ParentPath) && x.Depth == 0); // all roots
+                list = list.AllRootPaths();// Where(x => string.IsNullOrEmpty(x.ParentPath) && x.Depth == 0); // all roots
             }
             else
             {
                 var pathOfDirectParent = basePath.GetParentPath(1);
 #pragma warning disable CA1307 // Specify StringComparison
-                list = list.Where(x => x.NodePathString.StartsWith(pathOfDirectParent) && x.Level == basePath.Level);
+                list = list.Where(x => x.NodePathString.StartsWith(pathOfDirectParent) && x.Level == basePath.Level && x.PathId != basePath.PathId);
 #pragma warning restore CA1307 // Specify StringComparison
             }
             return list;
         }
 
-        public static Path? GetDirectParent(this IQueryable<Path>? list, Path basePath)
+        public static Path? DirectParent(this IQueryable<Path>? list, Path basePath)
         {
             if (list == null)
             {
@@ -80,7 +80,7 @@ namespace Bom.Core.Data
             return parent;
         }
 
-        public static IQueryable<Path> GetParents(this IQueryable<Path>? list, Path basePath, int? stepsToGoUp = null, bool orderByDepth = true)
+        public static IQueryable<Path> Ancestors(this IQueryable<Path>? list, Path basePath, int? stepsToGoUp = null, bool orderByDepth = true)
         {
             if (list == null)
             {
@@ -103,7 +103,7 @@ namespace Bom.Core.Data
             return list;
         }
 
-        public static IQueryable<Path> GetRootElements(this IQueryable<Path>? list)
+        public static IQueryable<Path> AllRootPaths(this IQueryable<Path>? list)
         {
             if(list == null)
             {

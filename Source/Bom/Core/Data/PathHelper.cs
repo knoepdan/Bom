@@ -52,7 +52,7 @@ namespace Bom.Core.Data
             var listOfParentPaths = new List<string>();
 
             int steps = stepsToGoUp.HasValue ? Math.Min(stepsToGoUp.Value, tmp.Length) : tmp.Length;
-            for(int i = 0; i < tmp.Length; i++)
+            for(int i = 1; i <= steps; i++)
             {
                 var parentPath = GetParentPathFragments(path, i);
                 var parentPathString = CreatePathFromFragments(parentPath); // would be something like this: string.Join(Path.Separator, pathValues);

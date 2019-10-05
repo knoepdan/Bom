@@ -22,9 +22,11 @@ namespace Bom.Core.Model
 
         public int NodeId { get; internal set; }
 
-        public virtual Node? Node { get; internal set; }
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        public virtual Node Node { get; internal set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
-        
+
         /// -> outcommented because not working in .net core 3.0 
         //internal Microsoft.SqlServer.Types.SqlHierarchyId NodePath { get; set; }
 

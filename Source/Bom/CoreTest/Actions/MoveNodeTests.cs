@@ -353,7 +353,7 @@ namespace Bom.Core.Actions
             // compare with DB node (not possible to compare string representation as order of children is not guaranteed to be the same)
             var inMemoryRoot = newParentNode.Root;
             var dbRoot = this.Context.GetPaths().First(p => p.Node != null && p.Node.Title == inMemoryRoot.Data.Title);
-            var allNodes = this.Context.GetPaths().GetChildren(dbRoot, 9999).ToList(); // level so high we get all
+            var allNodes = this.Context.GetPaths().Descendants(dbRoot, 9999).ToList(); // level so high we get all
             allNodes.Insert(0, dbRoot);
             var dbRootInMemory = TreeNodeUtils.CreateInMemoryModel(allNodes).First();
             bool areEqual = dbRootInMemory.AreDescendantsAndIEqual(inMemoryRoot, (node, simpleNode) => { return node.Data.Node?.Title == simpleNode.Data.Title; });
@@ -367,7 +367,7 @@ namespace Bom.Core.Actions
             {
                 // we need to check the tree also
                 var origTreeRoot = this.Context.GetPaths().First(p => p.Node != null && p.Node.Title == rootBeforeMoving.Data.Title);
-                var allOrigNodes = this.Context.GetPaths().GetChildren(origTreeRoot, 9999).ToList(); // level so high we get all
+                var allOrigNodes = this.Context.GetPaths().Descendants(origTreeRoot, 9999).ToList(); // level so high we get all
                 allOrigNodes.Add(origTreeRoot);
 
                 // compare count
