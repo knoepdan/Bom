@@ -165,6 +165,9 @@ namespace Ch.Knomes.Struct
             }
         }
 
+        /// <summary>
+        /// Ancestors/Parents ordered by proximity to node (e.g. direct parent is first in list)
+        /// </summary>
         public List<TreeNode<T>> Ancestors
         {
             get

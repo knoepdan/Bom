@@ -93,7 +93,7 @@ namespace Ch.Knomes.Struct
                 Assert.True(node.Children.Count == 0); // no children as they have not been moved (but were moved to parent)
                 foreach (var formerChild in formerChildren)
                 {
-                    if(formerParent == null)
+                    if (formerParent == null)
                     {
                         throw new Exception($"Former parent may not be null! ({formerChild})");
                     }
@@ -105,5 +105,27 @@ namespace Ch.Knomes.Struct
             // if code reaches here, we have an error
             Assert.True(1 == 2); // trigger fail
         }
+
+        [Fact]
+        public void Ancestors_are_sorted_by_proximity_to_node()
+        {
+            var rootNode = TestDataFactory.CreateSampleAnimalNodes();
+            var leaveNode = rootNode.Descendants.First(x => x.Children.Count == 0);
+            var ancestors = leaveNode.Ancestors;
+            Assert.True(ancestors.Count > 3 && ancestors[0] == leaveNode.Parent && ancestors[ancestors.Count - 1] == rootNode); // basic tests and making sure we have ancestors
+
+            var parent = leaveNode.Parent;
+            int ancestorsIndex = 0;
+            while(parent != null)
+            {
+                var ancestor = ancestors[ancestorsIndex];
+                Assert.True(parent == ancestor);
+
+                // prepare next loop
+                parent = parent.Parent;
+                ancestorsIndex++;
+            }
+        }
     }
 }
+

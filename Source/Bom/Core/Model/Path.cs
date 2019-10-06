@@ -20,10 +20,10 @@ namespace Bom.Core.Model
 
         public string NodePathString { get; protected set; } = "";
 
-        public int NodeId { get; internal set; }
+        public int NodeId { get; internal protected set; }
 
 #pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
-        public virtual Node Node { get; internal set; }
+        public virtual Node Node { get; internal protected set; }
 #pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
 

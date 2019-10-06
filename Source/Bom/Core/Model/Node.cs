@@ -7,7 +7,7 @@ namespace Bom.Core.Model
 {
     public class Node
     {
-        public int NodeId { get; private set; }
+        public int NodeId { get; protected set; }
 
         //   [StringLength(255)]
         public string Title { get; set; } = "";

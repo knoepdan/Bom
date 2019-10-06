@@ -9,8 +9,50 @@ namespace Bom.Core.TestUtils
     {
         public static bool HasSameContent<T>(IList<T> listA, IList<T> listB)
         {
+            if (listA == null)
+            {
+                throw new ArgumentNullException(nameof(listA));
+            }
+            if (listB == null)
+            {
+                throw new ArgumentNullException(nameof(listB));
+            }
             bool hasSameContent = listA.All(listB.Contains) && listA.Count == listB.Count;
             return hasSameContent;
+        }
+
+        public static bool HasSameContentInSameOrder<T>(IList<T> listA, IList<T> listB)
+        {
+            if (listA == null)
+            {
+                throw new ArgumentNullException(nameof(listA));
+            }
+            if (listB == null)
+            {
+                throw new ArgumentNullException(nameof(listB));
+            }
+            if (listA.Count != listB.Count)
+            {
+                return false;
+            }
+            for (int i = 0; i < listA.Count; i++)
+            {
+                var a = listA[i];
+                var b = listB[i];
+                if (a == null)
+                {
+                    if (b != null)
+                    {
+                        return false;
+                    }
+                    continue;
+                }
+                if (!a.Equals(b))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public static bool HasDuplicates<T>(IEnumerable<T> list)

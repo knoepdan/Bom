@@ -7,16 +7,22 @@ namespace Ch.Knomes.Struct
 {
     public sealed class SimpleNode : ITreeNodeTitle
     {
+        private static int idCounter = 0;
+
         public SimpleNode(string title)
         {
+            System.Threading.Interlocked.Increment(ref idCounter);
+            this.Id = idCounter;
             this.Title = title;
         }
+
+        public int Id { get; set; }
 
         public string Title { get; set; }
 
         public override string ToString()
         {
-            return "" + this.Title;
+            return $"{Id} '{Title}'";
         }
 
         public override bool Equals(object? obj)
