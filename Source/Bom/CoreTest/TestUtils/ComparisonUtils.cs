@@ -21,16 +21,18 @@ namespace Bom.Core.TestUtils
             return hasSameContent;
         }
 
-        public static bool HasSameContentInSameOrder<T>(IList<T> listA, IList<T> listB)
+        public static bool HasSameContentInSameOrder<T>(IEnumerable<T> colA, IEnumerable<T> colB)
         {
-            if (listA == null)
+            if (colA == null)
             {
-                throw new ArgumentNullException(nameof(listA));
+                throw new ArgumentNullException(nameof(colA));
             }
-            if (listB == null)
+            if (colB == null)
             {
-                throw new ArgumentNullException(nameof(listB));
+                throw new ArgumentNullException(nameof(colB));
             }
+            var listA = colA.ToList();
+            var listB = colB.ToList();
             if (listA.Count != listB.Count)
             {
                 return false;

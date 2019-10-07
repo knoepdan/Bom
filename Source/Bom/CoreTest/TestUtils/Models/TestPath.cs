@@ -43,6 +43,20 @@ namespace Bom.Core.TestUtils.Models
         }
 
         public TreeNode<SimpleNode> MemNode { get; }
+
+        public void SetNodePath(string customNodePath, bool ensureStartEnd = true)
+        {
+            if(customNodePath == null)
+            {
+                customNodePath = "";
+            }
+            if (ensureStartEnd)
+            {
+                customNodePath = Path.Separator + customNodePath.Trim().Trim(Path.Separator) + Path.Separator;
+            }
+            this.NodePathString = customNodePath;
+            this.Level = (short)(NodePathString.Length - NodePathString.Replace(""+Path.Separator, "", StringComparison.InvariantCulture).Length -1);
+        }
     }
     public class TestNode : Node
     {

@@ -51,7 +51,7 @@ namespace Bom.Core.Data
             var tmp = path.AllRawNodeIds;
             var listOfParentPaths = new List<string>();
 
-            int steps = stepsToGoUp.HasValue ? Math.Min(stepsToGoUp.Value, tmp.Length) : tmp.Length;
+            int steps = stepsToGoUp.HasValue ? Math.Min(stepsToGoUp.Value, tmp.Length-1) : tmp.Length-1;
             for(int i = 1; i <= steps; i++)
             {
                 var parentPath = GetParentPathFragments(path, i);
