@@ -9,10 +9,16 @@ namespace Bom.Core.Data
 {
     public static class PathHelper
     {
+        static PathHelper()
+        {
+#if DEBUG
+            PerformInternalTests();
+#endif
+        }
 
         public static IEnumerable<string> GetParentPathFragments(this Path path, int stepsToGoUp)
         {
-            if(path == null)
+            if (path == null)
             {
                 throw new ArgumentNullException(nameof(path));
             }
@@ -30,7 +36,8 @@ namespace Bom.Core.Data
                 var nofSteps = tmp.Length - steps + 1;
                 var relevantPaths = tmp.Take(nofSteps);
                 return relevantPaths;
-            }else if(tmp.Length > 0)
+            }
+            else if (tmp.Length > 0)
             {
                 return tmp.Take(1); // return root as we cannot go any further
             }
@@ -40,7 +47,7 @@ namespace Bom.Core.Data
 
         public static IEnumerable<string> GetAllParentPaths(this Path path, int? stepsToGoUp)
         {
-            if(path == null)
+            if (path == null)
             {
                 throw new ArgumentNullException(nameof(path));
             }
@@ -51,8 +58,8 @@ namespace Bom.Core.Data
             var tmp = path.AllRawNodeIds;
             var listOfParentPaths = new List<string>();
 
-            int steps = stepsToGoUp.HasValue ? Math.Min(stepsToGoUp.Value, tmp.Length-1) : tmp.Length-1;
-            for(int i = 1; i <= steps; i++)
+            int steps = stepsToGoUp.HasValue ? Math.Min(stepsToGoUp.Value, tmp.Length - 1) : tmp.Length - 1;
+            for (int i = 1; i <= steps; i++)
             {
                 var parentPath = GetParentPathFragments(path, i);
                 var parentPathString = CreatePathFromFragments(parentPath); // would be something like this: string.Join(Path.Separator, pathValues);
@@ -72,7 +79,6 @@ namespace Bom.Core.Data
             var pathString = CreatePathFromFragments(pathValues); // would be something like this: string.Join(Path.Separator, pathValues);
             return pathString;
         }
-
 
         public static IEnumerable<long> GetNodeIdsFromPath(string pathString)
         {
@@ -124,16 +130,52 @@ namespace Bom.Core.Data
 
         public static bool IsRoot(this Path path)
         {
-            if(path == null)
+            if (path == null)
             {
                 throw new ArgumentNullException(nameof(path));
             }
-            if(path.Level <= 1)
+            if (path.Level <= 1)
             {
                 return true;
             }
             return false;
         }
+
+        #region tests for non public methods (basic as public methods are to be unit tested)
+
+
+        [System.Diagnostics.Conditional("DEBUG")]
+        private static void PerformInternalTests()
+        {
+            // some basic tests
+            var errorMessages = new List<string>();
+            
+            // 1. GetPathValues(string pathString)
+            var pathArray = GetPathValues("a/b/");
+            if(pathArray.Length != 2 || pathArray[0] != "a" || pathArray[1] != "b")
+            {
+                errorMessages.Add($"{nameof(GetPathValues)} does not return the expected result");
+            }
+
+            //  2. CreatePathFromFragments(IEnumerable<string> pathValues)
+            if (CreatePathFromFragments(new[] { "1", "b"}) != "/1/b/" || CreatePathFromFragments(new[] { "x" }) != "/x/")
+            {
+                errorMessages.Add($"{nameof(CreatePathFromFragments)} does not return the expected result");
+            }
+            //  3. GetNodeIdsFromPathValues(IEnumerable<string> pathValues)
+            var pathValues = GetNodeIdsFromPathValues(new[] { "23", "99" }).ToList();
+            if (pathValues.Count != 2 || pathValues[0] != 23 || pathValues[1] != 99)
+            {
+                errorMessages.Add($"{nameof(GetNodeIdsFromPathValues)} does not return the expected result");
+            }
+            //  string GetParentPathForChild(Path path) -> cannot be tested here
+            if(errorMessages.Count > 0)
+            {
+                throw new Exception($"Not all tests were successful: {string.Join(", ", errorMessages)}");
+            }
+        }
+        
+        #endregion
 
         #region not used
         //public static IEnumerable<long> GetParentNodeIds(this Path path, int? stepsToGoUp = null)

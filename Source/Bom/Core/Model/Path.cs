@@ -71,6 +71,38 @@ namespace Bom.Core.Model
             return node;
         }
 
+        #region basic tests
+
+        static Path()
+        {
+#if DEBUG
+            PerformInternalTests();
+#endif
+        }
+
+        [System.Diagnostics.Conditional("DEBUG")]
+        private static void PerformInternalTests()
+        {
+            var errorMessages = new List<string>();
+
+            // 1. GetPathValues(string pathString)
+            var path = new Path();
+            path.NodePathString = "/44/2/7/";
+            var childPath = PathHelper.GetParentPathForChild(path); // not possible to test in 
+            if(childPath != "/44/2/7/")
+            {
+                errorMessages.Add($"{nameof(PathHelper)}.{nameof(PathHelper.GetPathValues)} does not return expected results");
+            }
+
+            //  summary
+            if (errorMessages.Count > 0)
+            {
+                throw new Exception($"Not all tests were successful: {string.Join(", ", errorMessages)}");
+            }
+        }
+
+
+        #endregion
 
         #region outcommented stuff
 
