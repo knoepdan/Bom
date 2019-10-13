@@ -39,6 +39,49 @@ namespace Bom.Core.Data
             return createdPath;
         }
 
+
+        public Path AddPathToNodeAndGetNewPath(Node node, Path? parentPath, bool setAsMainPath = false)
+        {
+            int newPathId = AddPathToNode(node, parentPath, setAsMainPath);
+            var newPath = this.ModelContext.GetPaths().Single(x => x.PathId == newPathId);
+            return newPath;
+        }
+
+        public int AddPathToNode(Node node, Path? parentPath, bool setAsMainPath = false)
+        {
+            if (node == null)
+            {
+                throw new ArgumentNullException(nameof(node));
+            }
+
+            string parentPathString = "";
+            if (parentPath != null)
+            {
+                parentPathString = PathHelper.GetParentPathForChild(parentPath);
+                parentPathString = parentPathString.Trim('/');
+            }
+
+            // how to handle output params: https://stackoverflow.com/questions/45252959/entity-framework-core-using-stored-procedure-with-output-parameters
+            var nodeIdParam = new Microsoft.Data.SqlClient.SqlParameter("@p0", node.NodeId);
+            var parentPathStringParam = new Microsoft.Data.SqlClient.SqlParameter("@p1", parentPathString);
+            var setAsMainParam = new Microsoft.Data.SqlClient.SqlParameter("@p2", setAsMainPath);
+            var outPath = new Microsoft.Data.SqlClient.SqlParameter("@outPath", SqlDbType.Int);
+
+            this.ModelContext.ExecuteRawSql("EXEC AddPathProc @p0, @p1, @p2, @ParamOut2 OUT", nodeIdParam, parentPathStringParam, setAsMainParam, outPath);
+
+            var newPathId = (int)outPath.Value;
+            return newPathId;
+
+            //var outPath = new Microsoft.Data.SqlClient.SqlParameter("@outPath", SqlDbType.Int);
+            //var spParams = new object[] { node.NodeId, parentPathString, setAsMainPath };
+            //this.ModelContext.ExecuteRawSql("EXEC AddPathProc @p0, @p1, @p2", spParams);
+
+            // probably not working as we have an output param
+            //    var createdPath = ModelContext.Paths.FromSqlRaw("AddPathProc  {0}, {1}", node.NodeId, parentPathString, setAsMainPath).ToList().First(); // important: first toList() !!!
+            //  return createdPath;
+
+        }
+
         /// <summary>
         /// Moves node (attention.. if childNodes are not to be moved.. the children of the moved node will be moved one level up to the former parent of the moved node
         /// </summary>
@@ -68,7 +111,7 @@ namespace Bom.Core.Data
 
         public void DeletePath(Path pathToDelete, bool alsoDeleteNode, bool alsoDeleteSubTree = false)
         {
-            if(pathToDelete == null)
+            if (pathToDelete == null)
             {
                 throw new ArgumentNullException(nameof(pathToDelete));
             }
@@ -79,12 +122,9 @@ namespace Bom.Core.Data
         {
             object[] spParams;
 
-            //var p0 = new System.Data.SqlClient.SqlParameter("@p0", pathIdToDelete);
-            //var p1 = new System.Data.SqlClient.SqlParameter("@p1", alsoDeleteNode);
-            //var p2 = new System.Data.SqlClient.SqlParameter("@p2", alsoDeleteSubTree);
-            var p0 = pathIdToDelete; // new System.Data.SqlClient.SqlParameter("@p0", pathIdToDelete);
-            var p1 = alsoDeleteNode; // new System.Data.SqlClient.SqlParameter("@p1", alsoDeleteNode);
-            var p2 = alsoDeleteSubTree; // new System.Data.SqlClient.SqlParameter("@p2", alsoDeleteSubTree);
+            var p0 = pathIdToDelete;
+            var p1 = alsoDeleteNode;
+            var p2 = alsoDeleteSubTree;
             spParams = new object[] { p0, p1, p2 };
             this.ModelContext.ExecuteRawSql("EXEC DeletePathProc @p0, @p1, @p2", spParams);
 
