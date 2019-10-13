@@ -10,7 +10,7 @@ using Bom.Core.Model;
 using Bom.Core.Utils;
 using Ch.Knomes.Struct;
 
-namespace Bom.Core.Actions.Utils
+namespace Bom.Core.Data.Actions.Utils
 {
     public class TestDeleteNodeArgs
     {

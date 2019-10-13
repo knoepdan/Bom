@@ -7,7 +7,7 @@ using Bom.Core.Model;
 using Ch.Knomes.Struct;
 using Bom.Core.TestUtils.Models;
 
-namespace Bom.Core.Queries
+namespace Bom.Core.Data
 {
     public class PathHelperTests
     {
