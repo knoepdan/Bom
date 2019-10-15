@@ -40,8 +40,7 @@ BEGIN
 				SET [MainPathId] =  @genPathId
 				WHERE NodeId = @nodeId;
 
-		SET @pathIdOutput = @genPathId; -- SELECT * FROM  [dbo].[Path] WHERE PathId = @genPathId
-		
+		SET @pathIdOutput = @genPathId; -- needed when called from other sp 
 		COMMIT TRANSACTION
 	END TRY
     BEGIN CATCH

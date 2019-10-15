@@ -18,11 +18,12 @@ namespace Bom.Core.Data.Actions
         public AddNodeTests()
         {
             this.Context = TestHelpers.GetModelContext(true);
-            RootNode = TestDataFactory.CreateSampleNodes(MaxLevel, NofChildrenPerNode);
-            AnimalRootNode = TestDataFactory.CreateSampleAnimalNodes();
+            RootNode = TestDataFactory.CreateSampleNodes(MaxLevel, NofChildrenPerNode, "");
+            SecondRootNode = TestDataFactory.CreateSampleNodes(MaxLevel, NofChildrenPerNode, SecondPrefix);
         }
+        private const string SecondPrefix = "ZZZ_";
 
-        public const int MaxLevel = 5;
+        public const int MaxLevel = 3;
 
         public const int NofChildrenPerNode = 2;
 
@@ -30,7 +31,7 @@ namespace Bom.Core.Data.Actions
 
         private TreeNode<SimpleNode> RootNode { get; }
 
-        private TreeNode<SimpleNode> AnimalRootNode { get; }
+        private TreeNode<SimpleNode> SecondRootNode { get; }
 
 
         [Fact]
@@ -39,10 +40,16 @@ namespace Bom.Core.Data.Actions
             lock (DbLockers.DbLock)
             {
                 EnsureSampleData(Context, RootNode, true);
+                EnsureSampleData(Context, SecondRootNode, false);
 
                 // Moving up the tree
                 AddNewPathForNode();
             
+
+                // create new root
+
+
+                // create duplicate path (should lead to an exception.. to be implemented in SP`???)
 
                 // final test
                 //this.Context.Dispose();
@@ -58,17 +65,21 @@ namespace Bom.Core.Data.Actions
 
         private void AddNewPathForNode()
         {
-            throw new NotImplementedException("TODO");
-            //var leaveNode = RootNode.DescendantsAndI.First(n => n.Level == MaxLevel); // 1a-2a-3a-4a-5a 
-            //var targetParent = RootNode.DescendantsAndI.Where(n => n.Level == 2).Skip(1).First(); // 1a-2b
-            //var args = new TestMoveNodeArgs(leaveNode, targetParent, false);
+            var node = RootNode.DescendantsAndI.First(n => n.Level == MaxLevel-1); // 1a-2a-3a-4a-5a 
+            var dbPath = Context.GetPaths().First(x => x.Node != null && x.Node.Title == node.Data.Title);
+            var parentPath = Context.GetPaths().First(x => x.Node != null && x.Node.Title != node.Data.Title && x.Level == 2); // some other node
 
-            //var movedPath = TestMoveNodePath(args);
+            var prov = new PathNodeProvider(Context);
+            var createdPath = prov.AddPathToNode(dbPath.Node, parentPath, true);
+            
+            // reload with new context (important)
+            this.Context.Dispose();
+            this.Context = TestHelpers.GetModelContext(true);
+            dbPath = Context.GetPaths().First(x => x.Node != null && x.Node.Title == node.Data.Title);
+
+            Assert.True(dbPath.Node.NodeId == createdPath.Node.NodeId && dbPath.PathId != createdPath.PathId);
         }
 
-    
-
-      
 
         private void CompareAllInMemoryAndAllDbNodes(IEnumerable<TreeNode<SimpleNode>> rootNodes)
         {

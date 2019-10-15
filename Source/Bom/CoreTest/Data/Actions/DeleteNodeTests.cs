@@ -91,7 +91,6 @@ namespace Bom.Core.Data.Actions
             Assert.True(this.Context.GetPaths().Count() == 0);
         }
 
-
         private void DeletingRootThrows()
         {
             if (!RootNode.Children.Any())

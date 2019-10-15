@@ -39,15 +39,11 @@ namespace Bom.Core.Data
             return createdPath;
         }
 
-
-        public Path AddPathToNodeAndGetNewPath(Node node, Path? parentPath, bool setAsMainPath = false)
-        {
-            int newPathId = AddPathToNode(node, parentPath, setAsMainPath);
-            var newPath = this.ModelContext.GetPaths().Single(x => x.PathId == newPathId);
-            return newPath;
-        }
-
-        public int AddPathToNode(Node node, Path? parentPath, bool setAsMainPath = false)
+        /// <summary>
+        /// Create a new path for an existing node and return new pathId
+        /// </summary>
+        /// <returns>Id of created path</returns>
+        public Path AddPathToNode(Node node, Path? parentPath, bool setAsMainPath = false)
         {
             if (node == null)
             {
@@ -60,25 +56,8 @@ namespace Bom.Core.Data
                 parentPathString = PathHelper.GetParentPathForChild(parentPath);
                 parentPathString = parentPathString.Trim('/');
             }
-
-            // how to handle output params: https://stackoverflow.com/questions/45252959/entity-framework-core-using-stored-procedure-with-output-parameters
-            var nodeIdParam = new Microsoft.Data.SqlClient.SqlParameter("@p0", node.NodeId);
-            var parentPathStringParam = new Microsoft.Data.SqlClient.SqlParameter("@p1", parentPathString);
-            var setAsMainParam = new Microsoft.Data.SqlClient.SqlParameter("@p2", setAsMainPath);
-            var outPath = new Microsoft.Data.SqlClient.SqlParameter("@outPath", SqlDbType.Int);
-
-            this.ModelContext.ExecuteRawSql("EXEC AddPathProc @p0, @p1, @p2, @ParamOut2 OUT", nodeIdParam, parentPathStringParam, setAsMainParam, outPath);
-
-            var newPathId = (int)outPath.Value;
-            return newPathId;
-
-            //var outPath = new Microsoft.Data.SqlClient.SqlParameter("@outPath", SqlDbType.Int);
-            //var spParams = new object[] { node.NodeId, parentPathString, setAsMainPath };
-            //this.ModelContext.ExecuteRawSql("EXEC AddPathProc @p0, @p1, @p2", spParams);
-
-            // probably not working as we have an output param
-            //    var createdPath = ModelContext.Paths.FromSqlRaw("AddPathProc  {0}, {1}", node.NodeId, parentPathString, setAsMainPath).ToList().First(); // important: first toList() !!!
-            //  return createdPath;
+            var createdPath = ModelContext.Paths.FromSqlRaw("AddPathToExistingNodeProc  {0}, {1}, {2}", node.NodeId, parentPathString, setAsMainPath).ToList().First(); // important: first toList() !!!
+            return createdPath;
 
         }
 

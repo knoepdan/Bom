@@ -30,14 +30,14 @@ namespace Ch.Knomes.Struct.Testing
             return title;
         }
 
-        public static TreeNode<SimpleNode> CreateSampleNodes(int nofLevels, int nofPos = 3)
+        public static TreeNode<SimpleNode> CreateSampleNodes(int nofLevels, int nofPos = 3, string? prefix = "")
         {
-            var root = new TreeNode<SimpleNode>(new SimpleNode("1a"));
-            AddSampleNodesRecursive(root, nofLevels, nofPos);
+            var root = new TreeNode<SimpleNode>(new SimpleNode("1a" + prefix));
+            AddSampleNodesRecursive(root, nofLevels, nofPos, prefix);
             return root;
         }
 
-        public static void AddSampleNodesRecursive(TreeNode<SimpleNode> parent, int nofLevels, int nofPos)
+        public static void AddSampleNodesRecursive(TreeNode<SimpleNode> parent, int nofLevels, int nofPos, string? prefix)
         {
             if(parent == null)
             {
@@ -46,12 +46,12 @@ namespace Ch.Knomes.Struct.Testing
             int level = parent.GetLevel();
             for (int pos = 0; pos < nofPos; pos++)
             {
-                var nodeTitle = GetTitle(parent, (level + 1), pos);
+                var nodeTitle = GetTitle(parent, (level + 1), pos) + prefix;
                 var memNode = new SimpleNode(nodeTitle);
                 var node = parent.AddChild(memNode);
                 if (node.Level < nofLevels)
                 {
-                    AddSampleNodesRecursive(node, nofLevels, nofPos);
+                    AddSampleNodesRecursive(node, nofLevels, nofPos, prefix);
                 }
             }
         }
