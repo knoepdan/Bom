@@ -48,9 +48,11 @@ namespace Bom.Core.Data.Actions
                 // create new root
                 AddNewRootPathForNode();
 
-                // create duplicate path (should lead to an exception.. to be implemented in SP`???)
+                // create duplicate path (should lead to an exception)
+                AddSamePathAgainThrows();
 
                 // final test
+                 this.Context.Dispose();
                 //this.Context.Dispose();
                 //this.Context = TestHelpers.GetModelContext(true);
                 //var rootNodes = new List<TreeNode<SimpleNode>>();
@@ -64,23 +66,48 @@ namespace Bom.Core.Data.Actions
 
         private void AddNewPathForNode()
         {
-            var node = RootNode.DescendantsAndI.First(n => n.Level == MaxLevel-1); // 1a-2a-3a-4a-5a 
-            var parentNode = RootNode.DescendantsAndI.First(x =>  x.Data.Title != node.Data.Title && x.Level == 2);
+            var node = RootNode.DescendantsAndI.First(n => n.Level == MaxLevel - 1); // 1a-2a-3a-4a-5a 
+            var parentNode = RootNode.DescendantsAndI.First(x => x.Data.Title != node.Data.Title && x.Level == 2);
             AddNewPathForNodeTest(node, parentNode);
         }
 
         private void AddNewRootPathForNode()
-        {                                                       
+        {
+            this.Context.Dispose();
+            this.Context = TestHelpers.GetModelContext(true);
+
             var node = RootNode.DescendantsAndI.First(n => n.Level == MaxLevel - 1); // 1a-2a-3a-4a-5a 
             var path = AddNewPathForNodeTest(node, null);
 
             Assert.True(path.IsRoot());
         }
 
+        private void AddSamePathAgainThrows()
+        {
+            this.Context.Dispose();
+            this.Context = TestHelpers.GetModelContext(true);
+
+            int nofPaths = this.Context.GetPaths().Count();
+            try
+            {
+                var node = RootNode.DescendantsAndI.Skip(1).First(n => n.Level == MaxLevel - 1);
+                var parentNode = node.Parent; // same parent
+                AddNewPathForNodeTest(node, parentNode);
+                Assert.True(1 == 2, "Code was not supposed to reach this point"); // trigger fail
+            }
+            catch (Microsoft.Data.SqlClient.SqlException ex)
+            {
+                Console.WriteLine("Expected error: " + ex.Message);
+                this.Context.Dispose();
+                this.Context = TestHelpers.GetModelContext(true);
+                Assert.Equal(nofPaths, this.Context.GetPaths().Count()); // no paths created
+            }
+        }
+
 
         private Path AddNewPathForNodeTest(TreeNode<SimpleNode> node, TreeNode<SimpleNode>? newParentNode)
         {
-            if(newParentNode != null && newParentNode.Data.Title == node.Data.Title)
+            if (newParentNode != null && newParentNode.Data.Title == node.Data.Title)
             {
                 throw new ArgumentException("newParentNode may not be the same as node", nameof(newParentNode));
             }
@@ -93,28 +120,28 @@ namespace Bom.Core.Data.Actions
 
             // get db data and act
             var dbPath = Context.GetPaths().First(x => x.Node != null && x.Node.Title == node.Data.Title);
-            Path? parentPath = null;
-            if(newParentNode != null)
+            Path? dbNewParent = null;
+            if (newParentNode != null)
             {
-                 parentPath = Context.GetPaths().First(x => x.Node != null && x.Node.Title != newParentNode.Data.Title); // some other node
+                dbNewParent = Context.GetPaths().First(x => x.Node != null && x.Node.Title == newParentNode.Data.Title); // some other node
             }
 
             var prov = new PathNodeProvider(Context);
-            var createdPath = prov.AddPathToNode(dbPath.Node, parentPath, true);
+            var createdPath = prov.AddPathToNode(dbPath.Node, dbNewParent, true);
 
             // reload with new context (important)
             this.Context.Dispose();
             this.Context = TestHelpers.GetModelContext(true);
             dbPath = Context.GetPaths().First(x => x.Node != null && x.Node.Title == node.Data.Title);
-            
+
             // Tests
             Assert.True(dbPath.Node.NodeId == createdPath.Node.NodeId && dbPath.PathId != createdPath.PathId);
-            Assert.True((parentPath == null) == createdPath.IsRoot());
+            Assert.True((dbNewParent == null) == createdPath.IsRoot());
             var parent = Context.GetPaths().DirectParent(createdPath);
-            Assert.True(parentPath == null && parent == null || parentPath != null && parent != null);
-            if (parent != null && parentPath != null)
+            Assert.True(dbNewParent == null && parent == null || dbNewParent != null && parent != null);
+            if (parent != null && dbNewParent != null)
             {
-                Assert.True(parentPath.NodePathString == parent.NodePathString);
+                Assert.True(dbNewParent.NodePathString == parent.NodePathString);
             }
             var descendants = Context.GetPaths().Descendants(createdPath, 1).ToList();
             Assert.True(descendants.Count == 0);
