@@ -91,7 +91,7 @@ namespace Bom.Core.Data.Actions
             var movedPath = MoveNodePath(args.ToMoveNode.Data.Title, args.NewParentNode?.Data?.Title, args.MoveChildrenToo);
 
             // ## test if parent really is the new parent
-            var dbParentPath = this.Context.GetPaths().DirectParent(movedPath);
+            var dbParentPath = this.Context.Paths.DirectParent(movedPath);
             if (dbParentPath == null || dbParentPath.Node == null)
             {
                 throw new Exception($"{nameof(dbParentPath)} is null or its node is null! ({dbParentPath == null})");
@@ -108,13 +108,13 @@ namespace Bom.Core.Data.Actions
                 {
                     expected.AddRange(args.NewParentNode.Children);
                 }
-                var newChildren = this.Context.GetPaths().Descendants(dbParentPath, 1).ToList();
+                var newChildren = this.Context.Paths.Descendants(dbParentPath, 1).ToList();
                 CheckIfAreTheSameAndThrowIfNot(expected, newChildren, "checking children of parent");
             }
 
             // ## Test children of moved node
             {
-                var newMovedChildren = this.Context.GetPaths().Descendants(movedPath, 1).ToList();
+                var newMovedChildren = this.Context.Paths.Descendants(movedPath, 1).ToList();
                 if (args.MoveChildrenToo)
                 {
                     CheckIfAreTheSameAndThrowIfNot(args.ToMoveNode.Children, newMovedChildren, "checking children of moved node");
@@ -129,13 +129,13 @@ namespace Bom.Core.Data.Actions
             {
                 if (oldParent != null)
                 {
-                    var dbOldParentPath = this.Context.GetPaths().First(p => p.Node != null && p.Node.Title == oldParent.Data.Title);
-                    var currentDescendants = this.Context.GetPaths().Descendants(dbOldParentPath, 9999).ToList(); // level so hight we get all children and subchildren .. we just want to check all children here
+                    var dbOldParentPath = this.Context.Paths.First(p => p.Node != null && p.Node.Title == oldParent.Data.Title);
+                    var currentDescendants = this.Context.Paths.Descendants(dbOldParentPath, 9999).ToList(); // level so hight we get all children and subchildren .. we just want to check all children here
                     if (currentDescendants.Count != oldParent.Descendants.Count)
                     {
 #if DEBUG
-                        var dbRoot = this.Context.GetPaths().First(p => p.Node != null && p.Node.Title == "1a");
-                        var dbAllNodes = this.Context.GetPaths().Descendants(dbRoot, 9999).ToList();
+                        var dbRoot = this.Context.Paths.First(p => p.Node != null && p.Node.Title == "1a");
+                        var dbAllNodes = this.Context.Paths.Descendants(dbRoot, 9999).ToList();
                         dbAllNodes.Add(dbRoot);
                         var inMemoryModel = TreeNodeUtils.CreateInMemoryModel(dbAllNodes);
 #endif
@@ -175,8 +175,8 @@ namespace Bom.Core.Data.Actions
 
         private Path MoveNodePath(string moveTitle, string? newParentTitle, bool moveChildrenToo)
         {
-            var moveNode = Context.GetPaths().First(x => x.Node != null && x.Node.Title == moveTitle);
-            var newParentNode = Context.GetPaths().First(x => x.Node != null && x.Node.Title == newParentTitle);
+            var moveNode = Context.Paths.First(x => x.Node != null && x.Node.Title == moveTitle);
+            var newParentNode = Context.Paths.First(x => x.Node != null && x.Node.Title == newParentTitle);
             var prov = new PathNodeProvider(Context);
             var movedPath = prov.MovePathAndReload(moveNode.PathId, newParentNode.PathId, moveChildrenToo);
             //this.Context.SaveChanges(); not necessary.. is saved because of stored procedure!

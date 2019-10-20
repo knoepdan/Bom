@@ -27,7 +27,7 @@ namespace Bom.Web.Areas.Main.Controllers
         [HttpGet("root")]
         public async Task<ActionResult<IEnumerable<NodeVm>>> GetRootNodes()
         {
-            var result = await _context.GetPaths().AllRootPaths()
+            var result = await _context.Paths.AllRootPaths()
                 .Include(x => x.Node)
                 .Select(x => new NodeVm(x))
                 .ToListAsync();
@@ -38,7 +38,7 @@ namespace Bom.Web.Areas.Main.Controllers
         [HttpGet("nodes")]
         public async Task<ActionResult<IEnumerable<NodeVm>>> GetNodes(TreeFilterInput filter)
         {
-            var paths = _context.GetPaths();
+            var paths = _context.Paths;
             if(paths == null)
             {
                 return NotFound();
@@ -71,7 +71,7 @@ namespace Bom.Web.Areas.Main.Controllers
         [HttpGet("nodeByPath")]
         public async Task<ActionResult<NodeVm>> GetNodeByPathId(int pathId)
         {
-            var paths = _context.GetPaths().Include(x => x.Node);
+            var paths = _context.Paths.Include(x => x.Node);
             var path = await paths.FirstOrDefaultAsync(x => x.PathId == pathId);
             if (path != null)
             {
@@ -84,7 +84,7 @@ namespace Bom.Web.Areas.Main.Controllers
         [HttpGet("nodeById")]
         public async Task<ActionResult<NodeVm>> GetNodeByNodeId(int nodeId)
         {
-            var paths = _context.GetPaths().Include(x => x.Node);
+            var paths = _context.Paths.Include(x => x.Node);
             var path = await paths.FirstOrDefaultAsync(x => x.NodeId == nodeId);
             if (path != null)
             {

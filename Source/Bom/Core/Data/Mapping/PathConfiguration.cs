@@ -25,7 +25,7 @@ namespace Bom.Core.Data.ModelMapping
             builder.Property(x => x.NodePathString).ValueGeneratedNever();// calculated column
 
             builder.Property(x => x.NodeId);
-            builder.AddNodeForeignKey(x => x.Node, nameof(Path.NodeId));
+            builder.HasOne(p => p.Node).WithMany(n => n.Paths); // // builder.AddNodeForeignKey(x => x.Node, nameof(Path.NodeId));
 
 
             builder.Ignore(x => x.AllRawNodeIds);

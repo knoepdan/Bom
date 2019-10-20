@@ -43,42 +43,42 @@ namespace Bom.Core.Data
                 var memLeaveNode = RootNode.Descendants.First(n => n.Children.Count == 0);
  
                 // db nodes
-                var dbRoot = this.Context.GetPaths().First(x => x.Node != null && x.Node.Title == memRoot.Data.Title);
-                var dbNode = this.Context.GetPaths().First(x => x.Node != null && x.Node.Title == memNode.Data.Title);
-                var dbLeaveNode = this.Context.GetPaths().First(x => x.Node != null && x.Node.Title == memLeaveNode.Data.Title);
+                var dbRoot = this.Context.Paths.First(x => x.Node != null && x.Node.Title == memRoot.Data.Title);
+                var dbNode = this.Context.Paths.First(x => x.Node != null && x.Node.Title == memNode.Data.Title);
+                var dbLeaveNode = this.Context.Paths.First(x => x.Node != null && x.Node.Title == memLeaveNode.Data.Title);
                 Assert.True(dbRoot.IsRoot() && !dbNode.IsRoot() && !dbLeaveNode.IsRoot());
                 Assert.True(IsTheSame(dbRoot, memRoot) && memRoot.Parent == null);
                 Assert.True(IsTheSame(dbNode, memNode));
                 Assert.True(IsTheSame(dbLeaveNode, memLeaveNode));
 
                 // Descendants
-                var children = this.Context.GetPaths().Descendants(dbRoot, 2).ToList();
+                var children = this.Context.Paths.Descendants(dbRoot, 2).ToList();
                 var memChildren = memRoot.Descendants.Where(x => x.Level <= memRoot.Level + 2).ToList();
                 Assert.True(IsTheSame(children, memChildren));
-                var children2 = this.Context.GetPaths().Descendants(dbRoot, 3).ToList();
+                var children2 = this.Context.Paths.Descendants(dbRoot, 3).ToList();
                 var memChildren2 = memRoot.Descendants.Where(x => x.Level <= memRoot.Level + 3).ToList();
                 Assert.True(IsTheSame(children, memChildren) && memChildren2.Count > memChildren.Count);
 
                 //GetSiblings
-                var siblings = this.Context.GetPaths().Siblings(dbNode).ToList();
+                var siblings = this.Context.Paths.Siblings(dbNode).ToList();
                 var memSiblings = memNode.Siblings;
                 Assert.True(IsTheSame(siblings, memSiblings));
-                Assert.True(IsTheSame(this.Context.GetPaths().Siblings(dbLeaveNode).ToList(), memLeaveNode.Siblings));
+                Assert.True(IsTheSame(this.Context.Paths.Siblings(dbLeaveNode).ToList(), memLeaveNode.Siblings));
 
                 // DirectParent
-                Assert.True(IsTheSame(this.Context.GetPaths().DirectParent(dbNode), memNode.Parent));
-                Assert.True(this.Context.GetPaths().DirectParent(dbRoot) == null);
+                Assert.True(IsTheSame(this.Context.Paths.DirectParent(dbNode), memNode.Parent));
+                Assert.True(this.Context.Paths.DirectParent(dbRoot) == null);
 
                 // Ancestors
-                var ancestors = this.Context.GetPaths().Ancestors(dbNode).ToList();
+                var ancestors = this.Context.Paths.Ancestors(dbNode).ToList();
                 var memAncestors = memNode.Ancestors;
                 Assert.True(IsTheSame(ancestors, memAncestors));
-                var ancestors2 = this.Context.GetPaths().Ancestors(dbLeaveNode, 2).ToList();
+                var ancestors2 = this.Context.Paths.Ancestors(dbLeaveNode, 2).ToList();
                 var memAncestors2 = memLeaveNode.Ancestors.Where(x => x.Level >= memLeaveNode.Level - 2).ToList();
                 Assert.True(IsTheSame(ancestors2, memAncestors2) && memAncestors2.All(x => x.Parent != null));
 
                 // DbRoot (could be improved by testing with more roots)
-                var allDbRoots = this.Context.GetPaths().AllRootPaths().ToList();
+                var allDbRoots = this.Context.Paths.AllRootPaths().ToList();
                 Assert.True(allDbRoots.Count == 1);
                 Assert.True(IsTheSame(allDbRoots.First(), memRoot));
             }

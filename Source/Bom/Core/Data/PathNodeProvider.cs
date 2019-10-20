@@ -75,7 +75,7 @@ namespace Bom.Core.Data
         public Path MovePathAndReload(int pathIdToMove, int newParentPathId, bool moveChildrenToo)
         {
             MovePath(pathIdToMove, newParentPathId, moveChildrenToo);
-            var movedPath = this.ModelContext.GetPaths().Single(p => p.PathId == pathIdToMove);
+            var movedPath = this.ModelContext.Paths.Single(p => p.PathId == pathIdToMove);
             ModelContext.Entry(movedPath).Reload();// needed
             return movedPath;
         }

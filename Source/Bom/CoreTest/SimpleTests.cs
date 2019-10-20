@@ -9,17 +9,8 @@ namespace Bom.Core
 {
     public class SimpleTests
     {
-        [Fact]
-        public void Database_is_accessible()
-        {
-            var context = TestHelpers.GetModelContext();
-            var firstPath = context.GetPaths().FirstOrDefault();
-            var nodeOfPath = firstPath?.Node;
-            var firstNode = context.GetNodes().FirstOrDefault();
-            Console.WriteLine("value1", "value2", $"Path: {firstPath}", $"firstNode: {firstNode}");
-        }
-      
-        [Fact]
+
+       [Fact]
         public void Database_clean_does_not_throw()
         {
             try

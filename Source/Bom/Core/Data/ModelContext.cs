@@ -13,27 +13,11 @@ namespace Bom.Core.Data
         public ModelContext(DbContextOptions<ModelContext> options) : base(options)
         { }
 
-        internal DbSet<Node>? Nodes { get; set; }
+        public DbSet<Node>? Nodes { get; internal set; }
 
-        internal DbSet<DbPicture>? DbPictures { get; set; }
+        public DbSet<DbPicture>? DbPictures { get; internal set; }
 
-        public IQueryable<DbPicture>? GetDbPictures()
-        {
-            return DbPictures;
-        }
-
-        public IQueryable<Node>? GetNodes()
-        {
-
-            return Nodes;
-        }
-
-        internal DbSet<Path>? Paths { get; set; }
-
-        public IQueryable<Path>? GetPaths()
-        {
-            return Paths;
-        }
+        public DbSet<Path>? Paths { get; internal set; }
         
         public async Task<Path?> FindPathAsync(params object[] keyValues)
         {

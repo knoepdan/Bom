@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UtilsTest", "UtilsTest\Util
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BomClient", "BomClient\BomClient.csproj", "{4CF44F47-61E0-4C85-B22A-ABBD7ED57CE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebTest", "WebTest\WebTest.csproj", "{A0BB30D6-AD96-478B-8BDF-F347D51CB21B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebTest", "WebTest\WebTest.csproj", "{A0BB30D6-AD96-478B-8BDF-F347D51CB21B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

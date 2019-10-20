@@ -16,6 +16,7 @@ namespace Bom.Core.Model
 
         public virtual Path? MainPath { get; set; }
 
+        internal virtual List<Path>? Paths { get; set; }
 
         public override string ToString()
         {

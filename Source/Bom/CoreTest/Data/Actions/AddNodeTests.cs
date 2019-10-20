@@ -19,7 +19,6 @@ namespace Bom.Core.Data.Actions
         {
             this.Context = TestHelpers.GetModelContext(true);
             RootNode = TestDataFactory.CreateSampleNodes(MaxLevel, NofChildrenPerNode, "");
-            SecondRootNode = TestDataFactory.CreateSampleNodes(MaxLevel, NofChildrenPerNode, SecondPrefix);
         }
         private const string SecondPrefix = "ZZZ_";
 
@@ -31,16 +30,12 @@ namespace Bom.Core.Data.Actions
 
         private TreeNode<SimpleNode> RootNode { get; }
 
-        private TreeNode<SimpleNode> SecondRootNode { get; }
-
-
         [Fact]
         public void Adding_path_works()
         {
             lock (DbLockers.DbLock)
             {
                 EnsureSampleData(Context, RootNode, true);
-                EnsureSampleData(Context, SecondRootNode, false);
 
                 // Moving up the tree
                 AddNewPathForNode();
@@ -78,7 +73,7 @@ namespace Bom.Core.Data.Actions
             this.Context.Dispose();
             this.Context = TestHelpers.GetModelContext(true);
 
-            int nofPaths = this.Context.GetPaths().Count();
+            int nofPaths = this.Context.Paths.Count();
             try
             {
                 var node = RootNode.DescendantsAndI.Skip(1).First(n => n.Level == MaxLevel - 1);
@@ -91,7 +86,7 @@ namespace Bom.Core.Data.Actions
                 Console.WriteLine("Expected error: " + ex.Message);
                 this.Context.Dispose();
                 this.Context = TestHelpers.GetModelContext(true);
-                Assert.Equal(nofPaths, this.Context.GetPaths().Count()); // no paths created
+                Assert.Equal(nofPaths, this.Context.Paths.Count()); // no paths created
             }
         }
 
@@ -104,17 +99,17 @@ namespace Bom.Core.Data.Actions
             }
 
             // db data to compare afterwards;
-            var allNodesWithSameTitleOrig = Context.GetPaths().Where(x => x.Node != null && x.Node.Title == node.Data.Title).ToList();
-            var pathCountOrig = Context.GetPaths().Count();
-            var nodeCountOrig = Context.GetNodes().Count();
+            var allNodesWithSameTitleOrig = Context.Paths.Where(x => x.Node != null && x.Node.Title == node.Data.Title).ToList();
+            var pathCountOrig = Context.Paths.Count();
+            var nodeCountOrig = Context.Nodes.Count();
 
 
             // get db data and act
-            var dbPath = Context.GetPaths().First(x => x.Node != null && x.Node.Title == node.Data.Title);
+            var dbPath = Context.Paths.First(x => x.Node != null && x.Node.Title == node.Data.Title);
             Path? dbNewParent = null;
             if (newParentNode != null)
             {
-                dbNewParent = Context.GetPaths().First(x => x.Node != null && x.Node.Title == newParentNode.Data.Title); // some other node
+                dbNewParent = Context.Paths.First(x => x.Node != null && x.Node.Title == newParentNode.Data.Title); // some other node
             }
 
             var prov = new PathNodeProvider(Context);
@@ -123,24 +118,24 @@ namespace Bom.Core.Data.Actions
             // reload with new context (important)
             this.Context.Dispose();
             this.Context = TestHelpers.GetModelContext(true);
-            dbPath = Context.GetPaths().First(x => x.Node != null && x.Node.Title == node.Data.Title);
+            dbPath = Context.Paths.First(x => x.Node != null && x.Node.Title == node.Data.Title);
 
             // Tests
             Assert.True(dbPath.Node.NodeId == createdPath.Node.NodeId && dbPath.PathId != createdPath.PathId);
             Assert.True((dbNewParent == null) == createdPath.IsRoot());
-            var parent = Context.GetPaths().DirectParent(createdPath);
+            var parent = Context.Paths.DirectParent(createdPath);
             Assert.True(dbNewParent == null && parent == null || dbNewParent != null && parent != null);
             if (parent != null && dbNewParent != null)
             {
                 Assert.True(dbNewParent.NodePathString == parent.NodePathString);
             }
-            var descendants = Context.GetPaths().Descendants(createdPath, 1).ToList();
+            var descendants = Context.Paths.Descendants(createdPath, 1).ToList();
             Assert.True(descendants.Count == 0);
 
             // other check with db data
-            var allNodesWithSameTitleNew = Context.GetPaths().Where(x => x.Node != null && x.Node.Title == node.Data.Title).ToList();
-            var pathCountNew = Context.GetPaths().Count();
-            var nodeCountNew = Context.GetNodes().Count();
+            var allNodesWithSameTitleNew = Context.Paths.Where(x => x.Node != null && x.Node.Title == node.Data.Title).ToList();
+            var pathCountNew = Context.Paths.Count();
+            var nodeCountNew = Context.Nodes.Count();
             Assert.Equal(allNodesWithSameTitleOrig.Count + 1, allNodesWithSameTitleNew.Count);
             Assert.Equal(pathCountOrig + 1, pathCountNew);
             Assert.Equal(nodeCountOrig, nodeCountNew);
@@ -153,7 +148,7 @@ namespace Bom.Core.Data.Actions
         private void CompareAllInMemoryAndAllDbNodes(IEnumerable<TreeNode<SimpleNode>> rootNodes)
         {
             //  no check all nodes in db an in memory.. all the trees must be equal
-            var allNodes = this.Context.GetPaths().ToList(); // level so high we get all
+            var allNodes = this.Context.Paths.ToList(); // level so high we get all
             var dbRoots = TreeNodeUtils.CreateInMemoryModel(allNodes);
             var memRoots = new List<TreeNode<SimpleNode>>(rootNodes.Distinct());
             if (memRoots.Count != dbRoots.Count)

@@ -26,7 +26,7 @@ namespace Bom.Web.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Path>>> GetPaths()
         {
-            return await _context.GetPaths().ToListAsync();
+            return await _context.Paths.ToListAsync();
         }
 
         // GET: api/Paths/5
@@ -101,7 +101,7 @@ namespace Bom.Web.Controllers
 
         private bool PathExists(int id)
         {
-            return _context.GetPaths().Any(e => e.PathId == id);
+            return this._context.Paths.Any(e => e.PathId == id);
         }
     }
 }

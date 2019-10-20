@@ -31,8 +31,8 @@ namespace Bom.Web.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            var firstPath = _context.GetPaths().FirstOrDefault();
-            var firstNode = _context.GetNodes().FirstOrDefault();
+            var firstPath = _context.Paths.FirstOrDefault();
+            var firstNode = _context.Nodes.FirstOrDefault();
 
             return new string[] { "value1", "value2", $"Path: {firstPath}" , $"firstNode: {firstNode}"};
         }

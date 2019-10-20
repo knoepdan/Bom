@@ -60,7 +60,7 @@ namespace Bom.Web.Controllers
             ImageCacheDto? imageBlob = GetFromCache(uid, size);
             if (imageBlob == null)
             {
-                DbPicture pic = this._context.GetDbPictures().SingleOrDefault(x => x.PictureUid == uid);
+                DbPicture pic = this._context.DbPictures.SingleOrDefault(x => x.PictureUid == uid);
                 if (pic == null)
                 {
                     return NotFound();
