@@ -1,0 +1,14 @@
+{
+  "name": "trial1",
+  "version": "1.0.0",
+  "description": "testing react scripts",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react-scripts": "^3.2.0"
+  }
+}

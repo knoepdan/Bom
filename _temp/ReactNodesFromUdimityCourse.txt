@@ -1,0 +1,18 @@
+
+## react stuff
+defaultProps
+dom references
+
+### varia
+- nice libraries for ui (mocking, icons)
+- grid system
+
+
+
+
+
+
+
+################ JS-Basics (boook) #############
+
+- property descriptors

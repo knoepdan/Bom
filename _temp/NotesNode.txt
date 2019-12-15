@@ -1,0 +1,29 @@
+﻿------------------
+https://blog.risingstack.com/node-hero-tutorial-getting-started-with-node-js/
+
+https://www.sitepoint.com/beginners-guide-node-package-manager/
+
+-------------------------------------------
+
+By far and away the biggest reason for using package.json to specify a project’s dependencies is portability. For example, when you clone someone else’s code, all you have to do is run npm i in the project root and npm will resolve and fetch all of the necessary packages for you to run the app. We’ll look at this in more detail later.
+
+------------
+
+
+*************************************
+most simple stuff:
+
+node index.js  (will start index.js in node server)
+npm start     (will start application according to package.json start script (one could also call npm test))
+npm install   (triggers downloading packages from package.json .. and may be more)
+npm ci   (is almost like npm install: https://docs.npmjs.com/cli/ci.html)
+
+--------- exit 
+ctrl c    (see also: http://stackoverflow.com/questions/10522532/stop-node-js-program-from-command-line)
+
+
+
+************************************
+Act as server: https://blog.risingstack.com/your-first-node-js-http-server/
+
+ 

@@ -1,0 +1,47 @@
+
+https://medium.com/@kirill_shevch/introduction-to-webpack-50303d687080
+
+
+----------------
+
+1. install webpack
+2. create webpack.config.js
+3. add "scripts" part in ackage.json  (example: "build": "webpack")
+4. -> npm run build
+
+
+
+Other important points: 
+- webpack-dev-server (livereload, running in memory, hot module replacement (??))
+- loaders: preprocess files (example SASS)
+- plugins  (examples: UglifyjsWebpackPlugin (minimize), babel..
+- NODE_ENV
+
+
+
+-------
+great links:
+
+https://webpack.js.org/guides/getting-started/ 
+https://tutorialzine.com/2017/04/learn-webpack-in-15-minutes
+https://medium.com/javascript-training/beginner-s-guide-to-webpack-b1f1a3638460
+
+
+---------
+typescript example for webpack: https://github.com/typeorm/typescript-example (forget about the orm)
+
+https://www.typescriptlang.org/docs/handbook/integrating-with-build-tools.html#webpack
+
+https://github.com/excaliburjs/example-ts-webpack (forget about excalibur stuff)
+
+
+https://itnext.io/step-by-step-building-and-publishing-an-npm-typescript-package-44fe7164964c
+
+https://codeburst.io/https-chidume-nnamdi-com-npm-module-in-typescript-12b3b22f0724
+
+------------ -> with link to working project
+https://hackernoon.com/a-tale-of-webpack-4-and-how-to-finally-configure-it-in-the-right-way-4e94c8e7e5c1
+
+
+
+https://itnext.io/vuejs-and-webpack-4-from-scratch-part-1-94c9c28a534a

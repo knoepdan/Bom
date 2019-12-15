@@ -1,0 +1,25 @@
+
+## basic
+npx create-react-app my-app --use-npm
+
+
+## basic and typescript
+npx create-react-app my-typeapp --typescript  --npm 
+
+
+
+----------- probably the way to go because: 
+
+- supported by react
+- relativly easy 
+- support for: 
+-- live reload (check if hot-reload is possible)
+-- environment variables
+-- progressive webapps
+-- eslint + prettier (probably out of the box.. to be checked)
+
+To check: 
+- hot reload possible
+- what other dependencies do we have?
+-- compare with other project.. sass? 
+-- do simple projects work with both configurations: that should be the goal.. it should be just about the dev experience!!

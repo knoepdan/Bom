@@ -1,0 +1,47 @@
+
+Requirements: 
+- React with Typescript support (react, typescript, webpack, ts-loader)
+- good debugging (source maps.. by typescript)
+- no unnecessary dependencies
+- detect environment at runtime (development, production)
+- inject configuration
+
+- Development: 
+--  hot reload  (webpack)
+
+- Production
+-- bundling and minification (webpack)
+
+
+
+####################
+
+
+- configuration depending on environment  (environment variables (production and dev))
+
+
+for a new example: 
+- add ts lint
+- check what else do others have
+- sass? maybe not needed as we react workflow has them working well
+- testing  (unit and integration tests)
+-- maybe not a very high priority right now
+- react router
+- react state management (probably last..as this is where im not sure) 
+
+
+
+
+--- good links -----
+https://developerhandbook.com/webpack/how-to-create-a-production-ready-webpack-config/
+
+
+
+Typescript compiler: https://www.typescriptlang.org/docs/handbook/compiler-options.html
+
+Typescript and react
+https://www.typescriptlang.org/docs/handbook/react-&-webpack.html
+https://create-react-app.dev/docs/adding-typescript/
+
+
+
