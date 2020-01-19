@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "jsx": "react",
+      "module": "commonjs",
+      "outDir": "./build/",
+      "removeComments": true,
+      "sourceMap": true,
+      "target": "ES2018",
+      "strict": true,
+    },
+    "include": [
+      "./src/**/**/*"
+    ]
+  }
