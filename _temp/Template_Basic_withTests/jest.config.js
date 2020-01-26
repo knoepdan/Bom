@@ -1,27 +1,17 @@
 module.exports = {
-  "roots": [
-    "<rootDir>/src"
-  ],
-  "transform": {
-    "^.+\\.tsx?$": "ts-jest"
-  },
-  "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
-  "moduleFileExtensions": [
-    "ts",
-    "tsx",
-    "js",
-    "jsx",
-    "json",
-    "node"
-  ],
-  
-	// Setup Enzyme  (see src/setupEnzyme.ts)
-	"snapshotSerializers": ["enzyme-to-json/serializer"],
+    roots: ['<rootDir>/src'],
+    modulePaths: ['<rootDir>', '/node_modules'],
+    transform: {
+        '^.+\\.tsx?$': 'ts-jest',
+    },
+    testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',
+    moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+
+    // Setup Enzyme  (see src/setupEnzyme.ts)
+    snapshotSerializers: ['enzyme-to-json/serializer'],
     setupFilesAfterEnv: ['<rootDir>/src/setupEnzyme.ts'],
-	// "setupTestFrameworkScriptFile": "<rootDir>/src/setupEnzyme.ts", depreceated in favor of setupFilesAfterEnv
- 
-  
-}
+    // "setupTestFrameworkScriptFile": "<rootDir>/src/setupEnzyme.ts", depreceated in favor of setupFilesAfterEnv
+};
 
 /*
 
