@@ -31,7 +31,7 @@ Setup:
     -> apply Eslint+prettier upon save in VS code: install "ESLint (with 'autoFixOnSave..." + "Prettier - Code formatter" (will create vscode settings file)
 6.  Setup tests
     -   1. JEST: npm i jest @types/jest ts-jest --dev (plus setup test script)
-    -        -> add jest.config.js
+    -            -> add jest.config.js
     -   2. Enzyme: npm i enzyme @types/enzyme enzyme-to-json enzyme-adapter-react-16 ---dev
            -> adapt jest.config.js and add src/setupEnzyme.ts
     -   3. Fix typings for enzymeadapter-react-16
@@ -56,3 +56,10 @@ https://www.pluralsight.com/guides/how-to-test-react-components-in-typescript (g
 
 7. State
    https://github.com/avkonst/hookstate#quick-start
+
+8. Routing
+   https://github.com/ReactTraining/react-router/tree/master/packages/react-router-dom (not react-router)
+   https://www.pluralsight.com/guides/react-router-typescript
+
+    ------------ info------
+    https://www.robinwieruch.de/react-libraries#react-state-management
