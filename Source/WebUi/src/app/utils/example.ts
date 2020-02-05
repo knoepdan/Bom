@@ -1,4 +1,4 @@
-export class TestClass {
+export class ExampleClass {
     public async callAnything(s: string): Promise<void> {
         console.log('TestClass.callAnything');
 
@@ -10,4 +10,8 @@ export class TestClass {
             console.log('error ' + e + '     ' + s);
         }
     }
+}
+
+export function sum(a: number, b: number): number {
+    return a + b;
 }

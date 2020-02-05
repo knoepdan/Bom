@@ -56,3 +56,17 @@ https://create-react-app.dev/docs/adding-typescript/
 
 
 
+
+
+###################### State stuff ##############
+
+
+- no other library: https://kentcdodds.com/blog/application-state-management-with-react
+-- context: https://www.smashingmagazine.com/2020/01/introduction-react-context-api/
+-- https://leewarrick.com/blog/the-problem-with-context/  -> problem with context api are rerenders..
+- redux
+- hook state:  https://github.com/avkonst/hookstate#quick-start
+- react-n  to be checked  (nice api)
+- mobx
+
+->  wrapper over hook state  (try to make it look like react-n????)

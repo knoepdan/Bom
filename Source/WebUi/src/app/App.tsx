@@ -1,10 +1,18 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Hello } from './components/Hello';
+import { Hello } from 'src/app/components/Hello';
+import { ReactHooksExample } from 'src/app/components/ReactHooksExample';
+import { ReactWrapperExample } from './components/ReactWrapperExample';
 declare let module: any;
 
+// <Hello compiler="Typescript" framework="React..." bundler="Webpack" />,
 ReactDOM.render(
-    <Hello compiler="Typescript" framework="React..." bundler="Webpack" />,
+    <div>
+    <Hello compiler="Typescript" framework="React..." bundler="Webpack" />
+    <ReactHooksExample />
+    <br/>
+    <ReactWrapperExample />
+    </div>,
     document.getElementById('root'),
 );
 

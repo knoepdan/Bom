@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TestClass } from './../utils/test';
+import { ExampleClass } from '../utils/example';
 
 interface RProps {
     compiler: string;
@@ -9,16 +9,18 @@ interface RProps {
 
 export class Hello extends React.Component<RProps, {}> {
     componentDidMount(): void {
-        const d = new TestClass();
+        const d = new ExampleClass();
         d.callAnything('test call in componentDidMount');
     }
 
     render(): JSX.Element {
         return (
-            <h1>
-                This is a {this.props.framework} application using {this.props.compiler} with {this.props.bundler}{' '}
-                (process.env.NODE_ENV: {process.env.NODE_ENV})
-            </h1>
+            <div>
+                <h1>
+                    This is a {this.props.framework} application using {this.props.compiler} with {this.props.bundler}{' '}
+                    (process.env.NODE_ENV: {process.env.NODE_ENV})
+                </h1>
+            </div>
         );
     }
 }
