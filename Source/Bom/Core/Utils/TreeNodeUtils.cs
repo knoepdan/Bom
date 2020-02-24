@@ -50,6 +50,10 @@ namespace Bom.Core.Utils
         private static void AddChildNodesRecursive(TreeNode<Path> baseNode, IList<Path> paths, HashSet<Path> checkedPaths )
         {
             var p = baseNode.Data;
+            if (string.IsNullOrEmpty(p.NodePathString))
+            {
+                return;
+            }
             var children = paths.Where(x => x.NodePathString.StartsWith(p.NodePathString, StringComparison.InvariantCulture) && x.Level == (p.Level + 1) && !checkedPaths.Contains(x));
             foreach (var child in children)
             {
