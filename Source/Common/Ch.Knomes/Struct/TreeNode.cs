@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -10,12 +9,12 @@ namespace Ch.Knomes.Struct
     {
         // https://stackoverflow.com/questions/66893/tree-data-structure-in-c-sharp
 
-        // TODO potential improvments: remove Child (by index or by object), copy method (flag for copying data also or just keep same data)
+        // potential improvments: remove Child (by index or by object), copy method (flag for copying data also or just keep same data)
 
-
-        public TreeNode(T data)
+        public TreeNode(T data, IComparer<TreeNode<T>>? compareFunc = null)
         {
             this.Data = data;
+            this.CompareFunc = compareFunc;
         }
 
         public T Data { get; set; }
@@ -24,10 +23,19 @@ namespace Ch.Knomes.Struct
         private List<TreeNode<T>> _children = new List<TreeNode<T>>();
         public IReadOnlyList<TreeNode<T>> Children => this._children;
 
+        /// <summary>
+        /// Compare function if nodes should be sorted (Null if unsorted)
+        /// </summary>
+        public IComparer<TreeNode<T>>? CompareFunc { get; }
+
         public TreeNode<T> AddChild(T child)
         {
-            TreeNode<T> childNode = new TreeNode<T>(child) { Parent = this };
+            TreeNode<T> childNode = new TreeNode<T>(child, this.CompareFunc) { Parent = this };
             this._children.Add(childNode);
+            if(this.CompareFunc != null)
+            {
+                this._children.Sort(this.CompareFunc); // probably not very performant this way
+            }
             return childNode;
         }
 
