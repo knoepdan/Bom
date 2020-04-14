@@ -31,7 +31,7 @@ Setup:
     -> apply Eslint+prettier upon save in VS code: install "ESLint (with 'autoFixOnSave..." + "Prettier - Code formatter" (will create vscode settings file)
 6.  Setup tests
     -   1. JEST: npm i jest @types/jest ts-jest --dev (plus setup test script)
-    -                -> add jest.config.js
+    -                  -> add jest.config.js
     -   2. Enzyme: npm i enzyme @types/enzyme enzyme-to-json enzyme-adapter-react-16 ---dev
            -> adapt jest.config.js and add src/setupEnzyme.ts
     -   3. Fix typings for enzymeadapter-react-16
@@ -65,7 +65,7 @@ https://www.pluralsight.com/guides/how-to-test-react-components-in-typescript (g
 9) CSS (SASS)
    TODO
 
-https://medium.com/a-beginners-guide-for-webpack-2/webpack-loaders-css-and-sass-2cc0079b5b3a
+https://developerhandbook.com/webpack/how-to-configure-scss-modules-for-webpack/
 https://dev.to/pixelgoo/how-to-configure-webpack-from-scratch-for-a-basic-website-46a5 (includes css/sass)
 
 10. configuration

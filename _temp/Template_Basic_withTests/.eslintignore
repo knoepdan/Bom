@@ -1,8 +1,0 @@
-node_modules
-dist
-_temp
-webpack.config.js
-package.json
-package-lock.json
-src/app/index.html
-src/app/App.tsx
