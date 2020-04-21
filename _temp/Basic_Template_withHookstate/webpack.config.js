@@ -82,13 +82,17 @@ module.exports = {
                     },
                 ],
             },
-            // static assets
-            { test: /\.html$/, use: 'html-loader' },
-            { test: /\.(a?png|svg)$/, use: 'url-loader?limit=10000' },
             {
-                test: /\.(jpe?g|gif|bmp|mp3|mp4|ogg|wav|eot|ttf|woff|woff2)$/,
-                use: 'file-loader',
-            },
+              oneOf: [
+                  // static assets
+                  { test: /\.html$/, use: 'html-loader' },
+                  { test: /\.(a?png|svg|jpg|gif)$/, use: 'url-loader?limit=10000' },
+                  {
+                      test: /\.(jpe?g|gif|bmp|mp3|mp4|ogg|wav|eot|ttf|woff|woff2)$/,
+                      use: 'file-loader',
+                  },
+              ],
+          },
         ],
     },
     optimization: {
