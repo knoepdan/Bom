@@ -1,0 +1,86 @@
+########### Template basis ###########
+https://github.com/rokoroku/react-redux-typescript-boilerplate  (main base)
+https://hackernoon.com/react-with-typescript-and-webpack-654f93f34db6
+https://github.com/saurabhpati/react-ts-webpack-boilerplate
+
+Requirements: 
+- Typscript Hot reload
+- CSS modules
+- Some kind of Linting
+- File references (images, etc.)
+- Environment variables
+-- can be very basic  (example: also be solved later by a separate config file 
+- Build with minification
+- No major obstacles for a growing application
+
+wanted extensions (todo): 
+- minification of css
+- example of splitting js (and maybe css) into junks for performance
+- manifest etc. 
+- mobile icons
+
+
+other possible extensions (maybe not for basic template): 
+- remove babel as unnecessary dependency (maybe still needed and very low priority)
+- tests (jest)
+- state management
+- extended environment variables (probably not needed)
+- uglification (to some degree already achieved, most probably not needed)
+
+
+########### Steps done ###########
+1. started with base template: https://github.com/rokoroku/react-mobx-typescript-boilerplate
+2. upgraded libraries (with minimal code changes necessary)
+3. Simply app and remove references to redux etc.
+4. integrate eslint and prettier (prettier was already included but was adapted a bit)
+   https://dev.to/robertcoopercode/using-eslint-and-prettier-in-a-typescript-project-53jb (tslint is deprecated and replaced by eslint)
+   https://medium.com/the-node-js-collection/why-and-how-to-use-eslint-in-your-project-742d0bc61ed7 (general)
+   https://eslint.org/docs/user-guide/getting-started
+   -> apply Eslint+prettier upon save in VS code: install "ESLint (with 'autoFixOnSave..." + "Prettier - Code formatter" (will create vscode settings file)
+5. examples in code: favicon, usage of images including adding Ts support for images in global.d.ts, global css using css modules
+
+
+########### General boilerplate links ###########
+good tutorial
+https://medium.com/p/6b069881229d/responses/show
+
+probably ok but no css
+https://github.com/GrantBartlett/react-typescript-webpack-starter/blob/master/package.json
+
+probably very good (has redux but we can remove that)
+https://github.com/rokoroku/react-redux-typescript-boilerplate
+
+old (webpack 2) but maybe has some good ideas
+https://scalable-react-ts-boilerplate.herokuapp.com/
+
+replace babel boilerplate with typescript
+https://itnext.io/add-typescript-to-react-boilerplate-project-332862b53fed
+
+good but probably not ok
+https://www.npmjs.com/package/react-webpack-typescript-starter
+
+
+########### specific links (not all tried and tested) ###########
+- removed express and installed webpack-dev-server
+   https://www.npmjs.com/package/webpack-dev-server
+- add environment variables (add scripts in package.json)
+   https://www.valentinog.com/blog/webpack/
+   https://www.robinwieruch.de/webpack-advanced-setup-tutorial
+- updated typescript config (strict, cleaned, target changed.. also ensured source maps)
+   https://www.typescriptlang.org/docs/handbook/compiler-options.html
+- CSS with scope, live reload build
+    https://www.jackfranklin.co.uk/blog/css-modules-webpack-react/ (2016, old)
+    https://medium.com/@dmitrynozhenko/9-ways-to-implement-css-in-react-js-ccea4d543aa3
+    https://www.robinwieruch.de/react-css-modules (follow this one)
+- SASS (not used)
+	https://developerhandbook.com/webpack/how-to-configure-scss-modules-for-webpack/
+	https://github.com/WeAreAthlon/frontend-webpack-boilerplate (boilerplate with sass)
+	npm install --save-dev node-sass sass-loader style-loader css-loader mini-css-extract-plugin
+	-> modifications to webpack.config.js
+- Typescript compiler
+	https://www.typescriptlang.org/docs/handbook/compiler-options.html
+- Typescript and react
+	https://www.typescriptlang.org/docs/handbook/react-&-webpack.html
+	https://create-react-app.dev/docs/adding-typescript/
+- webpack and typescript
+	https://developerhandbook.com/webpack/how-to-create-a-production-ready-webpack-config/

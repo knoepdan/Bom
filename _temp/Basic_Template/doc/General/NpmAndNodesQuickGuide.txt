@@ -1,0 +1,38 @@
+﻿############ NODE ############
+
+Links: 
+https://blog.risingstack.com/node-hero-tutorial-getting-started-with-node-js/
+https://www.sitepoint.com/beginners-guide-node-package-manager/
+https://blog.risingstack.com/your-first-node-js-http-server/ -> act as a server
+etc.
+
+most simple stuff:
+- "node index.js"  (will start index.js in node server)
+- ctrl c    (see also: http://stackoverflow.com/questions/10522532/stop-node-js-program-from-command-line)
+
+
+############ NPM ############
+
+npm install   
+- > triggers downloading packages from package.json .. and may be more)
+
+npm ci   
+-> is almost like npm install: https://docs.npmjs.com/cli/ci.html
+
+npm outdated
+-> shows all outdated libraries
+
+npm update {libraryname}
+-> updates library
+
+npm run {scriptname}
+-> runs script
+
+npm install react-scripts@latest
+-> install latest version of react scripts
+
+
+
+############ differences between npm and npx ############
+NPM Manages packages but doesn't make life easy executing any.
+NPX - A tool for executing Node packages.
