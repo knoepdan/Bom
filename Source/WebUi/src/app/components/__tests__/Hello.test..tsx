@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { Hello } from 'src/app/components/Hello';
+import { Hello } from '../Hello';
 
-describe('App', () => {
-    test('renders without crashing given the required props', () => {
+describe('Hello', () => {
+    it('renders without crashing given the required props', () => {
         const props = {
-            compiler: 'testc-ompiler',
+            compiler: 'test-compiler',
             framework: 'test-framework',
             bundler: 'test-bundler',
         };
@@ -16,6 +16,21 @@ describe('App', () => {
 });
 
 /*
+-- original test
+describe('App', () => {
+  it('renders without crashing given the required props', () => {
+    const props = {
+      isFetching: false,
+      dispatch: jest.fn(),
+      selectedSubreddit: 'reactjs',
+      posts: []
+    }
+    const wrapper = shallow(<App {...props} />)
+    expect(toJson(wrapper)).toMatchSnapshot()
+  })
+})
+
+
 -- some other test
 describe('My Test Suite', () => {
   it('My Test Case', () => {

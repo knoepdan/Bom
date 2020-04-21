@@ -1,5 +1,4 @@
-//import * as state from '@hookstate/core';
-import * as state from 'src/app/utils/CustomState';
+import * as state from 'app/utils/CustomState';
 
 function getInitialGlobalState(): GlobalState {
     const g = {

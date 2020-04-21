@@ -1,11 +1,14 @@
 module.exports = {
     roots: ['<rootDir>/src'],
-    modulePaths: ['<rootDir>', '/node_modules'],
+    modulePaths: ['<rootDir>/src', '/node_modules'],
     transform: {
         '^.+\\.tsx?$': 'ts-jest',
     },
     testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+    moduleNameMapper: {
+        "\\.(css|less|scss|sss|styl)$": "<rootDir>/node_modules/jest-css-modules"
+      }, // ignore css module imports.: https://www.npmjs.com/package/jest-css-modules
 
     // Setup Enzyme  (see src/setupEnzyme.ts)
     snapshotSerializers: ['enzyme-to-json/serializer'],

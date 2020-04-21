@@ -23,3 +23,17 @@ module.exports =  {
   printWidth:  120,
   tabWidth:  4,
 };
+
+/*
+some other possible.. settings
+{
+  "arrowParens": "always",
+  "semi": true,
+  "useTabs": false,
+  "tabWidth": 2,
+  "bracketSpacing": true,
+  "singleQuote": true,
+  "jsxBracketSameLine": false,
+  "printWidth": 100
+}
+*/

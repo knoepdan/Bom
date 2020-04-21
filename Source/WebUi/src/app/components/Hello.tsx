@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { ExampleClass } from '../utils/example';
+import * as style from './Hello.css';
+import { ExampleClass } from 'app/utils/example'; // relative: '../utils/example';
 
 interface RProps {
     compiler: string;
@@ -15,7 +16,7 @@ export class Hello extends React.Component<RProps, {}> {
 
     render(): JSX.Element {
         return (
-            <div>
+            <div className={style.hello}>
                 <h1>
                     This is a {this.props.framework} application using {this.props.compiler} with {this.props.bundler}{' '}
                     (process.env.NODE_ENV: {process.env.NODE_ENV})

@@ -1,8 +1,10 @@
 node_modules
-dist
+build
 _temp
 webpack.config.js
 package.json
 package-lock.json
-src/app/index.html
-src/app/App.tsx
+setupEnzyme.ts
+jest.config.js
+**/*.css
+**/*.html

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import * as utils from 'src/app/utils/utils';
-import * as state from 'src/app/components/GlobalState';
+import * as utils from 'app/utils/utils';
+import * as state from 'app/components/GlobalState';
 
 setInterval(() => {
     const useableState = state.globalStateRef.useState(false);
-    useableState.set(p => {
+    useableState.set((p) => {
         p.someNr = p.someNr * 2;
         return p;
     });
@@ -29,7 +29,7 @@ export const ReactWrapperExample = (): React.ReactElement<Props> => {
             <b>1. Counter value: {globalState.value.someNr}</b> (watch *2 every 4 seconds){' '}
             <button
                 onClick={(): void => {
-                    globalState.set(p => {
+                    globalState.set((p) => {
                         p.someNr = p.someNr + 1;
                         return p;
                     });
@@ -42,7 +42,7 @@ export const ReactWrapperExample = (): React.ReactElement<Props> => {
             <button
                 onClick={async (): Promise<void> => {
                     await utils.delay((): void => console.log('xxx'), 2000);
-                    globalState.set(p => {
+                    globalState.set((p) => {
                         p.otherNr = p.otherNr + 3;
                         return p;
                     });

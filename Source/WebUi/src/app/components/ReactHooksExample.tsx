@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createStateLink, useStateLink, useStateLinkUnmounted } from '@hookstate/core';
-import * as utils from 'src/app/utils/utils';
+import * as utils from 'app/utils/utils';
 
 const stateRef = createStateLink(0);
 
@@ -8,7 +8,7 @@ const stateRef2 = createStateLink(77);
 
 setInterval(() => {
     const useableState = useStateLinkUnmounted(stateRef);
-    useableState.set(p => p + 1);
+    useableState.set((p) => p + 1);
 }, 3000);
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -34,7 +34,7 @@ export const ReactHooksExample = (): React.ReactElement<Props> => {
                 <button
                     onClick={(): void => {
                         console.log('simple increment clicked');
-                        state.set(p => p + 1);
+                        state.set((p) => p + 1);
                     }}
                 >
                     Increment
@@ -46,8 +46,8 @@ export const ReactHooksExample = (): React.ReactElement<Props> => {
                 <button
                     onClick={async (): Promise<void> => {
                         await utils.delay((): void => console.log('increment by 2 clicked'), 2000);
-                        state2.set(p => p + 1);
-                        state2.set(p => {
+                        state2.set((p) => p + 1);
+                        state2.set((p) => {
                             p = p + 1;
                             return p;
                         });
