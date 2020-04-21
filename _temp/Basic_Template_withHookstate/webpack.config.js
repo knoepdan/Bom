@@ -130,6 +130,7 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: 'assets/index.html',
+      favicon: 'assets/favicon.ico',
       minify: {
         minifyJS: true,
         minifyCSS: true,
