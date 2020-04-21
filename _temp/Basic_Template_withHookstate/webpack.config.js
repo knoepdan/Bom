@@ -85,7 +85,7 @@ module.exports = {
             {
               oneOf: [
                   // static assets
-                  { test: /\.html$/, use: 'html-loader' },
+                  { test: /\.html$/, use: 'html-loader', exclude: /index\.html$/ },
                   { test: /\.(a?png|svg|jpg|gif)$/, use: 'url-loader?limit=10000' },
                   {
                       test: /\.(jpe?g|gif|bmp|mp3|mp4|ogg|wav|eot|ttf|woff|woff2)$/,
@@ -135,6 +135,13 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: 'assets/index.html',
             favicon: 'assets/favicon.ico',
+            scriptLoading: 'defer',
+            title: 'React template',
+            /* // nice custom logic:  // custom logic: https://github.com/jaketrent/html-webpack-template/tree/86f285d5c790a6c15263f5cc50fd666d51f974fd
+            googleAnalytics: {
+              trackingId: 'UA-XXXX-XX'
+            },
+            */
             minify: {
                 minifyJS: true,
                 minifyCSS: true,

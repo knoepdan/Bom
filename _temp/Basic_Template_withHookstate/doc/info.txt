@@ -13,6 +13,19 @@ Requirements:
 - Build with minification
 - No major obstacles for a growing application
 
+wanted extensions (todo): 
+- minification of css
+- example of splitting js (and maybe css) into junks for performance
+- manifest etc. 
+- mobile icons (https://github.com/jantimon/favicons-webpack-plugin)
+
+other possible extensions (maybe not for this template): 
+- remove babel as unnecessary dependency (maybe still needed and very low priority)
+- tests (jest)
+- extended environment variables (probably not needed)
+- uglification (to some degree already achieved, most probably not needed)
+- typing for css (if possible: https://github.com/Jimdo/typings-for-css-modules-loader)
+
 Possible extensions: 
 - remove unnecessary dependencies (@types/history, gh-pages, babel?)
 - tests (jest)
@@ -44,6 +57,7 @@ Possible extensions:
 		https://www.npmjs.com/package/jest-css-modules
 6. State with ReactHooks
 	https://github.com/avkonst/hookstate#quick-start
+7. examples in code: favicon, usage of images including adding Ts support for images in global.d.ts, global css using css modules
 
 
 
@@ -79,7 +93,7 @@ https://www.npmjs.com/package/react-webpack-typescript-starter
     https://www.jackfranklin.co.uk/blog/css-modules-webpack-react/ (2016, old)
     https://medium.com/@dmitrynozhenko/9-ways-to-implement-css-in-react-js-ccea4d543aa3
     https://www.robinwieruch.de/react-css-modules (follow this one)
-- SASS
+- SASS (not used)
 	https://developerhandbook.com/webpack/how-to-configure-scss-modules-for-webpack/
 	https://github.com/WeAreAthlon/frontend-webpack-boilerplate (boilerplate with sass)
 	npm install --save-dev node-sass sass-loader style-loader css-loader mini-css-extract-plugin
