@@ -1,0 +1,4 @@
+{
+    "APIUrl": "https://localhost/SomeApi",
+    "TestEntry": "SomeEntryProdBuild"
+}
