@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Route, Link } from 'react-router-dom';
-import { RouterDemoDetails } from 'app/components/RouterDemoDetails';
-import css from 'app/components/RouterDemo.module.css';
+import { RouterDemoDetails } from 'app/dev/components/RouterDemoDetails';
+import css from './RouterDemo.module.css';
 
 export interface RouterDemoProps {
     compiler: string;

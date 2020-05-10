@@ -1,13 +1,13 @@
 import React, { Suspense } from 'react';
-import { Config } from 'app/utils/Config';
-import macroCss from 'app/style/global.macros.module.css';
+import { Config } from 'app/Config';
+import macroCss from 'style/global.macros.module.css';
 
 // Import component lazy load
 // (must have default export defined to work with typescript)
 // define react components in typescript:
 // - export default SimpleText as React.FC;
 // - export default SimpleTextAsClassComponent as React.ComponentType
-const SimpleText = React.lazy(() => import('app/components/SimpleText'));
+const SimpleText = React.lazy(() => import('app/dev/components/SimpleText'));
 
 /*
 // if there is no default export defined, module can still be imported lazy load

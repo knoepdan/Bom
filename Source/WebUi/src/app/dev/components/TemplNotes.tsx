@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Config } from 'app/utils/Config';
+import { Config } from 'app/Config';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props {}

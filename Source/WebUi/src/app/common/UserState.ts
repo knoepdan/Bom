@@ -1,5 +1,37 @@
-import * as state from 'app/utils/CustomState';
+import * as state from 'app/utils/State';
+import { Right } from 'app/common/Right';
 
+export interface UserState {
+    isLoggedIn: boolean;
+    username: string;
+
+    // more props
+    // - loggedInDate: Date;
+    // - permissions etc.
+}
+
+export class UserModel {
+    isLoggedIn: boolean = false;
+    username: string = '';
+    permissions = new Array<Right>();
+
+    public hasRight(right: Right): boolean {
+        return this.permissions.some((r) => r == right);
+    }
+
+    public logIn(user: string) {
+        this.username = user;
+        this.isLoggedIn = true;
+    }
+    public logOut() {
+        this.username = '';
+        this.isLoggedIn = false;
+    }
+}
+
+export const userStateRef = new state.StateRef(new UserModel());
+
+/*
 function getInitialGlobalState(): GlobalState {
     const g = {
         tempArray: [],
@@ -42,3 +74,5 @@ export interface GlobalUiState {
     username: string;
     loggedInDate: Date;
 }
+
+*/
