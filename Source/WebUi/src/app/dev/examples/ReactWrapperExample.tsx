@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as utils from 'app/utils/utils';
-import * as state from 'app/dev/components/GlobalState';
+import * as state from 'app/dev/examples/GlobalState';
 
 setInterval(() => {
     const useableState = state.globalStateRef.useState(false);

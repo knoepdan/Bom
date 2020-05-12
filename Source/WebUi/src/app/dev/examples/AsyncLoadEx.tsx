@@ -7,7 +7,7 @@ import macroCss from 'style/global.macros.module.css';
 // define react components in typescript:
 // - export default SimpleText as React.FC;
 // - export default SimpleTextAsClassComponent as React.ComponentType
-const SimpleText = React.lazy(() => import('app/dev/components/SimpleText'));
+const SimpleText = React.lazy(() => import('app/dev/examples/SimpleText'));
 
 /*
 // if there is no default export defined, module can still be imported lazy load

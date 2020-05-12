@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Route, Link } from 'react-router-dom';
-import { RouterDemoDetails } from 'app/dev/components/RouterDemoDetails';
+import { RouterDemoDetails } from 'app/dev/examples/RouterDemoDetails';
 import css from './RouterDemo.module.css';
 
 export interface RouterDemoProps {
@@ -9,6 +9,7 @@ export interface RouterDemoProps {
     bundler: string;
 }
 export const RouterDemo: React.FC<RouterDemoProps> = (props: RouterDemoProps) => {
+    const preRoute = '/dev/examples/router';
     return (
         <div>
             <span className={css.hello}>
@@ -16,17 +17,17 @@ export const RouterDemo: React.FC<RouterDemoProps> = (props: RouterDemoProps) =>
                 (process.env.NODE_ENV: {process.env.NODE_ENV}). And it showcases some basic router behavior.
             </span>
             <div>
-                <Route path="/router/:testid" exact component={RouterDemoDetails}></Route>
+                <Route path={preRoute + '/:testid'} exact component={RouterDemoDetails}></Route>
 
                 <ul>
                     <li>
-                        <Link to="/router/3"> Details '3'</Link>
+                        <Link to={preRoute + '/3'}> Details '3'</Link>
                     </li>
                     <li>
-                        <Link to="/router/xx"> Details 'xx'</Link>
+                        <Link to={preRoute + '/xx'}> Details 'xx'</Link>
                     </li>
                     <li>
-                        <Link to="/router/999"> Details '999'</Link>
+                        <Link to={preRoute + '/999'}> Details '999'</Link>
                     </li>
                 </ul>
             </div>
