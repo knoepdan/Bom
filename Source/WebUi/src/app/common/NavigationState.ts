@@ -42,16 +42,17 @@ export function getNavigation(user: UserModel): NavigationModel {
     navModel.topMenues.push(m);
     mainNav.addMainMenues(m);
 
-    // admin
-    let a = new MenuItem(null, 'Admin-Area');
-    navModel.topMenues.push(a);
-    adminNav.addAdminMenues(a);
+    if (user && user.isLoggedIn) {
+        // admin
+        let a = new MenuItem(null, 'Admin-Area');
+        navModel.topMenues.push(a);
+        adminNav.addAdminMenues(a);
 
-    // dev
-    let d = new MenuItem(null, 'Developer-Area');
-    navModel.topMenues.push(d);
-    devNav.addDevMenues(d);
-
+        // dev
+        let d = new MenuItem(null, 'Developer-Area');
+        navModel.topMenues.push(d);
+        devNav.addDevMenues(d);
+    }
     return navModel;
 }
 

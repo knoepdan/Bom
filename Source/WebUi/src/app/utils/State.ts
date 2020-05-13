@@ -1,4 +1,5 @@
 import * as state from '@hookstate/core';
+// Wrapper around hookstate
 
 export declare type SetStateAction<S> = (S | Promise<S>) | ((prevState: S) => S | Promise<S>);
 export class State<S> {

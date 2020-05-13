@@ -22,7 +22,7 @@ const SimpleText = lazy(() =>
 interface Props {}
 
 export async function handleButtonClick(s: string): Promise<void> {
-    const testutils = await import('app/utils/TestFunc');
+    const testutils = await import('app/dev/examples/utils/TestFunc');
     testutils.testAlertBox(s);
 }
 

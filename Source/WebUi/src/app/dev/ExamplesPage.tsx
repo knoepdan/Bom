@@ -22,6 +22,7 @@ export const ExamplesPage = (): React.ReactElement<Props> => {
     const preRoute = '/dev/examples/';
     return (
         <div>
+            Examples page <br />
             <nav>
                 <ul>
                     <li>

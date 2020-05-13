@@ -1,6 +1,6 @@
 import * as state from 'app/utils/State';
 
-function getInitialGlobalState(): GlobalState {
+function getInitialGlobalState(): GlobalExampleState {
     const g = {
         tempArray: [],
         boolVal: false,
@@ -12,7 +12,7 @@ function getInitialGlobalState(): GlobalState {
             subArray: [],
         },
     };
-    return g as GlobalState;
+    return g as GlobalExampleState;
 }
 
 export const globalStateRef = new state.StateRef(getInitialGlobalState());
@@ -29,7 +29,7 @@ export interface SubOb {
     subArray: Array<string>;
 }
 
-export interface GlobalState {
+export interface GlobalExampleState {
     tempArray: Array<ArrayContent>;
     boolVal: boolean;
     stringVal: string;

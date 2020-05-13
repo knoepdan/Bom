@@ -1,10 +1,10 @@
 import * as React from 'react';
 
 import macroCss from 'app/style/global.macros.module.css';
-import samplePng from 'app/img/samplePng.png';
-import sampleJpg from 'app/img/sampleJpg.jpg';
-import sampleGif from 'app/img/sampleGif.gif';
-import sampleSvg from 'app/img/sampleSvg.svg';
+import samplePng from 'app/dev/examples/img/samplePng.png';
+import sampleJpg from 'app/dev/examples/img/sampleJpg.jpg';
+import sampleGif from 'app/dev/examples/img/sampleGif.gif';
+import sampleSvg from 'app/dev/examples/img/sampleSvg.svg';
 
 const imgStyle = {
     maxHeight: '40px',

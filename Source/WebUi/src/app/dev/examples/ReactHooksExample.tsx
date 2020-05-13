@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createStateLink, useStateLink, useStateLinkUnmounted } from '@hookstate/core';
-import * as utils from 'app/utils/utils';
+import * as utils from 'app/utils/HelperFunc';
 
 const stateRef = createStateLink(0);
 

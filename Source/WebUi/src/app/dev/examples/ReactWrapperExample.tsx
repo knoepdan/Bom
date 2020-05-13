@@ -1,6 +1,6 @@
 import * as React from 'react';
-import * as utils from 'app/utils/utils';
-import * as state from 'app/dev/examples/GlobalState';
+import * as utils from 'app/utils/HelperFunc';
+import * as state from 'app/dev/examples/GlobalExampleState';
 
 setInterval(() => {
     const useableState = state.globalStateRef.useState(false);
