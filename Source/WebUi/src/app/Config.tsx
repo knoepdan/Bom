@@ -21,15 +21,9 @@ export class Config {
             // that is used for a developers that wants to test against some other api, 
             // but is reluctant to always change config that is tracked by source control
         */
-        let hostname = '/';
-        let w = window as any;
-        if (w && process.env.NODE_ENV != 'development') {
-            hostname = w.location.pathname; // eg: "/BomUI/"
-            if (w.basePathOfApp) {
-                hostname = w.basePathOfApp; // custom global variable -> if needed, must be during installation as we cannot know url during build
-            }
-        }
-        const result = await fetch(hostname + 'externalConfig.json'); // process.env.PUBLIC_URL + '/externalConfig.json'
+
+        // we rely that <base href="/PUBLIC_URL%/" /> is set correctly in index file (in dev "/" is normally correct in prod -> depends on environment)
+        const result = await fetch(document.baseURI + 'externalConfig.json');
         if (!result.ok) {
             throw new Error('Error loading config'); // improve: more info about error
         }

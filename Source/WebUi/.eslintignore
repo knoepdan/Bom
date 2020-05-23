@@ -8,3 +8,4 @@ setupEnzyme.ts
 jest.config.js
 **/*.css
 **/*.html
+adaptForProduction.js
