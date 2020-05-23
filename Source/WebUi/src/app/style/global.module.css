@@ -1,7 +1,4 @@
-body {
-    background-color: rgb(173, 230, 182);
-}
-
+/* TESTS  */
 hr6 {
     background-color: rgb(173, 280, 182);
 }
@@ -9,4 +6,48 @@ hr6 {
 .test {
     color: red;
     background-color: whitesmoke;
+}
+
+/*--- Mobile And/Or All--*/
+body {
+    background-color: yellow;
+}
+.mobile {
+    visibility: visible;
+}
+
+/*--- Mobile Landscape --*/
+@media only screen and (min-width: 420px) {
+    body {
+        background-color: rgb(255, 254, 232);
+    }
+    .desktop {
+        visibility: hidden;
+    }
+}
+/*--- Tablet --*/
+@media only screen and (min-width: 641px) {
+    body {
+        background-color: rgb(173, 230, 182);
+    }
+
+    .desktop {
+        visibility: collapse;
+    }
+    .mobile {
+        visibility: collapse;
+    }
+}
+/*--- Desktop --*/
+@media only screen and (min-width: 961px) {
+    body {
+        background-color: rgb(206, 218, 255);
+    }
+
+    .desktop {
+        visibility: visible;
+    }
+    .mobile {
+        visibility: collapse;
+    }
 }
