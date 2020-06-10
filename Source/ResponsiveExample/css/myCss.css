@@ -4,17 +4,19 @@
   background-color: #f1f1f1 !important;
 }
 
-/*  https://www.mediaevent.de/tutorial/css-transform.html */
+/* 
+ ## START Hamburger ##
+https://www.mediaevent.de/tutorial/css-transform.html */
 
 label.hamburg {
   display: block;
   background: #555;
-  width: 75px;
-  height: 50px;
+  width: 45px;
+  height: 30px; /* orig 50 */
   position: relative;
   margin-left: auto;
   margin-right: auto;
-  border-radius: 4px;
+  border-radius: 2px;
 }
 
 input#hamburg {
@@ -23,9 +25,9 @@ input#hamburg {
 
 .line {
   position: absolute;
-  left: 10px;
-  height: 4px;
-  width: 55px;
+  left: 5px;
+  height: 2px;
+  width: 35px;
   background: #fff;
   border-radius: 2px;
   display: block;
@@ -34,17 +36,17 @@ input#hamburg {
 }
 
 .line:nth-child(1) {
-  top: 12px;
+  top: 7px;
 }
 .line:nth-child(2) {
-  top: 24px;
+  top: 14px;
 }
 .line:nth-child(3) {
-  top: 36px;
+  top: 21px;
 }
 
 #hamburg:checked + .hamburg .line:nth-child(1) {
-  transform: translateY(12px) rotate(-45deg);
+  transform: translateY(7px) rotate(-45deg);
 }
 
 #hamburg:checked + .hamburg .line:nth-child(2) {
@@ -52,5 +54,9 @@ input#hamburg {
 }
 
 #hamburg:checked + .hamburg .line:nth-child(3) {
-  transform: translateY(-12px) rotate(45deg);
+  transform: translateY(-7px) rotate(45deg);
 }
+
+/* 
+ ## END Hamburger ##
+https://www.mediaevent.de/tutorial/css-transform.html */
