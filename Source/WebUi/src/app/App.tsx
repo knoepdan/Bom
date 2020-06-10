@@ -1,5 +1,6 @@
 // include css in top component in correct order (to mimick a global css)
 // styles have to be applied value. Example:  className={macroCss.pt2}
+import css from 'app/style/global.module.css';
 import macroCss from 'app/style/global.macros.module.css';
 
 // app
@@ -58,35 +59,46 @@ export const App = (): React.ReactElement => {
         baseHref = baseTag[0].dataset.href; // example base tag: <base href="/app" data-href="/app" />    (for dev "/" is normally ok)
     }
     return (
-        <div className={macroCss.p2}>
-            <div>
-                <Login></Login>
-            </div>
+        <div>
+            <header>
+                <div className={css.topBar}>
+                    <div className={css.topBarAccount}>Admin</div>
+                </div>
+            </header>
+            <br />
+            <br />
+            <br />
+            <br />
+            <div className={macroCss.p2}>
+                <div>
+                    <Login></Login>
+                </div>
 
-            <div>
-                <BrowserRouter basename={baseHref}>
-                    <nav>
-                        <ul>
-                            {navModel.topMenues.map((topNav, index) => (
-                                <li key={index}>{areaNav(topNav)}</li>
-                            ))}
-                        </ul>
-                    </nav>
+                <div>
+                    <BrowserRouter basename={baseHref}>
+                        <nav>
+                            <ul>
+                                {navModel.topMenues.map((topNav, index) => (
+                                    <li key={index}>{areaNav(topNav)}</li>
+                                ))}
+                            </ul>
+                        </nav>
 
-                    <div>
-                        <h5>Content-Area</h5>
-                        <Switch>
-                            {navModel.getRoutes().map((route, index) => (
-                                <Route
-                                    key={index}
-                                    path={route.getRoute()}
-                                    exact={route.exact}
-                                    component={route.getComponent()}
-                                />
-                            ))}
-                        </Switch>
-                    </div>
-                </BrowserRouter>
+                        <div>
+                            <h5>Content-Area</h5>
+                            <Switch>
+                                {navModel.getRoutes().map((route, index) => (
+                                    <Route
+                                        key={index}
+                                        path={route.getRoute()}
+                                        exact={route.exact}
+                                        component={route.getComponent()}
+                                    />
+                                ))}
+                            </Switch>
+                        </div>
+                    </BrowserRouter>
+                </div>
             </div>
         </div>
     );

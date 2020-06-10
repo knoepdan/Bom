@@ -1,11 +1,48 @@
-/* TESTS  */
-hr6 {
-    background-color: rgb(173, 280, 182);
+div {
+    box-sizing: border-box;
+}
+span {
+    box-sizing: border-box;
+}
+body {
+    box-sizing: border-box;
+}
+header {
+    box-sizing: border-box;
+}
+footer {
+    box-sizing: border-box;
 }
 
-.test {
-    color: red;
+/*--- variables--*/
+:root {
+    --diff-lines: black;
+
+    --main-bg-color: brown;
+}
+
+/*--- global settings--*/
+html {
+    font-family: Calibri, Verdana, Arial;
+}
+
+/*--- main layout and navigation ---*/
+
+.topBar {
+    min-height: 25px;
+
+    width: 100%;
+    border-bottom: 1px;
+    border-bottom-style: solid;
+    border-color: var(--diff-lines);
+    padding: 4px 4px;
+
     background-color: whitesmoke;
+}
+
+.topBarAccount {
+    float: left;
+    margin: 2px;
 }
 
 /*--- Mobile And/Or All--*/
@@ -50,4 +87,14 @@ body {
     .mobile {
         visibility: collapse;
     }
+}
+
+/* TESTS  */
+hr6 {
+    background-color: rgb(173, 280, 182);
+}
+
+.test {
+    color: red;
+    background-color: whitesmoke;
 }
