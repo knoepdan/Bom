@@ -9,54 +9,141 @@
 https://www.mediaevent.de/tutorial/css-transform.html */
 
 label.hamburg {
+  position: relative;
   display: block;
-  background: #555;
   width: 45px;
   height: 30px; /* orig 50 */
-  position: relative;
-  margin-left: auto;
   margin-right: auto;
+  margin-left: auto;
   border-radius: 2px;
+  background: #555;
 }
 
 input#hamburg {
   display: none;
 }
 
-.line {
+.hambLine {
   position: absolute;
+  display: block;
   left: 5px;
   height: 2px;
   width: 35px;
-  background: #fff;
   border-radius: 2px;
-  display: block;
+  background: #fff;
   transition: 0.5s;
   transform-origin: center;
 }
 
-.line:nth-child(1) {
+.hambLine:nth-child(1) {
   top: 7px;
 }
-.line:nth-child(2) {
+.hambLine:nth-child(2) {
   top: 14px;
 }
-.line:nth-child(3) {
+.hambLine:nth-child(3) {
   top: 21px;
 }
 
-#hamburg:checked + .hamburg .line:nth-child(1) {
+#hamburg:checked + .hamburg .hambLine:nth-child(1) {
   transform: translateY(7px) rotate(-45deg);
 }
 
-#hamburg:checked + .hamburg .line:nth-child(2) {
+#hamburg:checked + .hamburg .hambLine:nth-child(2) {
   opacity: 0;
 }
 
-#hamburg:checked + .hamburg .line:nth-child(3) {
+#hamburg:checked + .hamburg .hambLine:nth-child(3) {
   transform: translateY(-7px) rotate(45deg);
 }
 
 /* 
  ## END Hamburger ##
 https://www.mediaevent.de/tutorial/css-transform.html */
+
+/* top */
+.topBar {
+  width: 100%;
+  overflow: hidden;
+
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+
+  font-size: 18px !important;
+  color: #fff !important;
+  background-color: #000 !important;
+}
+
+.hambButton {
+  padding: 8px 16px;
+  float: left;
+  width: auto;
+  border: none;
+  display: block;
+  outline: 0;
+
+  white-space: normal;
+  background-color: transparent !important;
+}
+
+.hambButton:hover {
+  background-color: transparent !important;
+}
+
+.account {
+  padding: 8px 16px;
+  float: left;
+  width: auto;
+  border: none;
+  display: block;
+  outline: 0;
+
+  float: right;
+}
+
+@media (min-width: 993px) {
+  .hideLarge {
+    display: none !important;
+  }
+}
+
+/*
+
+.w3-bar {
+  width: 100%;
+  overflow: hidden;
+}
+
+.w3-top,
+.w3-bottom {
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+}
+.w3-top {
+  top: 0;
+}
+*/
+/*
+.w3-black,
+.w3-hover-black:hover {
+  color: #fff !important;
+  background-color: #000 !important;
+}
+.w3-large {
+  font-size: 18px !important;
+}
+*/
+
+/*
+.w3-bar .w3-bar-item {
+  padding: 8px 16px;
+  float: left;
+  width: auto;
+  border: none;
+  display: block;
+  outline: 0;
+}
+*/
