@@ -4,9 +4,73 @@
   background-color: #f1f1f1 !important;
 }
 
+/*  basic stuff */
+html,
+body {
+  font-family: sans-serif, Verdana;
+  font-size: 15px;
+  line-height: 1.5;
+}
+html {
+  overflow-x: hidden;
+}
+h1 {
+  font-size: 36px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 20px;
+}
+h5 {
+  font-size: 18px;
+}
+h6 {
+  font-size: 16px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-weight: 400;
+  margin: 10px 0;
+}
+.w3-wide {
+  letter-spacing: 4px;
+}
+hr {
+  border: 0;
+  border-top: 1px solid #eee;
+  margin: 20px 0;
+}
+
 /* 
  ## START Hamburger ##
 https://www.mediaevent.de/tutorial/css-transform.html */
+
+.hambButton {
+  padding: 8px 16px;
+  float: left;
+  width: auto;
+  border: none;
+  display: block;
+  outline: 0;
+
+  white-space: normal;
+  background-color: transparent !important;
+}
+
+.hambButton:hover {
+  background-color: transparent !important;
+}
 
 label.hamburg {
   position: relative;
@@ -70,26 +134,11 @@ https://www.mediaevent.de/tutorial/css-transform.html */
   top: 0;
   width: 100%;
   z-index: 1;
+  z-index: 4;
 
   font-size: 18px !important;
   color: #fff !important;
   background-color: #000 !important;
-}
-
-.hambButton {
-  padding: 8px 16px;
-  float: left;
-  width: auto;
-  border: none;
-  display: block;
-  outline: 0;
-
-  white-space: normal;
-  background-color: transparent !important;
-}
-
-.hambButton:hover {
-  background-color: transparent !important;
 }
 
 .account {
@@ -105,40 +154,58 @@ https://www.mediaevent.de/tutorial/css-transform.html */
 
 /* start sidebar */
 
-#mySidebar {
+#sideNav {
+  z-index: 3;
+  width: 300px;
+
   height: 100%;
-  width: 200px;
   background-color: #fff;
   position: fixed !important;
   z-index: 1;
   overflow: auto;
 
-
   color: #000 !important;
   background-color: #fff !important;
 }
 
-
-#mySidebar:hover {
+#sideNav:hover {
   color: #000 !important;
   background-color: #fff !important;
 }
 
 @media (min-width: 993px) {
-  #mySidebar {
+  #sideNav {
     display: block !important;
   }
 }
 
 @media (max-width: 992px) {
-  #mySidebar {
+  #sideNav {
     display: none;
   }
-
-
-
+}
 /* END sidebar */
 
+/* Start main content */
+
+@media (max-width: 992px) {
+  #mainContent {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+@media (min-width: 993px) {
+  #mainContent {
+    margin-left: 300px;
+  }
+}
+
+#mainContent {
+  margin-top: 43px;
+
+  transition: margin-left 0.4s;
+}
+/* End main content */
 
 .animateFromLeft {
   position: relative;
@@ -160,42 +227,3 @@ https://www.mediaevent.de/tutorial/css-transform.html */
     display: none !important;
   }
 }
-
-/*
-
-.w3-bar {
-  width: 100%;
-  overflow: hidden;
-}
-
-.w3-top,
-.w3-bottom {
-  position: fixed;
-  width: 100%;
-  z-index: 1;
-}
-.w3-top {
-  top: 0;
-}
-*/
-/*
-.w3-black,
-.w3-hover-black:hover {
-  color: #fff !important;
-  background-color: #000 !important;
-}
-.w3-large {
-  font-size: 18px !important;
-}
-*/
-
-/*
-.w3-bar .w3-bar-item {
-  padding: 8px 16px;
-  float: left;
-  width: auto;
-  border: none;
-  display: block;
-  outline: 0;
-}
-*/
