@@ -103,6 +103,58 @@ https://www.mediaevent.de/tutorial/css-transform.html */
   float: right;
 }
 
+/* start sidebar */
+
+#mySidebar {
+  height: 100%;
+  width: 200px;
+  background-color: #fff;
+  position: fixed !important;
+  z-index: 1;
+  overflow: auto;
+
+
+  color: #000 !important;
+  background-color: #fff !important;
+}
+
+
+#mySidebar:hover {
+  color: #000 !important;
+  background-color: #fff !important;
+}
+
+@media (min-width: 993px) {
+  #mySidebar {
+    display: block !important;
+  }
+}
+
+@media (max-width: 992px) {
+  #mySidebar {
+    display: none;
+  }
+
+
+
+/* END sidebar */
+
+
+.animateFromLeft {
+  position: relative;
+  animation: animateleft 0.4s;
+}
+@keyframes animateleft {
+  from {
+    left: -300px;
+    opacity: 0;
+  }
+  to {
+    left: 0;
+    opacity: 1;
+  }
+}
+
 @media (min-width: 993px) {
   .hideLarge {
     display: none !important;
