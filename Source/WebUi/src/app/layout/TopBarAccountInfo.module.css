@@ -1,0 +1,10 @@
+.account {
+    padding: 8px 16px;
+    float: left;
+    width: auto;
+    border: none;
+    display: block;
+    outline: 0;
+
+    float: right;
+}

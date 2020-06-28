@@ -1,0 +1,46 @@
+.sideNav {
+    z-index: 3;
+    width: 300px;
+
+    height: 100%;
+    background-color: #fff;
+    position: fixed !important;
+    z-index: 1;
+    overflow: auto;
+
+    color: var(--default-font-color, black);
+    background-color: #fff !important;
+}
+
+.sideNav:hover {
+    color: var(--default-font-color, black);
+    background-color: #fff !important;
+}
+
+/* media queries  (in the future, use env queries once browsers support them. example: (min-width: var(--desktop-limit-min, 993px))...*/
+@media (min-width: 993px) {
+    .sideNav {
+        display: block !important;
+    }
+}
+
+@media (max-width: 992px) {
+    .sideNav {
+        display: none;
+    }
+}
+
+.animateFromLeft {
+    position: relative;
+    animation: animateleft 0.4s;
+}
+@keyframes animateleft {
+    from {
+        left: -300px;
+        opacity: 0;
+    }
+    to {
+        left: 0;
+        opacity: 1;
+    }
+}

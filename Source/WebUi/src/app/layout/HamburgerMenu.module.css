@@ -1,0 +1,64 @@
+.hambButton {
+    padding: 8px 16px;
+    float: left;
+    width: auto;
+    border: none;
+    display: block;
+    outline: 0;
+
+    white-space: normal;
+    background-color: transparent !important;
+}
+
+.hambButton:hover {
+    background-color: transparent !important;
+}
+
+label.hamburg {
+    position: relative;
+    display: block;
+    width: 45px;
+    height: 30px; /* orig 50 */
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 2px;
+    background: #555;
+}
+
+.hambLine {
+    position: absolute;
+    display: block;
+    left: 5px;
+    height: 2px;
+    width: 35px;
+    border-radius: 2px;
+    background: #fff;
+    transition: 0.5s;
+    transform-origin: center;
+}
+
+.hambLine:nth-child(1) {
+    top: 7px;
+}
+.hambLine:nth-child(2) {
+    top: 14px;
+}
+.hambLine:nth-child(3) {
+    top: 21px;
+}
+
+.hambCheckbox {
+    display: none;
+}
+
+.hambCheckbox:checked + .hamburg .hambLine:nth-child(1) {
+    transform: translateY(7px) rotate(-45deg);
+}
+
+.hambCheckbox:checked + .hamburg .hambLine:nth-child(2) {
+    opacity: 0;
+}
+
+.hambCheckbox:checked + .hamburg .hambLine:nth-child(3) {
+    transform: translateY(-7px) rotate(45deg);
+}

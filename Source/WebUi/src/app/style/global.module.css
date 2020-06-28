@@ -1,95 +1,138 @@
-div {
-    box-sizing: border-box;
-}
-span {
-    box-sizing: border-box;
-}
-body {
-    box-sizing: border-box;
-}
-header {
-    box-sizing: border-box;
-}
-footer {
-    box-sizing: border-box;
-}
-
 /*--- variables--*/
 :root {
-    --diff-lines: black;
+    --default-border: #000;
+    --default-font-color: #000;
 
-    --main-bg-color: brown;
+    /* responsive limits (attention, wont work in variables!!) 
+    -> these variables can therefore not be used in media queries and are mainly just to look up the limits!!
+    -> in the future env might be used to centralize these limits 
+    */
+    --mobile-limit-max: 640px;
+    --tablet-limit-min: 641px;
+    --tablet-limit-max: 992px;
+    --desktop-limit-min: 993px;
+}
+
+/*--- general global settings--*/
+body {
+    font-family: sans-serif, Verdana;
+    color: var(--default-font-color);
+    font-size: 15px;
+    line-height: 1.5;
+}
+html {
+    overflow-x: hidden;
+}
+
+/*
+h1 {
+    font-size: 36px;
+}
+h2 {
+    font-size: 30px;
+}
+h3 {
+    font-size: 24px;
+}
+h4 {
+    font-size: 20px;
+}*/
+h5 {
+    font-size: 18px;
+} /*
+h6 {
+    font-size: 16px;
+}*/
+
+hr {
+    border: 0;
+    border-top: 1px solid #eee;
 }
 
 /*--- global settings--*/
-html {
-    font-family: Calibri, Verdana, Arial;
+.mainContent {
+    margin-top: 43px;
+    transition: margin-left 0.4s;
 }
 
-/*--- main layout and navigation ---*/
-
-.topBar {
-    min-height: 25px;
-
-    width: 100%;
-    border-bottom: 1px;
-    border-bottom-style: solid;
-    border-color: var(--diff-lines);
-    padding: 4px 4px;
-
-    background-color: whitesmoke;
-}
-
-.topBarAccount {
-    float: left;
-    margin: 2px;
-}
-
-/*--- Mobile And/Or All--*/
-body {
-    background-color: yellow;
-}
-.mobile {
-    visibility: visible;
-}
-
-/*--- Mobile Landscape --*/
-@media only screen and (min-width: 420px) {
-    body {
-        background-color: rgb(255, 254, 232);
-    }
-    .desktop {
-        visibility: hidden;
-    }
-}
-/*--- Tablet --*/
-@media only screen and (min-width: 641px) {
-    body {
-        background-color: rgb(173, 230, 182);
-    }
-
-    .desktop {
-        visibility: collapse;
-    }
-    .mobile {
-        visibility: collapse;
-    }
-}
-/*--- Desktop --*/
-@media only screen and (min-width: 961px) {
-    body {
-        background-color: rgb(206, 218, 255);
-    }
-
-    .desktop {
+/* Mobile only (media query would not really be necessary as css would be overwritten by later css, but we leave it here for clarity */
+@media (max-width: 640px) {
+    .mobileOnly {
         visibility: visible;
     }
-    .mobile {
+    .tabletAndSmaller {
+        visibility: collapse;
+    }
+    .tabletOnly {
+        visibility: collapse;
+    }
+    .tabletAndBigger {
+        visibility: collapse;
+    }
+    .desktopOnly {
         visibility: collapse;
     }
 }
 
-/* TESTS  */
+/* Mobile and Tablet */
+@media (max-width: 992px) {
+    .tabletAndSmaller {
+        visibility: visible;
+    }
+
+    /* specific */
+    .mainContent {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+/* Tablet */
+@media (min-width: 641px) and (max-width: 992px) {
+    .mobileOnly {
+        visibility: collapse;
+    }
+    .tabletOnly {
+        visibility: visible;
+    }
+}
+
+/* Tablet and desktop*/
+@media (min-width: 641px) {
+    .tabletAndBigger {
+        visibility: visible;
+    }
+}
+
+/* Desktop*/
+@media (min-width: 993px) {
+    .mobileOnly {
+        visibility: collapse;
+    }
+    .tabletAndSmaller {
+        visibility: collapse;
+    }
+    .tabletOnly {
+        visibility: collapse;
+    }
+    .desktopOnly {
+        visibility: visible;
+    }
+
+    /* specific */
+    .mainContent {
+        margin-left: 300px;
+    }
+}
+
+@media (max-width: 992px) {
+    .mainContent {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+/* ######### START TESTS ######### */
 hr6 {
     background-color: rgb(173, 280, 182);
 }
@@ -98,3 +141,22 @@ hr6 {
     color: red;
     background-color: whitesmoke;
 }
+
+@media (max-width: 640px) {
+    body {
+        background-color: rgb(255, 254, 232);
+    }
+}
+
+@media (min-width: 641px) and (max-width: 992px) {
+    body {
+        background-color: rgb(173, 230, 182);
+    }
+}
+@media (min-width: 993px) {
+    body {
+        background-color: rgb(206, 218, 255);
+    }
+}
+
+/* ######### END TESTS ######### */
