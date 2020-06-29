@@ -3,7 +3,7 @@ import css from './SideNav.module.css';
 import macroCss from 'app/style/global.macros.module.css';
 import * as userState from 'app/common/UserState';
 import * as nav from 'app/common/NavigationState';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props {}
@@ -17,14 +17,16 @@ export const SideNav = (): React.ReactElement<Props> => {
 
     return (
         <nav className={css.animateFromLeft + ' ' + css.sideNav} id={SideNavHtmlId}>
-            <div className={macroCss.pl5}>
-                <h5>Birdview</h5>
+            <div className={macroCss.pl10}>
+                <h1>Birdview</h1>
             </div>
             <hr />
 
             <ul>
                 {navModel.topMenues.map((topNav, index) => (
-                    <AreaNav topNav={topNav}></AreaNav>
+                    <li className={macroCss.p10}>
+                        <AreaNav topNav={topNav}></AreaNav>
+                    </li>
                 ))}
             </ul>
         </nav>
@@ -54,21 +56,33 @@ const AreaNav = (props: AreaNavProps): React.ReactElement<AreaNavProps> => {
     let subLink = (subNav: nav.MenuItem): React.ReactElement => {
         if (subNav.route && subNav.route.getRoute()) {
             return (
-                <Link to={subNav.route.getRoute()}>
+                <NavLink to={subNav.route.getRoute()} activeClassName={css.navActive}>
                     {subNav.label} ( {subNav.route.getRoute()} )
-                </Link>
+                </NavLink>
             );
         } else {
             return <span>{subNav.label}</span>;
         }
     };
 
+    const onLiClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+        e.stopPropagation();
+        let el: any = e.target;
+        let l: HTMLLinkElement = el.querySelector('a');
+        if (l) {
+            l.click();
+        }
+        return false;
+    };
+
     return (
-        <div>
-            <h5 className={macroCss.pl5}>{props.topNav.label}</h5>
+        <div className={css.navArea}>
+            <h2>{props.topNav.label}</h2>
             <ul>
                 {props.topNav.children.map((childMenu, index) => (
-                    <li key={index}>{subLink(childMenu)}</li>
+                    <li key={index} onClick={onLiClick}>
+                        {subLink(childMenu)}
+                    </li>
                 ))}
             </ul>
         </div>

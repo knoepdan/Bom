@@ -3,6 +3,19 @@
     --default-border: #000;
     --default-font-color: #000;
 
+    --header-bck-color: #000;
+    --header-font-color: #fff;
+
+    --nav-bck-color: #fff;
+    --nav-font-color: #000;
+    --nav-hover-bck-color: #efefef;
+
+    /* font size */
+    --default-font-size: 1rem;
+    --title-font-size: 1.15rem;
+    --bigtitle-font-size: 1.4rem;
+    --secondary-font-size: 0.8rem;
+
     /* responsive limits (attention, wont work in variables!!) 
     -> these variables can therefore not be used in media queries and are mainly just to look up the limits!!
     -> in the future env might be used to centralize these limits 
@@ -14,35 +27,30 @@
 }
 
 /*--- general global settings--*/
+html {
+    overflow-x: hidden;
+    font-size: 16px;
+}
 body {
     font-family: sans-serif, Verdana;
     color: var(--default-font-color);
-    font-size: 15px;
     line-height: 1.5;
-}
-html {
-    overflow-x: hidden;
+    font-size: var(--default-font-size, 16px);
 }
 
-/*
+input[type='text'] {
+    font-size: 1rem;
+}
+select {
+    font-size: 1rem;
+}
+
 h1 {
-    font-size: 36px;
+    font-size: var(--bigtitle-font-size, 2rem);
 }
 h2 {
-    font-size: 30px;
+    font-size: var(--title-font-size, 2rem);
 }
-h3 {
-    font-size: 24px;
-}
-h4 {
-    font-size: 20px;
-}*/
-h5 {
-    font-size: 18px;
-} /*
-h6 {
-    font-size: 16px;
-}*/
 
 hr {
     border: 0;

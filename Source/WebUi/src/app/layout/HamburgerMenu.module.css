@@ -32,7 +32,7 @@ label.hamburg {
     height: 2px;
     width: 35px;
     border-radius: 2px;
-    background: #fff;
+    background: var(--header-font-color, #fff);
     transition: 0.5s;
     transform-origin: center;
 }
