@@ -1,7 +1,9 @@
 import * as state from 'app/utils/State';
 
+import * as React from 'react';
 import { UserModel } from 'app/common/UserState';
-//import { Right } from 'app/common/Right';
+import { LoginPage } from 'app/LoginPage';
+import { Right } from 'app/common/Right';
 import * as mainNav from 'app/main/MainNavigation';
 import * as adminNav from 'app/admin/AdminNavigation';
 import * as devNav from 'app/dev/DevNavigation';
@@ -32,10 +34,21 @@ export class RouteInfo implements IRoute {
         };
     }
 }
-//(n: number) => any
+
+export class Routes {
+    public static readonly LoginRoute = new RouteInfo('/login', React.createElement(LoginPage));
+
+    // just the routes
+    public static readonly PublicMainTo = '/main/entry';
+}
 
 export function getNavigation(user: UserModel): NavigationModel {
     let navModel = new NavigationModel();
+
+    // login
+    let loginMenu = new MenuItem(null, 'Login');
+    loginMenu.route = Routes.LoginRoute;
+    navModel.topMenues.push(loginMenu);
 
     // main
     let m = new MenuItem(null, 'Main-Area');
@@ -44,14 +57,18 @@ export function getNavigation(user: UserModel): NavigationModel {
 
     if (user && user.isLoggedIn) {
         // admin
-        let a = new MenuItem(null, 'Admin-Area');
-        navModel.topMenues.push(a);
-        adminNav.addAdminMenues(a);
+        if (user.hasRight(Right.AdminArea)) {
+            let a = new MenuItem(null, 'Admin-Area');
+            navModel.topMenues.push(a);
+            adminNav.addAdminMenues(a);
+        }
 
         // dev
-        let d = new MenuItem(null, 'Developer-Area');
-        navModel.topMenues.push(d);
-        devNav.addDevMenues(d);
+        if (user.hasRight(Right.DevArea)) {
+            let d = new MenuItem(null, 'Developer-Area');
+            navModel.topMenues.push(d);
+            devNav.addDevMenues(d);
+        }
     }
     return navModel;
 }

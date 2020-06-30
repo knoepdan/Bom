@@ -9,7 +9,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 // main stuff
 import { TopBar } from 'app/layout/TopBar';
-import { Login } from 'app/Login';
+//import { LoginPage } from 'app/LoginPage';
 import * as userState from 'app/common/UserState';
 import * as nav from 'app/common/NavigationState';
 import { SideNav } from './layout/SideNav';
@@ -39,8 +39,6 @@ export const App = (): React.ReactElement => {
                 <SideNav />
                 <div className={css.mainContent}>
                     <div className={macroCss.p2}>
-                        <Login></Login>
-                        <br />
                         <Switch>
                             {navModel.getRoutes().map((route, index) => (
                                 <Route

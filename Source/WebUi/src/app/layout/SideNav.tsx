@@ -24,7 +24,7 @@ export const SideNav = (): React.ReactElement<Props> => {
 
             <ul>
                 {navModel.topMenues.map((topNav, index) => (
-                    <li className={macroCss.p10}>
+                    <li key={index} className={macroCss.p10}>
                         <AreaNav topNav={topNav}></AreaNav>
                     </li>
                 ))}
