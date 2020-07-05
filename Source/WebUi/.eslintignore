@@ -8,4 +8,9 @@ setupEnzyme.ts
 jest.config.js
 **/*.css
 **/*.html
+**/*.png
+**/*.gif
+**/*.jpg
+**/*.svg
+**/*.ico
 adaptForProduction.js
