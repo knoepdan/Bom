@@ -19,11 +19,11 @@ export class UserModel {
         return this.permissions.some((r) => r == right);
     }
 
-    public logIn(user: string) {
+    public logIn(user: string): void {
         this.username = user;
         this.isLoggedIn = true;
     }
-    public logOut() {
+    public logOut(): void {
         this.username = '';
         this.isLoggedIn = false;
     }

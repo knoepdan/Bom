@@ -15,7 +15,7 @@ if (false && normCss && macroCss && defaultCss) {
     console.log('');
 }
 Config.loadConfigFile(true)
-    .then((r) => {
+    .then(() => {
         ReactDOM.render(<App />, document.getElementById('root'));
     })
     .catch((ex) => {

@@ -29,9 +29,55 @@ export class RouteInfo implements IRoute {
         return this.route;
     }
     public getComponent(): () => JSX.Element {
-        return () => {
+        return (): JSX.Element => {
             return this.component;
         };
+    }
+}
+
+export class MenuItem {
+    constructor(parent: MenuItem | null, label: string, route: IRoute | null = null) {
+        this.parent = parent;
+        this.label = label;
+        this.route = route;
+        /*if (this.parent) { // must be done outsice
+            this.parent.children.push(this);
+        }*/
+    }
+
+    public parent: MenuItem | null = null;
+    public children: Array<MenuItem> = new Array<MenuItem>();
+    public label = '';
+    public route: IRoute | null = null;
+}
+
+export class NavigationModel {
+    public topMenues: Array<MenuItem> = new Array<MenuItem>();
+
+    /*
+    private _selected: MenuItem | null = null;
+    get selected(): MenuItem | null {
+        return this._selected;
+    }
+    set selected(value: MenuItem | null) {
+        this._selected = value;
+    }
+    */
+    private static getRoutesRec(a: Array<IRoute>, menu: MenuItem): void {
+        if (menu.route) {
+            a.push(menu.route);
+        }
+        for (const child of menu.children) {
+            NavigationModel.getRoutesRec(a, child);
+        }
+    }
+
+    public getRoutes(): Array<IRoute> {
+        const a = new Array<IRoute>();
+        for (const m of this.topMenues) {
+            NavigationModel.getRoutesRec(a, m);
+        }
+        return a;
     }
 }
 
@@ -71,52 +117,6 @@ export function getNavigation(user: UserModel): NavigationModel {
         }
     }
     return navModel;
-}
-
-export class NavigationModel {
-    public topMenues: Array<MenuItem> = new Array<MenuItem>();
-
-    /*
-    private _selected: MenuItem | null = null;
-    get selected(): MenuItem | null {
-        return this._selected;
-    }
-    set selected(value: MenuItem | null) {
-        this._selected = value;
-    }
-    */
-    private static getRoutesRec(a: Array<IRoute>, menu: MenuItem): void {
-        if (menu.route) {
-            a.push(menu.route);
-        }
-        for (const child of menu.children) {
-            NavigationModel.getRoutesRec(a, child);
-        }
-    }
-
-    public getRoutes(): Array<IRoute> {
-        const a = new Array<IRoute>();
-        for (const m of this.topMenues) {
-            NavigationModel.getRoutesRec(a, m);
-        }
-        return a;
-    }
-}
-
-export class MenuItem {
-    constructor(parent: MenuItem | null, label: string, route: IRoute | null = null) {
-        this.parent = parent;
-        this.label = label;
-        this.route = route;
-        /*if (this.parent) { // must be done outsice
-            this.parent.children.push(this);
-        }*/
-    }
-
-    public parent: MenuItem | null = null;
-    public children: Array<MenuItem> = new Array<MenuItem>();
-    public label = '';
-    public route: IRoute | null = null;
 }
 
 export const navStateRef = new state.StateRef(new NavigationModel());

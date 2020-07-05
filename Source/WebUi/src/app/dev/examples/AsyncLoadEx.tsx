@@ -32,7 +32,13 @@ export const AsyncLoadEx = (): React.ReactElement<Props> => {
         <div>
             <div>AsyncLoadComp :-) ({Config.TestEntry})</div>
             <div>
-                <button onClick={async () => await handleButtonClick('click ')}>Click button to load code async</button>
+                <button
+                    onClick={async (): Promise<void> => {
+                        await handleButtonClick('click ');
+                    }}
+                >
+                    Click button to load code async
+                </button>
             </div>
             <Suspense fallback={<div>Loading that will never be called</div>}>
                 <div className={macroCss.solidBox + ' ' + macroCss.p5}>

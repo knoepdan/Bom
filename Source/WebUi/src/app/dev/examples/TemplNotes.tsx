@@ -106,7 +106,9 @@ export const TemplNotes = (): React.ReactElement<Props> => {
             </ul>
             <h3>Global variables (like $ in JQuery)</h3>
             <ul>
-                <li>in code. 'import $ from 'jquery';global.$ = $;'</li>
+                <li>
+                    in code. {'"'}import $ from {'"'}jquery{'"'};global.$ = $;{'"'}
+                </li>
                 <li>see: https://symfonycasts.com/screencast/webpack-encore/external-libs</li>
                 <li>probably also possible to just store it to window object or similar (not tested)</li>
                 <li>Not recommended.. </li>

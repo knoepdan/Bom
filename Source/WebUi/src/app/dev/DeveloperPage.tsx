@@ -11,26 +11,26 @@ export const DeveloperPage = (): React.ReactElement<Props> => {
             <div>
                 <div>
                     Routing and loading does not yet work. <br />- with baseUrl: navigation routes probably have to be
-                    without "/" (check for side effects) <br />- clicking on same route should not lead to a route that
+                    without / (check for side effects) <br />- clicking on same route should not lead to a route that
                     gets bigger and bigger!!!
                     <br />- clicking on browser link should not kill the base part: http://localhost/BomUi/ url should
                     NOT become: http://localhost/main (but http://localhost/BomUi/main)
                     <br />
                     <br />
-                    Tests with base url set ("../image.png" or "images/bla.png" are relative. urls starting with slashes
-                    are absolute paths)
+                    Tests with base url set ({'"'}../image.png{'"'} or {'"'}images/bla.png{'"'} are relative. urls
+                    starting with slashes are absolute paths)
                     <ul>
                         <li>
-                            router url: "main/entry" url becomes bigger with each click :
-                            "http://localhost/BomUi/main/main/main/main/main/entry"
+                            router url: {'"'}main/entry{'"'} url becomes bigger with each click:
+                            {'"'}http://localhost/BomUi/main/main/main/main/main/entry{'"'}
                         </li>
                         <li>
-                            router url: "./main/entry" url becomes bigger with each click :
-                            "http://localhost/BomUi/main/main/main/main/main/entry"
+                            router url: {'"'}./main/entry{'"'} url becomes bigger with each click :{'"'}
+                            http://localhost/BomUi/main/main/main/main/main/entry{'"'}
                         </li>
                         <li>
-                            router url: "/main/entry" url removes base tag part : "http://localhost/main/entry" (but
-                            does not become bigger) (without BomUI from base tag)
+                            router url: {'"'}/main/entry{'"'} url removes base tag part : http://localhost/main/entry
+                            (but does not become bigger) (without BomUI from base tag)
                         </li>
                     </ul>
                 </div>

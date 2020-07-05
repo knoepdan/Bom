@@ -21,13 +21,22 @@ export const RouterDemo: React.FC<RouterDemoProps> = (props: RouterDemoProps) =>
 
                 <ul>
                     <li>
-                        <Link to={preRoute + '/3'}> Details '3'</Link>
+                        <Link to={preRoute + '/3'}>
+                            {' '}
+                            Details {'"'}3{'"'}
+                        </Link>
                     </li>
                     <li>
-                        <Link to={preRoute + '/xx'}> Details 'xx'</Link>
+                        <Link to={preRoute + '/xx'}>
+                            {' '}
+                            Details {'"'}xx{'"'}
+                        </Link>
                     </li>
                     <li>
-                        <Link to={preRoute + '/999'}> Details '999'</Link>
+                        <Link to={preRoute + '/999'}>
+                            {' '}
+                            Details {'"'}999{'"'}
+                        </Link>
                     </li>
                 </ul>
             </div>

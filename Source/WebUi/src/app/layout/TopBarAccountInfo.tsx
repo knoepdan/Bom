@@ -12,7 +12,7 @@ export const TopBarAccountInfo = (): React.ReactElement<Props> => {
     const userState = state.userStateRef.useState();
     const history = useHistory(); // https://stackoverflow.com/questions/31079081/programmatically-navigate-using-react-router
 
-    const handleLogoutClick = () => {
+    const handleLogoutClick = (): void => {
         const userState = state.userStateRef.useState(false);
         userState.set((userModel) => {
             userModel.logOut();
@@ -25,7 +25,13 @@ export const TopBarAccountInfo = (): React.ReactElement<Props> => {
     if (!userState.value.isLoggedIn) {
         loginInfo = <Link to={nav.Routes.LoginRoute.getRoute()}>Login</Link>;
     } else {
-        loginInfo = <a onClick={handleLogoutClick}>Logout '{userState.value.username}'</a>;
+        loginInfo = (
+            <a onClick={handleLogoutClick}>
+                Logout {"'"}
+                {userState.value.username}
+                {"'"}
+            </a>
+        );
     }
     return <span className={css.account}>{loginInfo}</span>;
 };

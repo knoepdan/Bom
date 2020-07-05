@@ -11,7 +11,7 @@ export const LoginPage = (): React.ReactElement => {
 
     const userState = state.userStateRef.useState();
 
-    const handleLoginClick = () => {
+    const handleLoginClick = (): void => {
         const userState = state.userStateRef.useState(false);
         userState.set((userModel) => {
             userModel.logIn(username);
@@ -23,7 +23,7 @@ export const LoginPage = (): React.ReactElement => {
         });
     };
 
-    const handleLogoutClick = () => {
+    const handleLogoutClick = (): void => {
         const userState = state.userStateRef.useState(false);
         userState.set((userModel) => {
             userModel.logOut();
@@ -31,7 +31,7 @@ export const LoginPage = (): React.ReactElement => {
         });
     };
 
-    let submitFn = () => {};
+    let submitFn = (): void => {};
     let controls;
     if (!userState.value.isLoggedIn) {
         submitFn = handleLoginClick;
@@ -45,7 +45,7 @@ export const LoginPage = (): React.ReactElement => {
                         type="text"
                         maxLength={255}
                         value={username}
-                        onChange={(e) => {
+                        onChange={(e): void => {
                             setUsername(e.target.value);
                         }}
                     ></input>
@@ -67,7 +67,7 @@ export const LoginPage = (): React.ReactElement => {
                         type="checkbox"
                         value="true"
                         checked={isAdmin}
-                        onChange={(e) => {
+                        onChange={(): void => {
                             setIsAdmin(!isAdmin);
                         }}
                     />{' '}
@@ -78,7 +78,9 @@ export const LoginPage = (): React.ReactElement => {
     } else {
         controls = (
             <div>
-                Your are currently logged in as '{userState.value.username}'. <br />
+                Your are currently logged in as {"'"}
+                {userState.value.username}
+                {"'"}. <br />
                 <br />
                 <button onClick={handleLogoutClick}>Logout</button>
             </div>
@@ -91,7 +93,7 @@ export const LoginPage = (): React.ReactElement => {
             <br />
             <br />
             <form
-                onSubmit={() => {
+                onSubmit={(): void => {
                     submitFn();
                 }}
             >

@@ -65,7 +65,7 @@ const AreaNav = (props: AreaNavProps): React.ReactElement<AreaNavProps> => {
         }
     };
 
-    const onLiClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+    const onLiClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>): void => {
         e.stopPropagation();
         const el: any = e.target;
         const l: HTMLLinkElement = el.querySelector('a');
