@@ -33,7 +33,6 @@ export const App = (): React.ReactElement => {
         baseHref = baseTag[0].dataset.href; // example base tag: <base href="/app" data-href="/app" />    (for dev "/" is normally ok)
     }
     return (
-        <div>
             <BrowserRouter basename={baseHref}>
                 <TopBar />
                 <SideNav />
@@ -52,7 +51,6 @@ export const App = (): React.ReactElement => {
                     </div>
                 </div>
             </BrowserRouter>
-        </div>
     );
 };
 

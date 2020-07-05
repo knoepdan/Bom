@@ -47,7 +47,7 @@ export const DeveloperPage = (): React.ReactElement<Props> => {
                     <li>
                         File structure something like this:
                         <br />
-                        area -> subfolder utils (maybe also further subdivision possible)
+                        area: subfolder utils (maybe also further subdivision possible)
                         <br />
                         utils (anything that has no business logic at all, could be reused in other projects
                         <br />
