@@ -6,10 +6,10 @@ import { ExamplesPage } from './ExamplesPage';
 
 export function addDevMenues<T>(topMenu: MenuItem): void {
     // developer
-    let devs = new MenuItem(topMenu, 'Devs', new RouteInfo('/dev/developers', React.createElement(DeveloperPage)));
+    const devs = new MenuItem(topMenu, 'Devs', new RouteInfo('/dev/developers', React.createElement(DeveloperPage)));
     topMenu.children.push(devs);
 
-    let ex = new MenuItem(
+    const ex = new MenuItem(
         topMenu,
         'Examples',
         new RouteInfo('/dev/examples', React.createElement(ExamplesPage), false),

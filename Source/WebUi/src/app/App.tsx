@@ -33,24 +33,24 @@ export const App = (): React.ReactElement => {
         baseHref = baseTag[0].dataset.href; // example base tag: <base href="/app" data-href="/app" />    (for dev "/" is normally ok)
     }
     return (
-            <BrowserRouter basename={baseHref}>
-                <TopBar />
-                <SideNav />
-                <div className={css.mainContent}>
-                    <div className={macroCss.p2}>
-                        <Switch>
-                            {navModel.getRoutes().map((route, index) => (
-                                <Route
-                                    key={index}
-                                    path={route.getRoute()}
-                                    exact={route.exact}
-                                    component={route.getComponent()}
-                                />
-                            ))}
-                        </Switch>
-                    </div>
+        <BrowserRouter basename={baseHref}>
+            <TopBar />
+            <SideNav />
+            <div className={css.mainContent}>
+                <div className={macroCss.p2}>
+                    <Switch>
+                        {navModel.getRoutes().map((route, index) => (
+                            <Route
+                                key={index}
+                                path={route.getRoute()}
+                                exact={route.exact}
+                                component={route.getComponent()}
+                            />
+                        ))}
+                    </Switch>
                 </div>
-            </BrowserRouter>
+            </div>
+        </BrowserRouter>
     );
 };
 

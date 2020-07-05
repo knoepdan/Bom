@@ -10,4 +10,4 @@ export const RouterDemoDetails: React.FC<RouterDemoDetailProps> = (props) => {
     );
 };
 
-interface RouterDemoDetailProps extends RouteComponentProps<{ testid: string }> {}
+type RouterDemoDetailProps = RouteComponentProps<{ testid: string }>;

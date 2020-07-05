@@ -4,7 +4,7 @@ import { EntryPage } from './EntryPage';
 import { PublicPage } from './PublicPage';
 
 export function addMainMenues<T>(topMenu: MenuItem): void {
-    let entry = new MenuItem(topMenu, 'Entry', new RouteInfo('/main/entry', React.createElement(EntryPage)));
+    const entry = new MenuItem(topMenu, 'Entry', new RouteInfo('/main/entry', React.createElement(EntryPage)));
     topMenu.children.push(entry);
 
     topMenu.children.push(

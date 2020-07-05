@@ -43,29 +43,29 @@ export class Routes {
 }
 
 export function getNavigation(user: UserModel): NavigationModel {
-    let navModel = new NavigationModel();
+    const navModel = new NavigationModel();
 
     // login
-    let loginMenu = new MenuItem(null, 'Login');
+    const loginMenu = new MenuItem(null, 'Login');
     loginMenu.route = Routes.LoginRoute;
     navModel.topMenues.push(loginMenu);
 
     // main
-    let m = new MenuItem(null, 'Main-Area');
+    const m = new MenuItem(null, 'Main-Area');
     navModel.topMenues.push(m);
     mainNav.addMainMenues(m);
 
     if (user && user.isLoggedIn) {
         // admin
         if (user.hasRight(Right.AdminArea)) {
-            let a = new MenuItem(null, 'Admin-Area');
+            const a = new MenuItem(null, 'Admin-Area');
             navModel.topMenues.push(a);
             adminNav.addAdminMenues(a);
         }
 
         // dev
         if (user.hasRight(Right.DevArea)) {
-            let d = new MenuItem(null, 'Developer-Area');
+            const d = new MenuItem(null, 'Developer-Area');
             navModel.topMenues.push(d);
             devNav.addDevMenues(d);
         }
@@ -89,14 +89,14 @@ export class NavigationModel {
         if (menu.route) {
             a.push(menu.route);
         }
-        for (let child of menu.children) {
+        for (const child of menu.children) {
             NavigationModel.getRoutesRec(a, child);
         }
     }
 
     public getRoutes(): Array<IRoute> {
-        let a = new Array<IRoute>();
-        for (let m of this.topMenues) {
+        const a = new Array<IRoute>();
+        for (const m of this.topMenues) {
             NavigationModel.getRoutesRec(a, m);
         }
         return a;
@@ -115,7 +115,7 @@ export class MenuItem {
 
     public parent: MenuItem | null = null;
     public children: Array<MenuItem> = new Array<MenuItem>();
-    public label: string = '';
+    public label = '';
     public route: IRoute | null = null;
 }
 

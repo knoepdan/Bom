@@ -9,7 +9,7 @@ interface Props {}
 // more or less random notes about webpack setup
 export const HamburgerMenu = (): React.ReactElement<Props> => {
     const handleClick = () => {
-        let sideNav = document.getElementById(SideNavHtmlId);
+        const sideNav = document.getElementById(SideNavHtmlId);
         if (sideNav) {
             if (sideNav.style.display === 'block') {
                 console.log('open sidenave -> set to none');

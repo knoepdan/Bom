@@ -32,7 +32,7 @@ export class Config {
     }
 
     static get isLoaded(): boolean {
-        let val = sessionStorage.getItem(confKey);
+        const val = sessionStorage.getItem(confKey);
         if (val) {
             return true;
         }
@@ -40,7 +40,7 @@ export class Config {
     }
 
     private static getConfig(): IConfig {
-        let val = sessionStorage.getItem(confKey);
+        const val = sessionStorage.getItem(confKey);
         if (val) {
             return JSON.parse(val);
         }

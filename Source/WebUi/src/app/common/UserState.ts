@@ -11,8 +11,8 @@ export interface UserState {
 }
 
 export class UserModel {
-    isLoggedIn: boolean = false;
-    username: string = '';
+    isLoggedIn = false;
+    username = '';
     permissions = new Array<Right>();
 
     public hasRight(right: Right): boolean {

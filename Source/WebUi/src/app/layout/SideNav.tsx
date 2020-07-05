@@ -53,7 +53,7 @@ interface AreaNavProps {
 }
 
 const AreaNav = (props: AreaNavProps): React.ReactElement<AreaNavProps> => {
-    let subLink = (subNav: nav.MenuItem): React.ReactElement => {
+    const subLink = (subNav: nav.MenuItem): React.ReactElement => {
         if (subNav.route && subNav.route.getRoute()) {
             return (
                 <NavLink to={subNav.route.getRoute()} activeClassName={css.navActive}>
@@ -67,8 +67,8 @@ const AreaNav = (props: AreaNavProps): React.ReactElement<AreaNavProps> => {
 
     const onLiClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
         e.stopPropagation();
-        let el: any = e.target;
-        let l: HTMLLinkElement = el.querySelector('a');
+        const el: any = e.target;
+        const l: HTMLLinkElement = el.querySelector('a');
         if (l) {
             l.click();
         }

@@ -8,13 +8,13 @@ export function addAdminMenues<T>(topMenu: MenuItem): void {
 
     //  // equals: <StatisticsPage> in jsx https://reactjs.org/docs/jsx-in-depth.html
 
-    let statistic = new MenuItem(topMenu, 'Statistics');
+    const statistic = new MenuItem(topMenu, 'Statistics');
     statistic.route = new RouteInfo('/admin/statistics', React.createElement(StatisticsPage)); //// equals: <StatisticsPage> in jsx https://reactjs.org/docs/jsx-in-depth.html
 
     topMenu.children.push(statistic);
 
     // users
-    let users = new MenuItem(topMenu, 'Users', new RouteInfo('/admin/users', React.createElement(UsersPage)));
+    const users = new MenuItem(topMenu, 'Users', new RouteInfo('/admin/users', React.createElement(UsersPage)));
     topMenu.children.push(users);
 }
 /*
