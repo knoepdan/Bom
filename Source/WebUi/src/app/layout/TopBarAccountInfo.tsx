@@ -3,18 +3,18 @@ import * as state from 'app/common/UserState';
 import * as nav from 'app/common/NavigationState';
 import { Link, useHistory } from 'react-router-dom';
 import css from './TopBarAccountInfo.module.css';
+import { useState as globalState } from '@hookstate/core';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props {}
 
 // more or less random notes about webpack setup
 export const TopBarAccountInfo = (): React.ReactElement<Props> => {
-    const userState = state.userStateRef.useState();
+    const userState = globalState(state.userStateRef);
     const history = useHistory(); // https://stackoverflow.com/questions/31079081/programmatically-navigate-using-react-router
 
     const handleLogoutClick = (): void => {
-        const userState = state.userStateRef.useState(false);
-        userState.set((userModel) => {
+        state.userStateRef.set((userModel) => {
             userModel.logOut();
             history.push(nav.Routes.PublicMainTo);
             return userModel;

@@ -74,7 +74,7 @@
         "@fortawesome/fontawesome-svg-core": "^1.2.29",
         "@fortawesome/free-solid-svg-icons": "^5.13.1",
         "@fortawesome/react-fontawesome": "^0.1.11",
-        "@hookstate/core": "^1.8.8",
+        "@hookstate/core": "^3.0.1",
         "classnames": "^2.2.6",
         "primeicons": "^2.0.0",
         "primereact": "^4.2.2",

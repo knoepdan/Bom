@@ -1,4 +1,4 @@
-import * as state from 'app/utils/State';
+import * as state from '@hookstate/core';
 import { Right } from 'app/common/Right';
 
 export interface UserState {
@@ -29,7 +29,7 @@ export class UserModel {
     }
 }
 
-export const userStateRef = new state.StateRef(new UserModel());
+export const userStateRef = state.createState(new UserModel());
 
 /*
 function getInitialGlobalState(): GlobalState {

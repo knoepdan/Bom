@@ -1,6 +1,22 @@
-import * as state from 'app/utils/State';
+import { BaseState } from 'app/dev/examples/utils/BaseState';
+import { State } from '@hookstate/core';
+import { SetStateAction } from 'react';
 
-function getInitialGlobalState(): GlobalExampleState {
+export class GlobalStateWrapper extends BaseState<GlobalState> {
+    constructor(s: GlobalState) {
+        super(s);
+    }
+    // overwrite wrapState to offer functions (often not needed, set/get are enough)
+    // often not needed, but then one would have to also set the basic methods like get/set again
+    protected wrapState = (s: State<GlobalState>) => ({
+        get: () => s.value,
+        set: (newValue: SetStateAction<GlobalState>) => {
+            s.set(newValue);
+        },
+    });
+}
+
+function getInitialGlobalState(): GlobalState {
     const g = {
         tempArray: [],
         boolVal: false,
@@ -12,12 +28,12 @@ function getInitialGlobalState(): GlobalExampleState {
             subArray: [],
         },
     };
-    return g as GlobalExampleState;
+    return g as GlobalState;
 }
 
-export const globalStateRef = new state.StateRef(getInitialGlobalState());
+export const globalStateRef = new GlobalStateWrapper(getInitialGlobalState());
 
-export const uiStateRef = new state.StateRef({ username: 'testuser', loggedInDate: new Date() });
+export const uiStateRef = new BaseState<GlobalUiState>({ username: 'testuser', loggedInDate: new Date() });
 
 export interface ArrayContent {
     title: string;
@@ -29,7 +45,7 @@ export interface SubOb {
     subArray: Array<string>;
 }
 
-export interface GlobalExampleState {
+export interface GlobalState {
     tempArray: Array<ArrayContent>;
     boolVal: boolean;
     stringVal: string;

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useState as globalState } from '@hookstate/core';
 import * as state from 'app/common/UserState';
 import { Right } from 'app/common/Right';
 import macroCss from 'app/style/global.macros.module.css';
@@ -9,11 +10,10 @@ export const LoginPage = (): React.ReactElement => {
     const [isAdmin, setIsAdmin] = useState(false);
     const [username, setUsername] = useState('');
 
-    const userState = state.userStateRef.useState();
+    const userState = globalState(state.userStateRef);
 
     const handleLoginClick = (): void => {
-        const userState = state.userStateRef.useState(false);
-        userState.set((userModel) => {
+        state.userStateRef.set((userModel) => {
             userModel.logIn(username);
             if (isAdmin) {
                 userModel.permissions.push(Right.AdminArea);
@@ -24,8 +24,7 @@ export const LoginPage = (): React.ReactElement => {
     };
 
     const handleLogoutClick = (): void => {
-        const userState = state.userStateRef.useState(false);
-        userState.set((userModel) => {
+        state.userStateRef.set((userModel) => {
             userModel.logOut();
             return userModel;
         });

@@ -4,6 +4,7 @@ import macroCss from 'app/style/global.macros.module.css';
 import * as userState from 'app/common/UserState';
 import * as nav from 'app/common/NavigationState';
 import { NavLink } from 'react-router-dom';
+import { useState as globalState } from '@hookstate/core';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props {}
@@ -12,7 +13,7 @@ export const SideNavHtmlId = 'sideNav';
 
 // more or less random notes about webpack setup
 export const SideNav = (): React.ReactElement<Props> => {
-    const userStateRef = userState.userStateRef.useState();
+    const userStateRef = globalState(userState.userStateRef);
     const navModel = nav.getNavigation(userStateRef.value);
 
     return (

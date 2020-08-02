@@ -3,7 +3,7 @@ import * as utils from 'app/utils/HelperFunc';
 import * as state from 'app/dev/examples/GlobalExampleState';
 
 setInterval(() => {
-    const useableState = state.globalStateRef.useState(false);
+    const useableState = state.globalStateRef.accessGlobalState();
     useableState.set((p) => {
         p.someNr = p.someNr * 2;
         return p;
@@ -14,19 +14,19 @@ setInterval(() => {
 interface Props {}
 
 export const ReactWrapperExample = (): React.ReactElement<Props> => {
-    const globalState = state.globalStateRef.useState();
+    const globalState = state.globalStateRef.useGlobalState();
 
-    const uiState = state.uiStateRef.useState();
+    const uiState = state.uiStateRef.useGlobalState();
 
     return (
         <div>
             <br />
             <br />
             <h3>Test with wrapped state</h3>
-            <div>{uiState.value.username}</div>
+            <div>{uiState.get().username}</div>
             <br />
             <br />
-            <b>1. Counter value: {globalState.value.someNr}</b> (watch *2 every 4 seconds){' '}
+            <b>1. Counter value: {globalState.get().someNr}</b> (watch *2 every 4 seconds){' '}
             <button
                 onClick={(): void => {
                     globalState.set((p) => {
@@ -38,7 +38,7 @@ export const ReactWrapperExample = (): React.ReactElement<Props> => {
                 Increment
             </button>
             <br />
-            <b>2. Counter value: {globalState.value.otherNr}</b>
+            <b>2. Counter value: {globalState.get().otherNr}</b>
             <button
                 onClick={async (): Promise<void> => {
                     await utils.delay((): void => console.log('xxx'), 2000);

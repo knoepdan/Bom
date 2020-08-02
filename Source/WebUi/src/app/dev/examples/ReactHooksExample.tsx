@@ -1,23 +1,22 @@
 import * as React from 'react';
-import { createStateLink, useStateLink, useStateLinkUnmounted } from '@hookstate/core';
+import { createState, useState } from '@hookstate/core';
 import * as utils from 'app/utils/HelperFunc';
 
-const stateRef = createStateLink(0);
+const stateRef = createState(0);
 
-const stateRef2 = createStateLink(77);
+const stateRef2 = createState(77);
 
 setInterval(() => {
-    const useableState = useStateLinkUnmounted(stateRef);
-    useableState.set((p) => p + 1);
+    stateRef.set((p) => p + 1);
 }, 3000);
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props {}
 
 export const ReactHooksExample = (): React.ReactElement<Props> => {
-    const state = useStateLink(stateRef);
+    const state = useState(stateRef);
 
-    const state2 = useStateLink(stateRef2);
+    const state2 = useState(stateRef2);
 
     return (
         <div>

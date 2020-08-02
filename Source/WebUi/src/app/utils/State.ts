@@ -1,3 +1,4 @@
+/*
 import * as state from '@hookstate/core';
 // Wrapper around hookstate
 
@@ -35,3 +36,4 @@ export class StateRef<S> {
         }
     }
 }
+*/
