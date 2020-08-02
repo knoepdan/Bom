@@ -21,13 +21,13 @@ namespace Bom.Core.Data
         
         public async Task<Path?> FindPathAsync(params object[] keyValues)
         {
-            if(this.Paths == null)
-            {
 #pragma warning disable CA2007 // Consider calling ConfigureAwait on the awaited task
+            if (this.Paths == null)
+            {
                 return await Task.FromResult<Path?>(null);
-#pragma warning restore CA2007 // Consider calling ConfigureAwait on the awaited task
             }
             return await this.Paths.FindAsync(keyValues);
+#pragma warning restore CA2007 // Consider calling ConfigureAwait on the awaited task
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
