@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using Bom.Core.Model;
 using Ch.Knomes.Struct;
@@ -31,7 +32,7 @@ namespace Bom.Core.TestUtils.Models
             // now caluclate node path
             const char sep = Path.Separator;
             var sb = new StringBuilder(sep);
-            var parents = this.MemNode.Ancestors;
+            var parents = this.MemNode.Ancestors.ToList();
             parents.Reverse();
             foreach (var p in parents)
             {

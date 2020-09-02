@@ -140,7 +140,7 @@ namespace Ch.Knomes.Struct
         /// <summary>
         /// All Descendants plus this instance (but no parent nodes)
         /// </summary>
-        public IEnumerable<TreeNode<T>> DescendantsAndI
+        public IList<TreeNode<T>> DescendantsAndI
         {
             get
             {
@@ -176,18 +176,16 @@ namespace Ch.Knomes.Struct
         /// <summary>
         /// Ancestors/Parents ordered by proximity to node (e.g. direct parent is first in list)
         /// </summary>
-        public List<TreeNode<T>> Ancestors
+        public IEnumerable<TreeNode<T>> Ancestors
         {
             get
             {
-                var list = new List<TreeNode<T>>();
                 var parent = this.Parent;
                 while (parent != null && parent != this) // this check to prevent loops
                 {
-                    list.Add(parent);
+                    yield return parent;
                     parent = parent.Parent;
                 }
-                return list;
             }
         }
 
@@ -209,6 +207,7 @@ namespace Ch.Knomes.Struct
         /// <summary>
         /// Compares Data of tree node (beginning with this node and going down to all descendants) on equality using either passed compareMethod or Equals method
         /// </summary>
+        /// <remarks>Does not take into account sorting of children</remarks>
         public bool AreDescendantsAndIEqual<TX>(TreeNode<TX> compareNode, Func<TreeNode<T>, TreeNode<TX>, bool>? compareMethod = null) where TX : notnull
         {
             if (compareNode == null)
@@ -244,6 +243,27 @@ namespace Ch.Knomes.Struct
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Creates a path representation (somethink like: "1/3/32/"
+        /// </summary>
+        public string GetPath(Func<TreeNode<T>, string> getNodeSegmentFunc, char separator = '/')
+        {
+            if (getNodeSegmentFunc == null)
+            {
+                getNodeSegmentFunc = GetNodeDefaultTitle;
+            }
+            var sb = new StringBuilder();
+            var ancestors = this.Ancestors.ToList();
+            for (int i = ancestors.Count - 1; i >= 0; i--)
+            {
+                var anc = ancestors[i];
+                sb.Append(getNodeSegmentFunc(anc));
+                sb.Append(separator);
+            }
+            sb.Append(getNodeSegmentFunc(this));
+            return sb.ToString();
         }
 
         public string VisualString => VisualStringRepresentation(null);

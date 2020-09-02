@@ -12,18 +12,18 @@ namespace Ch.Knomes.Struct
         public void Creating_basic_tree_works()
         {
             var root = new TreeNode<SimpleNode>(new SimpleNode("Animals"));
-            Assert.True(root.Parent == null && root.Children.Count() == 0 && root.Descendants.Count() == 0 && root.DescendantsAndI.Count() == 1 && root.Ancestors.Count == 0 && root.Siblings.Count == 0);
+            Assert.True(root.Parent == null && root.Children.Count() == 0 && root.Descendants.Count() == 0 && root.DescendantsAndI.Count() == 1 && root.Ancestors.Count() == 0 && root.Siblings.Count == 0);
             var n1 = root.AddChild(new SimpleNode("Mammals"));
-            Assert.True(root.Parent == null && root.Children.Count() == 1 && root.Descendants.Count() == 1 && root.DescendantsAndI.Count() == 2 && root.Ancestors.Count == 0 && root.Siblings.Count == 0);
-            Assert.True(n1.Parent == root && n1.Children.Count() == 0 && n1.Descendants.Count() == 0 && n1.DescendantsAndI.Count() == 1 && n1.Ancestors.Count == 1 && n1.Siblings.Count == 0);
+            Assert.True(root.Parent == null && root.Children.Count() == 1 && root.Descendants.Count() == 1 && root.DescendantsAndI.Count() == 2 && root.Ancestors.Count() == 0 && root.Siblings.Count == 0);
+            Assert.True(n1.Parent == root && n1.Children.Count() == 0 && n1.Descendants.Count() == 0 && n1.DescendantsAndI.Count() == 1 && n1.Ancestors.Count() == 1 && n1.Siblings.Count == 0);
             var n2 = root.AddChild(new SimpleNode("Reptiles"));
-            Assert.True(root.Parent == null && root.Children.Count() == 2 && root.Descendants.Count() == 2 && root.DescendantsAndI.Count() == 3 && root.Ancestors.Count == 0 && root.Siblings.Count == 0);
-            Assert.True(n1.Parent == root && n1.Children.Count() == 0 && n1.Descendants.Count() == 0 && n1.DescendantsAndI.Count() == 1 && n1.Ancestors.Count == 1 && n1.Siblings.Count == 1);
+            Assert.True(root.Parent == null && root.Children.Count() == 2 && root.Descendants.Count() == 2 && root.DescendantsAndI.Count() == 3 && root.Ancestors.Count() == 0 && root.Siblings.Count == 0);
+            Assert.True(n1.Parent == root && n1.Children.Count() == 0 && n1.Descendants.Count() == 0 && n1.DescendantsAndI.Count() == 1 && n1.Ancestors.Count() == 1 && n1.Siblings.Count == 1);
             var nn3 = n1.AddChild(new SimpleNode("Elephant"));
-            Assert.True(root.Parent == null && root.Children.Count() == 2 && root.Descendants.Count() == 3 && root.DescendantsAndI.Count() == 4 && root.Ancestors.Count == 0 && root.Siblings.Count == 0);
-            Assert.True(n1.Parent == root && n1.Children.Count() == 1 && n1.Descendants.Count() == 1 && n1.DescendantsAndI.Count() == 2 && n1.Ancestors.Count == 1 && n1.Ancestors.Contains(root) && n1.Siblings.Count == 1);
+            Assert.True(root.Parent == null && root.Children.Count() == 2 && root.Descendants.Count() == 3 && root.DescendantsAndI.Count() == 4 && root.Ancestors.Count() == 0 && root.Siblings.Count == 0);
+            Assert.True(n1.Parent == root && n1.Children.Count() == 1 && n1.Descendants.Count() == 1 && n1.DescendantsAndI.Count() == 2 && n1.Ancestors.Count() == 1 && n1.Ancestors.Contains(root) && n1.Siblings.Count == 1);
             Assert.True(nn3.Parent == n1 && nn3.Children.Count() == 0 && nn3.Descendants.Count() == 0 && nn3.DescendantsAndI.Count() == 1 &&
-                nn3.Ancestors.Count == 2 && nn3.Ancestors.Contains(n1) && nn3.Ancestors.Contains(root) && nn3.Siblings.Count == 0);
+                nn3.Ancestors.Count() == 2 && nn3.Ancestors.Contains(n1) && nn3.Ancestors.Contains(root) && nn3.Siblings.Count == 0);
         }
 
         [Fact]
@@ -111,7 +111,7 @@ namespace Ch.Knomes.Struct
         {
             var rootNode = TestDataFactory.CreateSampleAnimalNodes();
             var leaveNode = rootNode.Descendants.First(x => x.Children.Count == 0);
-            var ancestors = leaveNode.Ancestors;
+            var ancestors = leaveNode.Ancestors.ToList();
             Assert.True(ancestors.Count > 3 && ancestors[0] == leaveNode.Parent && ancestors[ancestors.Count - 1] == rootNode); // basic tests and making sure we have ancestors
 
             var parent = leaveNode.Parent;

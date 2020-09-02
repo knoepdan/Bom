@@ -96,7 +96,7 @@ namespace Ch.Knomes.Struct.Testing
                         var node232 = node23.AddChild(new SimpleNode("Gavial"));
                     }
                 }
-                var node3 = node2.AddChild(new SimpleNode("Amphibians"));
+                var node3 = root.AddChild(new SimpleNode("Amphibians"));
                 {
                     var node32 = node3.AddChild(new SimpleNode("Frogs and Toads"));
                     {
