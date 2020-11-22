@@ -101,6 +101,10 @@ namespace Bom.Web.Controllers
 
         private bool PathExists(int id)
         {
+            if(this._context.Paths == null)
+            {
+                return false;
+            }
             return this._context.Paths.Any(e => e.PathId == id);
         }
     }

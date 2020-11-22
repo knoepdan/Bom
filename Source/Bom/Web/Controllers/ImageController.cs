@@ -60,14 +60,14 @@ namespace Bom.Web.Controllers
             ImageCacheDto? imageBlob = GetFromCache(uid, size);
             if (imageBlob == null)
             {
-                DbPicture pic = this._context.DbPictures.SingleOrDefault(x => x.PictureUid == uid);
+                DbPicture? pic = this._context.DbPictures?.SingleOrDefault(x => x.PictureUid == uid);
                 if (pic == null)
                 {
                     return NotFound();
                     //  return new HttpNotFoundResult(""); // Response.StatusCode = 404;
                 }
                 imageBlob = new ImageCacheDto(pic);
-                if (size != null && !size.IsEmpty)
+                if (!size.IsEmpty)
                 {
                     imageBlob.ImageBytes = GetResizedImageBytes(pic, size);
                 }
@@ -134,7 +134,7 @@ namespace Bom.Web.Controllers
         private static string GetKey(string picId, Size targetSize)
         {
             var key = "img_" + picId;
-            if (!(targetSize == null || targetSize.IsEmpty))
+            if (!targetSize.IsEmpty)
             {
                 key += "_" + targetSize.Width + "_" + targetSize.Height;
             }

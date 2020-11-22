@@ -13,7 +13,7 @@ namespace Ch.Knomes.TestUtils
             get
             {
                 // https://stackoverflow.com/questions/23515736/how-to-refer-to-test-files-from-xunit-tests-in-visual-studio
-                string? codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                string? codeBase = Assembly.GetExecutingAssembly().Location;
                 if(codeBase == null)
                 {
                     throw new Exception("Could not find code base from executing assembly");

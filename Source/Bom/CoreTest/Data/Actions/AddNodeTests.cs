@@ -72,6 +72,11 @@ namespace Bom.Core.Data.Actions
         {
             this.Context.Dispose();
             this.Context = TestHelpers.GetModelContext(true);
+            if (this.Context == null || this.Context.Paths == null || this.Context.Nodes == null)
+            {
+                throw new InvalidOperationException($"{nameof(this.Context)} or required property is null. Cannot execute");
+            }
+
 
             int nofPaths = this.Context.Paths.Count();
             try
@@ -86,13 +91,17 @@ namespace Bom.Core.Data.Actions
                 Console.WriteLine("Expected error: " + ex.Message);
                 this.Context.Dispose();
                 this.Context = TestHelpers.GetModelContext(true);
-                Assert.Equal(nofPaths, this.Context.Paths.Count()); // no paths created
+                Assert.Equal(nofPaths, this.Context.Paths?.Count()); // no paths created
             }
         }
 
 
         private Path AddNewPathForNodeTest(TreeNode<SimpleNode> node, TreeNode<SimpleNode>? newParentNode)
         {
+            if (this.Context == null || this.Context.Paths == null || this.Context.Nodes == null)
+            {
+                throw new InvalidOperationException($"{nameof(this.Context)} or required property is null. Cannot execute");
+            }
             if (newParentNode != null && newParentNode.Data.Title == node.Data.Title)
             {
                 throw new ArgumentException("newParentNode may not be the same as node", nameof(newParentNode));
@@ -118,6 +127,10 @@ namespace Bom.Core.Data.Actions
             // reload with new context (important)
             this.Context.Dispose();
             this.Context = TestHelpers.GetModelContext(true);
+            if (this.Context == null || this.Context.Paths == null || this.Context.Nodes == null)
+            {
+                throw new InvalidOperationException($"{nameof(this.Context)} or required property is null. Cannot execute");
+            }
             dbPath = Context.Paths.First(x => x.Node != null && x.Node.Title == node.Data.Title);
 
             // Tests
@@ -148,7 +161,7 @@ namespace Bom.Core.Data.Actions
         private void CompareAllInMemoryAndAllDbNodes(IEnumerable<TreeNode<SimpleNode>> rootNodes)
         {
             //  no check all nodes in db an in memory.. all the trees must be equal
-            var allNodes = this.Context.Paths.ToList(); // level so high we get all
+            var allNodes = this.Context.Paths?.ToList() ?? new List<Path>(); // level so high we get all
             var dbRoots = TreeNodeUtils.CreateInMemoryModel(allNodes);
             var memRoots = new List<TreeNode<SimpleNode>>(rootNodes.Distinct());
             if (memRoots.Count != dbRoots.Count)

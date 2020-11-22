@@ -322,7 +322,7 @@ namespace Bom.Web.Controllers
         }
 
 
-        public static IList<FileInfo> GetFileInfoListByString(string uploadString)
+        public static IList<FileInfo> GetFileInfoListByString(string? uploadString)
         {
             var files = new List<FileInfo>();
 
@@ -376,11 +376,12 @@ namespace Bom.Web.Controllers
                 }
 
                 uploadString = fileIdentifier;
-                FileInfo uploadFile = GetFileInfoListByString(uploadString).FirstOrDefault();
-                if (uploadFile == null || !uploadFile.Exists)
+                IList<FileInfo> uploadedFiles = GetFileInfoListByString(uploadString) ?? new List<FileInfo>();
+                if (uploadedFiles == null || uploadedFiles.Count == 0 || !uploadedFiles.First().Exists)
                 {
                     return Content("");
                 }
+                FileInfo uploadFile = uploadedFiles.First();
 
                 //response.Clear(); --> Net .. not supported in .net core
                 if (isImage)

@@ -83,6 +83,11 @@ namespace Bom.Core.Data.Actions
 
         private Path TestMoveNodePath(TestMoveNodeArgs args)
         {
+            if (this.Context == null || this.Context.Paths == null)
+            {
+                throw new InvalidOperationException($"{nameof(this.Context)} or required property is null. Cannot execute");
+            }
+
             // remember some state before
             TreeNode<SimpleNode>? oldParent = args.ToMoveNode.Parent;
             var siblings = args.ToMoveNode.Siblings;
@@ -175,6 +180,11 @@ namespace Bom.Core.Data.Actions
 
         private Path MoveNodePath(string moveTitle, string? newParentTitle, bool moveChildrenToo)
         {
+            if (this.Context == null || this.Context.Paths == null)
+            {
+                throw new InvalidOperationException($"{nameof(this.Context)} or required property is null. Cannot execute");
+            }
+
             var moveNode = Context.Paths.First(x => x.Node != null && x.Node.Title == moveTitle);
             var newParentNode = Context.Paths.First(x => x.Node != null && x.Node.Title == newParentTitle);
             var prov = new PathNodeProvider(Context);

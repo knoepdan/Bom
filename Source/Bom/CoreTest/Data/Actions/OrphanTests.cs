@@ -74,8 +74,8 @@ namespace Bom.Core.Data.Actions
             var orphansOrig = this.Context.Nodes.Orphans().ToList();
             Assert.True(orphansOrig.Count == 0);
 
-            var node = this.Context.Paths.First(x => x.Level > 1);
-            var parentNode = this.Context.Paths.First(x => x.Level > 1 && x.PathId != node.PathId);
+            var node = this.Context.Paths?.First(x => x.Level > 1) ?? new Path();
+            var parentNode = this.Context.Paths?.First(x => x.Level > 1 && x.PathId != node.PathId);
             var orphanNode = CreateOrphanedNode(node, parentNode);
 
             var orphans = this.Context.Nodes.Orphans().ToList();
@@ -84,7 +84,7 @@ namespace Bom.Core.Data.Actions
 
 
             //  Add path again
-            var randomNewParentPath = this.Context.Paths.First(x => x.Level > 1);
+            var randomNewParentPath = this.Context.Paths?.First(x => x.Level > 1) ?? new Path();
             var provider = new PathNodeProvider(this.Context);
             provider.AddPathToNode(orphans[0], randomNewParentPath);
             Assert.True(this.Context.Nodes.Orphans().Count() == 0);
@@ -93,11 +93,11 @@ namespace Bom.Core.Data.Actions
 
         private Node CreateOrphanedNode(TreeNode<SimpleNode> node, TreeNode<SimpleNode>? newParentNode)
         {
-            var dbPath = Context.Paths.First(x => x.Node != null && x.Node.Title == node.Data.Title);
+            var dbPath = Context.Paths?.First(x => x.Node != null && x.Node.Title == node.Data.Title) ?? new Path();
             Path? dbNewParent = null;
             if (newParentNode != null)
             {
-                dbNewParent = Context.Paths.First(x => x.Node != null && x.Node.Title == newParentNode.Data.Title); // some other node
+                dbNewParent = Context.Paths?.First(x => x.Node != null && x.Node.Title == newParentNode.Data.Title); // some other node
             }
             var orphanedNode = CreateOrphanedNode(dbPath, dbNewParent);
             return orphanedNode;
@@ -106,6 +106,11 @@ namespace Bom.Core.Data.Actions
 
         private Node CreateOrphanedNode(Path dbPath, Path? dbNewParent)
         {
+            if(this.Context == null || this.Context.Paths == null)
+            {
+                throw new InvalidOperationException($"{nameof(this.Context)} or required property is null. Cannot execute");
+            }
+
             // prepare
             var dbPathsOriginal = Context.Paths.Where(x => x.Node != null && x.NodeId == dbPath.NodeId).ToList();
             if (dbPathsOriginal.Count > 1)
@@ -120,21 +125,25 @@ namespace Bom.Core.Data.Actions
 
             // reload with new context (important)
             this.Context = TestHelpers.GetModelContext(true);
-            var dbPathsAfterAdd = Context.Paths.Where(x => x.Node != null && x.NodeId == dbPath.NodeId).ToList();
+            var dbPathsAfterAdd = Context.Paths?.Where(x => x.Node != null && x.NodeId == dbPath.NodeId).ToList() ?? new List<Path>();
             Assert.True(dbPathsAfterAdd.Count == dbPathsOriginal.Count + 1 && dbPathsAfterAdd.Any(y => y.PathId == createdPath.PathId)
                 && dbPathsAfterAdd.Any(y => y.PathId == dbPath.PathId)); // only a minimal test as this is better tested elsewhere
 
             // delete node
             prov.DeletePath(dbPathsAfterAdd.First(x => x.PathId != createdPath.PathId), false, false);
             this.Context = TestHelpers.GetModelContext(true);
-            dbPathsAfterAdd = Context.Paths.Where(x => x.Node != null && x.NodeId == dbPath.NodeId).ToList();
+            dbPathsAfterAdd = Context.Paths?.Where(x => x.Node != null && x.NodeId == dbPath.NodeId).ToList() ?? new List<Path>();
             Assert.True(dbPathsAfterAdd.Count == dbPathsOriginal.Count && dbPathsAfterAdd.Any(y => y.PathId == createdPath.PathId)); // only a minimal test as this is better tested elsewhere
 
             prov.DeletePath(createdPath.PathId, false, false);
             this.Context = TestHelpers.GetModelContext(true);
-            dbPathsAfterAdd = Context.Paths.Where(x => x.Node != null && x.NodeId == dbPath.NodeId).ToList();
+            dbPathsAfterAdd = Context.Paths?.Where(x => x.Node != null && x.NodeId == dbPath.NodeId).ToList() ?? new List<Path>();
             Assert.True(dbPathsAfterAdd.Count == dbPathsOriginal.Count - 1 && !dbPathsAfterAdd.Any(y => y.PathId == dbPath.PathId)); // only a minimal test as this is better tested elsewhere
             Assert.True(dbPathsAfterAdd.Count == 0);
+            if(this.Context.Nodes == null)
+            {
+                throw new InvalidOperationException($"{nameof(Context.Nodes)} is null. Cannot execute");
+            }
 
             var orphanedNode = Context.Nodes.First(n => n.NodeId == dbPath.NodeId);
             return orphanedNode;

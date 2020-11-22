@@ -74,8 +74,16 @@ namespace Bom.Core.Data
         /// </summary>
         public Path MovePathAndReload(int pathIdToMove, int newParentPathId, bool moveChildrenToo)
         {
+            if(this.ModelContext == null)
+            {
+                throw new InvalidOperationException($"{nameof(this.ModelContext)} is null. Cannot operate");
+            }
+            if (this.ModelContext.Paths == null)
+            {
+                throw new InvalidOperationException($"{nameof(this.ModelContext)}.{nameof(this.ModelContext.Paths)} is null. Cannot execute function");
+            }
             MovePath(pathIdToMove, newParentPathId, moveChildrenToo);
-            var movedPath = this.ModelContext.Paths.Single(p => p.PathId == pathIdToMove);
+            var movedPath = this.ModelContext.Paths.Single(p => p != null && p.PathId == pathIdToMove);
             ModelContext.Entry(movedPath).Reload();// needed
             return movedPath;
         }

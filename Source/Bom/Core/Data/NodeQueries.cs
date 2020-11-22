@@ -18,7 +18,7 @@ namespace Bom.Core.Data
                 throw new ArgumentNullException(nameof(list));
             }
 
-            list = list.Where(x => !x.Paths.Any());
+            list = list.Where(x => x.Paths != null && !x.Paths.Any());
             return list;
         }
     }

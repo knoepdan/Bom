@@ -43,9 +43,13 @@ namespace Bom.Core.Data
                 var memLeaveNode = RootNode.Descendants.First(n => n.Children.Count == 0);
  
                 // db nodes
-                var dbRoot = this.Context.Paths.First(x => x.Node != null && x.Node.Title == memRoot.Data.Title);
-                var dbNode = this.Context.Paths.First(x => x.Node != null && x.Node.Title == memNode.Data.Title);
-                var dbLeaveNode = this.Context.Paths.First(x => x.Node != null && x.Node.Title == memLeaveNode.Data.Title);
+                Path? dbRoot = this.Context.Paths?.First(x => x.Node != null && x.Node.Title == memRoot.Data.Title);
+                var dbNode = this.Context.Paths?.First(x => x.Node != null && x.Node.Title == memNode.Data.Title);
+                var dbLeaveNode = this.Context.Paths?.First(x => x.Node != null && x.Node.Title == memLeaveNode.Data.Title);
+                if(dbRoot == null || dbNode == null || dbLeaveNode == null)
+                {
+                    throw new InvalidOperationException("Queried nodes/paths are null which should not be possible");
+                }
                 Assert.True(dbRoot.IsRoot() && !dbNode.IsRoot() && !dbLeaveNode.IsRoot());
                 Assert.True(IsTheSame(dbRoot, memRoot) && memRoot.Parent == null);
                 Assert.True(IsTheSame(dbNode, memNode));

@@ -88,7 +88,7 @@ namespace Bom.Core.Data.Actions
             // delete root
             var args = new TestDeleteNodeArgs(RootNode, false, false);
             DeleteNodePath(args);
-            Assert.True(this.Context.Paths.Count() == 0);
+            Assert.True(this.Context.Paths != null && this.Context.Paths.Count() == 0);
         }
 
         private void DeletingRootThrows()
@@ -145,7 +145,7 @@ namespace Bom.Core.Data.Actions
         private void CompareAllInMemoryAndAllDbNodes(IEnumerable<TreeNode<SimpleNode>> rootNodes)
         {
             //  no check all nodes in db an in memory.. all the trees must be equal
-            var allNodes = this.Context.Paths.ToList(); // level so high we get all
+            var allNodes = this.Context.Paths?.ToList() ?? new List<Path>(); // level so high we get all
             var dbRoots = TreeNodeUtils.CreateInMemoryModel(allNodes);
             var memRoots = new List<TreeNode<SimpleNode>>(rootNodes.Distinct());
             if (memRoots.Count != dbRoots.Count)
@@ -173,7 +173,7 @@ namespace Bom.Core.Data.Actions
             var fromDeleteNode = args.ToDeleteNode;
             Assert.Contains(RootNode.DescendantsAndI, x => x.Data.Title == fromDeleteNode.Data.Title);// toDeleteNode is part of RootNode
 
-            var allDbNodes = this.Context.Nodes.ToList();
+            var allDbNodes = this.Context.Nodes?.ToList() ?? new List<Node>();
             var allNodesDownFromDelNode = allDbNodes.Where(n => fromDeleteNode.DescendantsAndI.Any(x => x.Data.Title == n.Title)).ToList(); // assumption: nodes for same path all have the same title
 
             // execute action
@@ -197,7 +197,7 @@ namespace Bom.Core.Data.Actions
             this.CompareAllInMemoryAndAllDbNodes(rootNodes); // method handles duplicates
 
             // comparing nodes
-            var newDbNodes = this.Context.Nodes.ToList();
+            var newDbNodes = this.Context.Nodes?.ToList() ?? new List<Node>();
             if (!args.AlsoDeleteNode)
             {
                 Assert.True(newDbNodes.Count == allDbNodes.Count); // no changes
@@ -228,7 +228,11 @@ namespace Bom.Core.Data.Actions
 
         private void DeleteNodePath(TestDeleteNodeArgs args)
         {
-            var deleteNode = Context.Paths.First(x => x.Node != null && x.Node.Title == args.ToDeleteNode.Data.Title);
+            var deleteNode = Context.Paths?.First(x => x.Node != null && x.Node.Title == args.ToDeleteNode.Data.Title);
+            if(deleteNode == null)
+            {
+                throw new InvalidOperationException($"{nameof(deleteNode)} is null. Cannote execute");
+            }
             var prov = new PathNodeProvider(Context);
             prov.DeletePath(deleteNode, args.AlsoDeleteNode, args.DeleteChildrenToo);
             //this.Context.SaveChanges(); not necessary.. is saved because of stored procedure!

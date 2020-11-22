@@ -177,7 +177,7 @@ namespace Bom.Core.Data.Actions
             var targetParent = RootNode.DescendantsAndI.Where(n => n.Level == 4 && n.Ancestors.Any(a => a == node)).First();
             try
             {
-                var moveNode = Context.Paths.First(x => x.Node != null && x.Node.Title == node.Data.Title);
+                var moveNode = Context.Paths?.First(x => x.Node != null && x.Node.Title == node.Data.Title) ?? throw new InvalidOperationException(nameof(Context.Paths) + " is null");
                 var newParentNode = Context.Paths.First(x => x.Node != null && x.Node.Title == targetParent.Data.Title);
                 var prov = new PathNodeProvider(Context);
                 var movedPath = prov.MovePathAndReload(moveNode.PathId, newParentNode.PathId, true);
@@ -287,7 +287,7 @@ namespace Bom.Core.Data.Actions
         private void CompareAllInMemoryAndAllDbNodes(IEnumerable<TreeNode<SimpleNode>> rootNodes)
         {
             //  no check all nodes in db an in memory.. all the trees must be equal
-            var allNodes = this.Context.Paths.ToList(); // level so high we get all
+            var allNodes = this.Context.Paths?.ToList() ?? new List<Path>(); // level so high we get all
             var dbRoots = TreeNodeUtils.CreateInMemoryModel(allNodes);
             var memRoots = new List<TreeNode<SimpleNode>>(rootNodes.Distinct());
             if (memRoots.Count != dbRoots.Count)
@@ -352,7 +352,7 @@ namespace Bom.Core.Data.Actions
 
             // compare with DB node (not possible to compare string representation as order of children is not guaranteed to be the same)
             var inMemoryRoot = newParentNode.Root;
-            var dbRoot = this.Context.Paths.First(p => p.Node != null && p.Node.Title == inMemoryRoot.Data.Title);
+            var dbRoot = this.Context.Paths?.First(p => p.Node != null && p.Node.Title == inMemoryRoot.Data.Title) ?? throw new InvalidOperationException(nameof(this.Context.Nodes) + " is null");
             var allNodes = this.Context.Paths.Descendants(dbRoot, 9999).ToList(); // level so high we get all
             allNodes.Insert(0, dbRoot);
             var dbRootInMemory = TreeNodeUtils.CreateInMemoryModel(allNodes).First();
@@ -394,7 +394,7 @@ namespace Bom.Core.Data.Actions
 
         private Path MoveNodePath(string moveTitle, string? newParentTitle, bool moveChildrenToo)
         {
-            var moveNode = Context.Paths.First(x => x.Node != null && x.Node.Title == moveTitle);
+            var moveNode = Context.Paths?.First(x => x.Node != null && x.Node.Title == moveTitle) ?? throw new InvalidOperationException(nameof(Context.Paths) + " are null"); ;
             var newParentNode = Context.Paths.FirstOrDefault(x => x.Node != null && x.Node.Title == newParentTitle);
             var prov = new PathNodeProvider(Context);
             var movedPath = prov.MovePathAndReload(moveNode.PathId, newParentNode == null ? 0 : newParentNode.PathId, moveChildrenToo);
