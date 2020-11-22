@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
+//using System.Drawing;
 using System.Text;
 using System.IO;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
-using SixLabors.ImageSharp.MetaData;
-using SixLabors.ImageSharp.MetaData.Profiles;
+//using SixLabors.ImageSharp.MetaData;
+//using SixLabors.ImageSharp.MetaData.Profiles;
 
 namespace Ch.Knomes.Drawing
 {
@@ -31,7 +31,7 @@ namespace Ch.Knomes.Drawing
             // not the most elegant solution: http://stackoverflow.com/questions/670546/determine-if-file-is-an-image
             try
             {
-                using (Image<Rgba32> image = Image.Load(fullFilePath))
+                using (Image image = Image.Load(fullFilePath))
                 {
                     return true;
                 }
@@ -97,7 +97,7 @@ namespace Ch.Knomes.Drawing
             return foundFormat.Value;
         }
 
-        public static MemoryStream ResizeImage(Stream imageStream, Size targetSize, ImageFormat targetFormat)
+        public static MemoryStream ResizeImage(Stream imageStream, int targetWith, int targetHeight, ImageFormat targetFormat)
         {
             if (imageStream == null)
             {
@@ -108,26 +108,26 @@ namespace Ch.Knomes.Drawing
                 throw new ArgumentException("length of passed stream needs to be bigger than 0", nameof(imageStream));
             }
             var targetStream = new MemoryStream();
-            using (Image<Rgba32> image = Image.Load(imageStream))
+            using (var image = Image.Load(imageStream))
             {
                 image.Mutate(x => x
-                     .Resize(targetSize.Width, targetSize.Height)
+                     .Resize(targetWith, targetHeight)
                      .Grayscale());
                 SaveImageToStream(image, targetFormat, targetStream);
             }
             return targetStream;
         }
 
-        public static void ResizeImage(string imagePath, string targetPath, Size targetSize)
+        public static void ResizeImage(string imagePath, string targetPath, int maxWith, int maxHeight)
         {
             if (!System.IO.File.Exists(imagePath))
             {
                 throw new ArgumentException("Passed source image does not exist: " + imagePath, imagePath);
             }
-            using (Image<Rgba32> image = Image.Load(imagePath))
+            using (var image = Image.Load(imagePath))
             {
                 image.Mutate(x => x
-                     .Resize(targetSize.Width, targetSize.Height)
+                     .Resize(maxWith, maxHeight)
                      .Grayscale());
                 //image.Mutate(x => x
                 //     .Resize(image.Width / 2, image.Height / 2)
@@ -137,7 +137,8 @@ namespace Ch.Knomes.Drawing
             }
         }
 
-        private static void SaveImageToStream<TPixel>(Image<TPixel> img, ImageFormat format, Stream targetStream) where TPixel : struct, IPixel<TPixel>
+        //private static void SaveImageToStream<TPixel>(Image img, ImageFormat format, Stream targetStream) where TPixel : struct, IPixel
+       private static void SaveImageToStream(Image img, ImageFormat format, Stream targetStream)
         {
             switch (format)
             {

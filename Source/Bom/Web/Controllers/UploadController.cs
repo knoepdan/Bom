@@ -80,9 +80,9 @@ namespace Bom.Web.Controllers
         private static bool DefaultCanClearUploadsUponSessionEnd = true;
 
 
-        private static IUploadChecker? DefaultUploadChecker = null;
+        private static IUploadChecker? DefaultUploadChecker;
 
-        private static IPostSaveHandler? DefaultUploadPostSaveTreatment = null;
+        private static IPostSaveHandler? DefaultUploadPostSaveTreatment;
 
         /// <summary>
         /// Only to be called upon application start (global.asax)

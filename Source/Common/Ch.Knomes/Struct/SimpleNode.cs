@@ -7,7 +7,7 @@ namespace Ch.Knomes.Struct
 {
     public sealed class SimpleNode : ITreeNodeTitle
     {
-        private static int idCounter = 0;
+        private static int idCounter;
 
         public SimpleNode(string title)
         {

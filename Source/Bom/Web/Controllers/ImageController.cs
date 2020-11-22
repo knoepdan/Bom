@@ -104,7 +104,7 @@ namespace Bom.Web.Controllers
             }
             using (var origImage = new System.IO.MemoryStream(dbPic.BlobData.Data))
             {
-                using (var resizedImage = PictureUtility.ResizeImage(origImage, targetSize, imgFormat))
+                using (var resizedImage = PictureUtility.ResizeImage(origImage, targetSize.Width, targetSize.Height, imgFormat))
                 {
                     var resizedByteArray = resizedImage.ToArray();
                     return resizedByteArray;

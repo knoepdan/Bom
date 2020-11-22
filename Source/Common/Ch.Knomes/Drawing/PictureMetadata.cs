@@ -9,8 +9,8 @@ using System.Drawing;
 using System.Diagnostics;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
-using SixLabors.ImageSharp.MetaData;
-using SixLabors.ImageSharp.MetaData.Profiles;
+using SixLabors.ImageSharp.Metadata;
+using SixLabors.ImageSharp.Metadata.Profiles;
 
 namespace Ch.Knomes.Drawing
 {
@@ -38,13 +38,13 @@ namespace Ch.Knomes.Drawing
 
             var path = fileInfo.FullName;
             this.Image = SixLabors.ImageSharp.Image.Load(path);
-            this.MetaData = this.Image.MetaData;
+            this.MetaData = this.Image.Metadata;
 
         }
 
-        internal Image<SixLabors.ImageSharp.PixelFormats.Rgba32> Image { get; }
+        internal Image Image { get; }
 
-        internal ImageMetaData MetaData { get; }
+        internal ImageMetadata MetaData { get; }
 
         public int Height => Image.Height;
 
@@ -55,7 +55,7 @@ namespace Ch.Knomes.Drawing
         {
             get
             {
-                var toReturn = GetDateTaken(MetaData, SixLabors.ImageSharp.MetaData.Profiles.Exif.ExifTag.DateTime);
+                var toReturn = GetDateTaken(MetaData, SixLabors.ImageSharp.Metadata.Profiles.Exif.ExifTag.DateTime);
                 return toReturn;
             }
         }
@@ -64,7 +64,7 @@ namespace Ch.Knomes.Drawing
         {
             get
             {
-                var toReturn = GetPositionFromMeta(this.MetaData, SixLabors.ImageSharp.MetaData.Profiles.Exif.ExifTag.GPSLatitude, SixLabors.ImageSharp.MetaData.Profiles.Exif.ExifTag.GPSLatitudeRef);
+                var toReturn = GetPositionFromMeta(this.MetaData, SixLabors.ImageSharp.Metadata.Profiles.Exif.ExifTag.GPSLatitude, SixLabors.ImageSharp.Metadata.Profiles.Exif.ExifTag.GPSLatitudeRef);
                 return toReturn;
             }
         }
@@ -73,17 +73,21 @@ namespace Ch.Knomes.Drawing
         {
             get
             {
-                var toReturn = GetPositionFromMeta(this.MetaData, SixLabors.ImageSharp.MetaData.Profiles.Exif.ExifTag.GPSLongitude, SixLabors.ImageSharp.MetaData.Profiles.Exif.ExifTag.GPSLongitudeRef);
+                var toReturn = GetPositionFromMeta(this.MetaData, SixLabors.ImageSharp.Metadata.Profiles.Exif.ExifTag.GPSLongitude, SixLabors.ImageSharp.Metadata.Profiles.Exif.ExifTag.GPSLongitudeRef);
                 return toReturn;
             }
         }
 
-        private static float? GetPositionFromMeta(ImageMetaData metaData, SixLabors.ImageSharp.MetaData.Profiles.Exif.ExifTag positionField, SixLabors.ImageSharp.MetaData.Profiles.Exif.ExifTag positionRefField)
+#pragma warning disable CA1801 // Review unused parameters
+        private static float? GetPositionFromMeta(ImageMetadata metaData, SixLabors.ImageSharp.Metadata.Profiles.Exif.ExifTag positionField, SixLabors.ImageSharp.Metadata.Profiles.Exif.ExifTag positionRefField)
+#pragma warning restore CA1801 // Review unused parameters
         {
             try
             {
+                throw new NotImplementedException($"{nameof(GetPositionFromMeta)} is not implemented after upgrading");
+                /*
                 var posField = metaData.ExifProfile.GetValue(positionField);
-                if (posField != null && posField.IsArray && posField.DataType == SixLabors.ImageSharp.MetaData.Profiles.Exif.ExifDataType.Rational)
+                if (posField != null && posField.IsArray && posField.DataType == SixLabors.ImageSharp.Metadata.Profiles.Exif.ExifDataType.Rational)
                 {
                     var posValues = (SixLabors.ImageSharp.Primitives.Rational[])posField.Value;
                     SixLabors.ImageSharp.MetaData.Profiles.Exif.ExifValue? refField = metaData.ExifProfile.GetValue(positionRefField);
@@ -91,7 +95,7 @@ namespace Ch.Knomes.Drawing
                     var floatVal = ExifGpsToFloat(posValues, metaRefVal);
                     return floatVal;
                 }
-                return null;
+                */
             }
             catch (Exception ex)
             {
@@ -100,6 +104,7 @@ namespace Ch.Knomes.Drawing
             }
         }
 
+        /*
         private static float ExifGpsToFloat(SixLabors.ImageSharp.Primitives.Rational[] propItem, string? propItemRef)
         {
             uint degreesNumerator = propItem[0].Numerator;//BitConverter.ToUInt32(propItem.Value, 0);
@@ -125,13 +130,15 @@ namespace Ch.Knomes.Drawing
             }
             return coorditate;
         }
+        */
 
-        private static DateTime? GetDateTaken(ImageMetaData metaData, SixLabors.ImageSharp.MetaData.Profiles.Exif.ExifTag dateField)
+        private static DateTime? GetDateTaken(ImageMetadata metaData, SixLabors.ImageSharp.Metadata.Profiles.Exif.ExifTag dateField)
         {
-            try
+            throw new NotImplementedException($"{nameof(GetDateTaken)} not implemented after upgrading to Nert 5");
+            /*try
             {
                 var dField = metaData.ExifProfile.GetValue(dateField);
-                if (dField == null || dField.DataType != SixLabors.ImageSharp.MetaData.Profiles.Exif.ExifDataType.Ascii)
+                if (dField == null || dField.DataType != SixLabors.ImageSharp.Metadata.Profiles.Exif.ExifDataType.Ascii)
                 {
                     return null;
                 }
@@ -150,6 +157,7 @@ namespace Ch.Knomes.Drawing
                 Debug.WriteLine(ex.Message); ///dtaken = DateTime.Parse("1956-01-01 00:00:00.000");
                 return null;
             }
+            */
         }
 
         public void Dispose()

@@ -11,9 +11,9 @@ namespace Bom.Web.Controllers.Upload
 
     public class EnsureWebImagesPostSaveHandler : IPostSaveHandler
     {
-        public int ImageMaxWith { get; set; } = 0;
+        public int ImageMaxWith { get; set; }
 
-        public int ImageMaxHeight { get; set; } = 0;
+        public int ImageMaxHeight { get; set; }
 
         public bool KeepMetadata { get; set; }
 
@@ -24,10 +24,9 @@ namespace Bom.Web.Controllers.Upload
             //string fileName = Ch.Knomes.Drawing.PictureMetadata.ResizeImage(fullFilePath, folderPath, ImageMaxWith, ImageMaxHeight, KeepMetadata); // converts to web-image (example: tiff -> jpeg, and slightly adapts ending in some cases)
 
             Utils.Dev.Todo("Keep metadata is not yet supported", Utils.Dev.Urgency.Middle);
-            var size = new Size(ImageMaxWith, ImageMaxHeight);
 
             var targetPath = Path.Combine(folderPath, "xxx");
-            Ch.Knomes.Drawing.PictureUtility.ResizeImage(fullFilePath, targetPath, size); // converts to web-image (example: tiff -> jpeg, and slightly adapts ending in some cases)
+            Ch.Knomes.Drawing.PictureUtility.ResizeImage(fullFilePath, targetPath, ImageMaxWith, ImageMaxHeight); // converts to web-image (example: tiff -> jpeg, and slightly adapts ending in some cases)
             return targetPath;
         }
     }
