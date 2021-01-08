@@ -17,7 +17,7 @@ using Ch.Knomes.Struct.Testing;
 
 namespace Bom.Web.Areas.Testing.Controllers
 {
-    [Area("Test")]
+   // [Area("Test")]
     [Route("test")]
     [ApiController]
     public class TestController : BomBaseController

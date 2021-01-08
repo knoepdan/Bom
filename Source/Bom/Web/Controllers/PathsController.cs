@@ -11,6 +11,9 @@ using Bom.Web.Lib.Infrastructure;
 
 namespace Bom.Web.Controllers
 {
+
+
+    // JUST TESTING
     [Route("api/[controller]")]
     [ApiController]
     public class PathsController : ControllerBase

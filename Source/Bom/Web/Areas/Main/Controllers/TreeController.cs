@@ -11,7 +11,7 @@ using Bom.Web.Lib.Infrastructure;
 
 namespace Bom.Web.Areas.Main.Controllers
 {
-    [Area("Main")]
+ //   [Area("Main")]
     [Route("main")]
     [ApiController]
     public class TreeController : BomBaseController
@@ -67,8 +67,8 @@ namespace Bom.Web.Areas.Main.Controllers
 
 
         // GET: api/Paths/5
-        [HttpGet("{pathId}")]
-        [HttpGet("nodeByPath")]
+   //     [HttpGet("{pathId}")]
+        [HttpGet("nodeByPath/{pathId}")]
         public async Task<ActionResult<NodeVm>> GetNodeByPathId(int pathId)
         {
             var paths = _context.Paths.Include(x => x.Node);
@@ -80,8 +80,8 @@ namespace Bom.Web.Areas.Main.Controllers
             return NoContent();
         }
 
-        [HttpGet("{nodeId}")]
-        [HttpGet("nodeById")]
+      //  [HttpGet("{nodeId}")]
+        [HttpGet("nodeById/{nodeId}")]
         public async Task<ActionResult<NodeVm>> GetNodeByNodeId(int nodeId)
         {
             var paths = _context.Paths.Include(x => x.Node);

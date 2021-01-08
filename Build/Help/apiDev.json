@@ -1,389 +1,11 @@
-﻿{
-  "x-generator": "NSwag v12.2.5.0 (NJsonSchema v9.13.37.0 (Newtonsoft.Json v11.0.0.0))",
+{
+  "x-generator": "NSwag v13.9.4.0 (NJsonSchema v10.3.1.0 (Newtonsoft.Json v12.0.0.0))",
   "openapi": "3.0.0",
   "info": {
     "title": "My Title",
     "version": "1.0.0"
   },
   "paths": {
-    "/api/Values": {
-      "get": {
-        "tags": [
-          "Values"
-        ],
-        "operationId": "Values_GetAll",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "nullable": true,
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Values"
-        ],
-        "operationId": "Values_Post",
-        "requestBody": {
-          "x-name": "value",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "string"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/api/Values/ex": {
-      "get": {
-        "tags": [
-          "Values"
-        ],
-        "operationId": "Values_Ex",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "nullable": true
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Values/{id}": {
-      "get": {
-        "tags": [
-          "Values"
-        ],
-        "operationId": "Values_Get",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "nullable": true
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Values"
-        ],
-        "operationId": "Values_Put",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "requestBody": {
-          "x-name": "value",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "string"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 2
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Values"
-        ],
-        "operationId": "Values_Delete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/main/root": {
-      "get": {
-        "tags": [
-          "Tree"
-        ],
-        "operationId": "Tree_GetRootNodes",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "nullable": true,
-                  "items": {
-                    "$ref": "#/components/schemas/NodeVm"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/main/nodes": {
-      "get": {
-        "tags": [
-          "Tree"
-        ],
-        "operationId": "Tree_GetNodes",
-        "requestBody": {
-          "x-name": "filter",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TreeFilterInput"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "nullable": true,
-                  "items": {
-                    "$ref": "#/components/schemas/NodeVm"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/main/{pathId}": {
-      "get": {
-        "tags": [
-          "Tree"
-        ],
-        "operationId": "Tree_GetNodeByPathId",
-        "parameters": [
-          {
-            "name": "pathId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "nullable": true,
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/NodeVm"
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/main/nodeByPath": {
-      "get": {
-        "tags": [
-          "Tree"
-        ],
-        "operationId": "Tree_GetNodeByPathId2",
-        "parameters": [
-          {
-            "name": "pathId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "nullable": true,
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/NodeVm"
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/main/{nodeId}": {
-      "get": {
-        "tags": [
-          "Tree"
-        ],
-        "operationId": "Tree_GetNodeByNodeId",
-        "parameters": [
-          {
-            "name": "nodeId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "nullable": true,
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/NodeVm"
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/main/nodeById": {
-      "get": {
-        "tags": [
-          "Tree"
-        ],
-        "operationId": "Tree_GetNodeByNodeId2",
-        "parameters": [
-          {
-            "name": "nodeId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "nullable": true,
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/NodeVm"
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/Image": {
       "get": {
         "tags": [
@@ -429,7 +51,6 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "nullable": true,
                   "items": {
                     "$ref": "#/components/schemas/Path"
                   }
@@ -464,12 +85,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "nullable": true,
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/Path"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/Path"
                 }
               }
             }
@@ -570,10 +186,408 @@
           }
         }
       }
+    },
+    "/api/Values": {
+      "get": {
+        "tags": [
+          "Values"
+        ],
+        "operationId": "Values_GetAll",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Values"
+        ],
+        "operationId": "Values_Post",
+        "requestBody": {
+          "x-name": "value",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/Values/ex": {
+      "get": {
+        "tags": [
+          "Values"
+        ],
+        "operationId": "Values_Ex",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Values/{id}": {
+      "get": {
+        "tags": [
+          "Values"
+        ],
+        "operationId": "Values_Get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Values"
+        ],
+        "operationId": "Values_Put",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "requestBody": {
+          "x-name": "value",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 2
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Values"
+        ],
+        "operationId": "Values_Delete",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/test/clearDatabase": {
+      "post": {
+        "tags": [
+          "Test"
+        ],
+        "operationId": "Test_ClearDatabase",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test/clearAndFillDatabase": {
+      "post": {
+        "tags": [
+          "Test"
+        ],
+        "operationId": "Test_ClearAndFillDatabase",
+        "parameters": [
+          {
+            "name": "typeOfData",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/main/root": {
+      "get": {
+        "tags": [
+          "Tree"
+        ],
+        "operationId": "Tree_GetRootNodes",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NodeVm"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/main/nodes": {
+      "get": {
+        "tags": [
+          "Tree"
+        ],
+        "operationId": "Tree_GetNodes",
+        "requestBody": {
+          "x-name": "filter",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TreeFilterInput"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NodeVm"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/main/nodeByPath/{pathId}": {
+      "get": {
+        "tags": [
+          "Tree"
+        ],
+        "operationId": "Tree_GetNodeByPathId",
+        "parameters": [
+          {
+            "name": "pathId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NodeVm"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/main/nodeById/{nodeId}": {
+      "get": {
+        "tags": [
+          "Tree"
+        ],
+        "operationId": "Tree_GetNodeByNodeId",
+        "parameters": [
+          {
+            "name": "nodeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NodeVm"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "Path": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "pathId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "level": {
+            "type": "integer"
+          },
+          "nodePathString": {
+            "type": "string"
+          },
+          "nodeId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "node": {
+            "$ref": "#/components/schemas/Node"
+          },
+          "allNodeIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        }
+      },
+      "Node": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "nodeId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string"
+          },
+          "mainPathId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "mainPath": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Path"
+              }
+            ]
+          }
+        }
+      },
       "NodeVm": {
         "type": "object",
         "additionalProperties": false,
@@ -592,8 +606,7 @@
             "nullable": true
           },
           "path": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "pathId": {
             "type": "integer",
@@ -616,93 +629,6 @@
           "parentDepth": {
             "type": "integer",
             "format": "int32"
-          }
-        }
-      },
-      "Path": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "pathId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "parentPath": {
-            "type": "string",
-            "nullable": true
-          },
-          "hierarchyLevel": {
-            "type": "integer"
-          },
-          "hierarchyString": {
-            "type": "string",
-            "nullable": true
-          },
-          "hierarchyNetString": {
-            "type": "string",
-            "nullable": true
-          },
-          "nodeId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "node": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Node"
-              }
-            ]
-          },
-          "depth": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "parentPathValues": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "type": "string"
-            }
-          },
-          "nofParentFragments": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "allParentNodeIds": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        }
-      },
-      "Node": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "nodeId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "mainPathId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "mainPath": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Path"
-              }
-            ]
           }
         }
       }

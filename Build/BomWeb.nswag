@@ -1,11 +1,11 @@
-﻿{
-  "runtime": "NetCore31",
+{
+  "runtime": "Net50",
   "defaultVariables": null,
   "documentGenerator": {
     "aspNetCoreToOpenApi": {
       "project": "../Source/Bom/Web/Web.csproj",
       "msBuildProjectExtensionsPath": null,
-      "configuration": null,
+      "configuration": "",
       "runtime": null,
       "targetFramework": null,
       "noBuild": false,
@@ -48,6 +48,7 @@
       "allowNullableBodyParameters": true,
       "output": "Help/apiDev.json",
       "outputType": "OpenApi3",
+      "newLineBehavior": "Auto",
       "assemblyPaths": [],
       "assemblyConfig": null,
       "referencePaths": [],

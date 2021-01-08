@@ -106,7 +106,18 @@ namespace Bom.Web
             //app.UseStaticFiles(); // only needed to server help
             //app.UseCookiePolicy();
 
-            //app.UseMvc();
+
+            app.UseRouting();
+
+            //app.UseAuthorization(); // must be between UseRouting and UseEndpoints
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+
+
+            /*
             app.UseMvc(routes =>
             {
                 routes.MapRoute("areaRoute", "{area:exists}/{controller=Admin}/{action=Index}/{id?}");
@@ -115,7 +126,7 @@ namespace Bom.Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
+            */
         }
     }
 }
