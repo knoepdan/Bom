@@ -1754,14 +1754,14 @@ namespace BomClient
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public ApiResponse<System.Collections.Generic.ICollection<NodeVm>> GetRootNodes()
+        public ApiResponse<ListAnswerOfNodeVm> GetRootNodes()
         {
             return System.Threading.Tasks.Task.Run(async () => await GetRootNodesAsync(System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ApiResponse<System.Collections.Generic.ICollection<NodeVm>>> GetRootNodesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ApiResponse<ListAnswerOfNodeVm>> GetRootNodesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/main/root");
@@ -1796,12 +1796,12 @@ namespace BomClient
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<NodeVm>>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<ListAnswerOfNodeVm>(response_, headers_).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            return new ApiResponse<System.Collections.Generic.ICollection<NodeVm>>(status_, headers_, objectResponse_.Object);
+                            return new ApiResponse<ListAnswerOfNodeVm>(status_, headers_, objectResponse_.Object);
                         }
                         else
                         {
@@ -1824,14 +1824,14 @@ namespace BomClient
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public ApiResponse<System.Collections.Generic.ICollection<NodeVm>> GetNodes(TreeFilterInput filter)
+        public ApiResponse<ListAnswerOfNodeVm> GetNodes(TreeFilterInput filter)
         {
             return System.Threading.Tasks.Task.Run(async () => await GetNodesAsync(filter, System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ApiResponse<System.Collections.Generic.ICollection<NodeVm>>> GetNodesAsync(TreeFilterInput filter, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ApiResponse<ListAnswerOfNodeVm>> GetNodesAsync(TreeFilterInput filter, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (filter == null)
                 throw new System.ArgumentNullException("filter");
@@ -1872,12 +1872,12 @@ namespace BomClient
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<NodeVm>>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<ListAnswerOfNodeVm>(response_, headers_).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            return new ApiResponse<System.Collections.Generic.ICollection<NodeVm>>(status_, headers_, objectResponse_.Object);
+                            return new ApiResponse<ListAnswerOfNodeVm>(status_, headers_, objectResponse_.Object);
                         }
                         else
                         {
@@ -1900,14 +1900,14 @@ namespace BomClient
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public ApiResponse<NodeVm> GetNodeByPathId(int pathId)
+        public ApiResponse<AnswerOfNodeVm> GetNodeByPathId(int pathId)
         {
             return System.Threading.Tasks.Task.Run(async () => await GetNodeByPathIdAsync(pathId, System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ApiResponse<NodeVm>> GetNodeByPathIdAsync(int pathId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ApiResponse<AnswerOfNodeVm>> GetNodeByPathIdAsync(int pathId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (pathId == null)
                 throw new System.ArgumentNullException("pathId");
@@ -1946,12 +1946,12 @@ namespace BomClient
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<NodeVm>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<AnswerOfNodeVm>(response_, headers_).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            return new ApiResponse<NodeVm>(status_, headers_, objectResponse_.Object);
+                            return new ApiResponse<AnswerOfNodeVm>(status_, headers_, objectResponse_.Object);
                         }
                         else
                         {
@@ -1974,14 +1974,14 @@ namespace BomClient
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public ApiResponse<NodeVm> GetNodeByNodeId(int nodeId)
+        public ApiResponse<AnswerOfNodeVm> GetNodeByNodeId(int nodeId)
         {
             return System.Threading.Tasks.Task.Run(async () => await GetNodeByNodeIdAsync(nodeId, System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ApiResponse<NodeVm>> GetNodeByNodeIdAsync(int nodeId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<ApiResponse<AnswerOfNodeVm>> GetNodeByNodeIdAsync(int nodeId, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (nodeId == null)
                 throw new System.ArgumentNullException("nodeId");
@@ -2020,12 +2020,12 @@ namespace BomClient
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<NodeVm>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<AnswerOfNodeVm>(response_, headers_).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
-                            return new ApiResponse<NodeVm>(status_, headers_, objectResponse_.Object);
+                            return new ApiResponse<AnswerOfNodeVm>(status_, headers_, objectResponse_.Object);
                         }
                         else
                         {
@@ -2211,6 +2211,24 @@ namespace BomClient
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class ListAnswerOfNodeVm 
+    {
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<NodeVm> Value { get; set; }= default!;
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static ListAnswerOfNodeVm FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListAnswerOfNodeVm>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
     public partial class NodeVm 
     {
         [Newtonsoft.Json.JsonProperty("nodeId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2260,6 +2278,24 @@ namespace BomClient
         public static TreeFilterInput FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<TreeFilterInput>(data);
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.1.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class AnswerOfNodeVm 
+    {
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public NodeVm? Value { get; set; }= default!;
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+    
+        public static AnswerOfNodeVm FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<AnswerOfNodeVm>(data);
         }
     
     }

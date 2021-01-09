@@ -25,18 +25,17 @@ namespace Bom.Web.Areas.Main.Controllers
 
         // GET: api/Paths
         [HttpGet("root")]
-        public async Task<ActionResult<IEnumerable<NodeVm>>> GetRootNodes()
+        public async Task<ListAnswer<NodeVm>> GetRootNodes()
         {
             var result = await _context.Paths.AllRootPaths()
                 .Include(x => x.Node)
-                .Select(x => new NodeVm(x))
-                .ToListAsync();
-            return result;
+                .Select(x => new NodeVm(x)).ToListAsync();
+            return Answer.CreateList(result);
         }
 
 
         [HttpGet("nodes")]
-        public async Task<ActionResult<IEnumerable<NodeVm>>> GetNodes(TreeFilterInput filter)
+        public async Task<ActionResult<ListAnswer<NodeVm>>> GetNodes(TreeFilterInput filter)
         {
             var paths = _context.Paths;
             if(paths == null)
@@ -61,7 +60,7 @@ namespace Bom.Web.Areas.Main.Controllers
                 var children = paths.Descendants(basePath, filter.ChildDepth).Include(x => x.Node);
                 searchResult.AddRange(children.Select(x => new NodeVm(x)));
             }
-            return searchResult;
+            return Answer.CreateList(searchResult);
         }
 
 
@@ -69,28 +68,31 @@ namespace Bom.Web.Areas.Main.Controllers
         // GET: api/Paths/5
    //     [HttpGet("{pathId}")]
         [HttpGet("nodeByPath/{pathId}")]
-        public async Task<ActionResult<NodeVm>> GetNodeByPathId(int pathId)
+        public async Task<Answer<NodeVm>> GetNodeByPathId(int pathId)
         {
             var paths = _context.Paths.Include(x => x.Node);
             var path = await paths.FirstOrDefaultAsync(x => x.PathId == pathId);
             if (path != null)
             {
-                return new NodeVm(path);
+                return Answer.Create(new NodeVm(path));
             }
-            return NoContent();
+            // TODO -> switch to a default result object that is always returned 
+            //return this.Ok(); // NoContent(); would return 200
+            return new Answer<NodeVm>(); ;
         }
 
       //  [HttpGet("{nodeId}")]
         [HttpGet("nodeById/{nodeId}")]
-        public async Task<ActionResult<NodeVm>> GetNodeByNodeId(int nodeId)
+        public async Task<Answer<NodeVm>> GetNodeByNodeId(int nodeId)
         {
             var paths = _context.Paths.Include(x => x.Node);
             var path = await paths.FirstOrDefaultAsync(x => x.NodeId == nodeId);
             if (path != null)
             {
-                return new NodeVm(path);
+                return Answer.Create(new NodeVm(path));
             }
-            return NoContent(); // rather than NotFound(); (status codes only for true errors)
+            // TODO -> switch to a default result object that is always returned 
+            return new Answer<NodeVm>(); // NoContent(); // rather than NotFound(); (status codes only for true errors)
         }
     }
 }

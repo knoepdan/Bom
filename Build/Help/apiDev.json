@@ -419,10 +419,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/NodeVm"
-                  }
+                  "$ref": "#/components/schemas/ListAnswerOfNodeVm"
                 }
               }
             }
@@ -454,10 +451,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/NodeVm"
-                  }
+                  "$ref": "#/components/schemas/ListAnswerOfNodeVm"
                 }
               }
             }
@@ -489,7 +483,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NodeVm"
+                  "$ref": "#/components/schemas/AnswerOfNodeVm"
                 }
               }
             }
@@ -521,7 +515,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NodeVm"
+                  "$ref": "#/components/schemas/AnswerOfNodeVm"
                 }
               }
             }
@@ -588,6 +582,18 @@
           }
         }
       },
+      "ListAnswerOfNodeVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NodeVm"
+            }
+          }
+        }
+      },
       "NodeVm": {
         "type": "object",
         "additionalProperties": false,
@@ -629,6 +635,20 @@
           "parentDepth": {
             "type": "integer",
             "format": "int32"
+          }
+        }
+      },
+      "AnswerOfNodeVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NodeVm"
+              }
+            ]
           }
         }
       }

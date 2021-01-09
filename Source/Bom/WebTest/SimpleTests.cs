@@ -25,7 +25,7 @@ namespace Bom.Web.Test
             using (var httpClient = HttpClientFactory.CreateHttpClient())
             {
                 var client = new TreeClient(ConfigUtils.BaseUrl, httpClient);
-                var rootNode = client.GetRootNodes().Result.FirstOrDefault();
+                var rootNode = client.GetRootNodes().Result.Value.FirstOrDefault();
                 if (rootNode == null)
                 {
                     return; //  nothing to query (test is to be improved)
@@ -34,7 +34,7 @@ namespace Bom.Web.Test
                 input.BasePathId = rootNode.PathId;
                 input.ChildDepth = 44;
                 var response = client.GetNodes(input);
-                var result = response.Result;
+                var result = response.Result.Value;
                 foreach (var r in result)
                 {
                     Console.WriteLine($"{r.NodeId}  {r.Title}");
@@ -57,7 +57,7 @@ namespace Bom.Web.Test
             using (var httpClient = HttpClientFactory.CreateHttpClient())
             {
                 var client = new TreeClient(ConfigUtils.BaseUrl, httpClient);
-                var rootNode = client.GetRootNodes().Result.FirstOrDefault();
+                var rootNode = client.GetRootNodes().Result.Value.FirstOrDefault();
                 if (rootNode == null)
                 {
                     return; //  nothing to query (test is to be improved)
@@ -67,7 +67,7 @@ namespace Bom.Web.Test
                 input.ChildDepth = 44;
                 var response = client.GetNodes(input);
                 // second serch
-                var baseNode = response.Result.FirstOrDefault(x => x.Depth > 4);
+                var baseNode = response.Result.Value.FirstOrDefault(x => x.Depth > 4);
                 if (baseNode != null)
                 {
                     input = new TreeFilterInput();
