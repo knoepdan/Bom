@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Bom.Core.Model;
+using Bom.Core.Model.Identity;
 
 namespace Bom.Core.Data
 {
@@ -13,12 +14,22 @@ namespace Bom.Core.Data
         public ModelContext(DbContextOptions<ModelContext> options) : base(options)
         { }
 
-        public DbSet<Node>? Nodes { get; internal set; }
+        // Declare as non-nullable as DbSet properties should always be set
+        // Use null-forgiving operator:  https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-forgiving
+        // also see:  https://stackoverflow.com/questions/59424673/best-practice-for-using-nullable-reference-types-for-dtos
 
-        public DbSet<DbPicture>? DbPictures { get; internal set; }
+        public DbSet<Node> Nodes { get; internal set; } = default!;
 
-        public DbSet<Path>? Paths { get; internal set; }
-        
+        public DbSet<DbPicture> DbPictures { get; internal set; } = default!;
+
+        public DbSet<Path> Paths { get; internal set; } = default!;
+
+        public DbSet<User> Users { get; internal set; } = default!;
+
+        public DbSet<UserRole> UserRoles { get; internal set; } = default!;
+
+        public DbSet<Role> Roles { get; internal set; } = default!;
+
         public async Task<Path?> FindPathAsync(params object[] keyValues)
         {
 #pragma warning disable CA2007 // Consider calling ConfigureAwait on the awaited task
