@@ -11,7 +11,7 @@ using Bom.Web.Lib.Infrastructure;
 
 namespace Bom.Web.Areas.Main.Controllers
 {
- //   [Area("Main")]
+  //  [Area("Main")] -> not needed for api controllers
     [Route("main")]
     [ApiController]
     public class TreeController : BomBaseController
