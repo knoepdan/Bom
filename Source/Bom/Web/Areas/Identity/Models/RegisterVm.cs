@@ -11,13 +11,13 @@ namespace Bom.Web.Areas.Identity.Models
         [Required]
         [EmailAddress]
         [StringLength(255)]
-        public string Username { get; set; } = "";
+        public string Username { get; set; } = default!;
 
         [Required]
         [StringLength(255)]
-        public string? Password { get; set; } = "";
+        public string Password { get; set; } = default!;
 
         [Required]
-        public string? ConfirmPassword { get; set; } = "";
+        public string ConfirmPassword { get; set; } = default!;
     }
 }

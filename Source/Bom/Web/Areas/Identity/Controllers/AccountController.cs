@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Ch.Knomes.Security;
 using Bom.Core.Common;
 using Bom.Web.Areas.Main.Models;
 using Bom.Web.Lib.Infrastructure;
 using Bom.Web.Areas.Identity.Models;
 using Bom.Core.Identity;
 using Bom.Core.Identity.DbModels;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace Bom.Web.Areas.Main.Controllers
 {
@@ -39,26 +41,26 @@ namespace Bom.Web.Areas.Main.Controllers
 
         [HttpPost("register")]
         //  public async Task<IActionResult> Register(RegisterVm model)
-        public IActionResult Register(RegisterVm model)
+        public async Task<IActionResult> Register(RegisterVm model)
         {
 
             if (this.ModelState.IsValid)
             {
                 // TODO -> validate confirm pw, validate if email is unique and return proper error message
 
+                var pwHelper = new PasswordHelper();
+                var pwResult = pwHelper.HashPasswordWithRandomSalt(model.Password, true);
 
                 var user = new User();
                 user.Username = model.Username;
-                user.Salt = "bla";
-                user.PasswordHash = "xx";
-               // this._context.Users.Add(user);
-
-              //  await this._context.SaveChangesAsync();
+                user.Salt = pwResult.SaltString;
+                user.PasswordHash = pwResult.HashString;
+                user.ActivationToken = CryptoUtility.GetPseudoRandomString(2) + DateTime.Now.Ticks.ToString() + CryptoUtility.GetPseudoRandomString(29);
+                this._context.Users.Add(user);
+                await this._context.SaveChangesAsync();
 
                 return RedirectToAction("Index", "Home");
             }
-
-
             return View(model);
             //  return View("~/Areas/Identity/Views/Account/Register", model);
         }
