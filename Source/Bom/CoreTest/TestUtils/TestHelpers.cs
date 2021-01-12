@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Reflection;
-using Bom.Core.Data;
+using Bom.Core.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bom.Core.TestUtils

@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Bom.Core.Data;
-using Bom.Core.Model;
+using Bom.Core.Common;
+using Bom.Core.Nodes.DbModels;
 using Bom.Web.Lib.Infrastructure;
 
 namespace Bom.Web.Controllers

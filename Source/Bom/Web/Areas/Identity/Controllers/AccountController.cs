@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Bom.Core.Data;
+using Bom.Core.Common;
 using Bom.Web.Areas.Main.Models;
 using Bom.Web.Lib.Infrastructure;
 using Bom.Web.Areas.Identity.Models;
-using Bom.Core.Model.Identity;
+using Bom.Core.Identity;
+using Bom.Core.Identity.DbModels;
 
 namespace Bom.Web.Areas.Main.Controllers
 {

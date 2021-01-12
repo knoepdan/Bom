@@ -2,8 +2,9 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
-using Bom.Core.Data;
-using Bom.Core.Model;
+using Bom.Core.Common;
+using Bom.Core.Nodes;
+using Bom.Core.Nodes.DbModels;
 using Bom.Core.Utils;
 using Ch.Knomes.Struct;
 

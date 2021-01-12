@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Bom.Core.Data;
+using Bom.Core.Common;
 using Bom.Web.Lib.Infrastructure;
 
 #pragma warning disable IDE0060 // Remove unused parameter

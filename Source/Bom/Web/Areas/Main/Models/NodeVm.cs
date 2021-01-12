@@ -9,7 +9,7 @@ namespace Bom.Web.Areas.Main.Models
     {
         public NodeVm() { }
 
-        public NodeVm(Core.Model.Path path)
+        public NodeVm(Core.Nodes.DbModels.Path path)
         {
             if(path == null)
             {

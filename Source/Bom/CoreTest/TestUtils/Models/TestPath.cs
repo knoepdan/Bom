@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-using Bom.Core.Model;
+using Bom.Core.Nodes.DbModels;
 using Ch.Knomes.Struct;
 
 namespace Bom.Core.TestUtils.Models

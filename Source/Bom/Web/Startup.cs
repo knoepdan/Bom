@@ -23,8 +23,7 @@ using Microsoft.AspNetCore.Http;
 using Bom.Web.Lib.Infrastructure.ErrorHandling;
 
 
-using Bom.Core.Model;
-using Bom.Core.Data;
+using Bom.Core.Common;
 
 using Microsoft.EntityFrameworkCore;
 

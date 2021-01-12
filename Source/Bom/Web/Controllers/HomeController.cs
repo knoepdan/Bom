@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Bom.Core.Data;
 using Bom.Web.Areas.Main.Models;
 using Bom.Web.Lib.Infrastructure;
 using Bom.Web.Areas.Identity.Models;
