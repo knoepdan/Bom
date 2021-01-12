@@ -6,31 +6,55 @@
 
 <h1>Register</h1>
 
-<h4>RegisterVm</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Register">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+        @Html.BeginForm(FormMethod.Post){
+
+        @{/*
+
+                different way: easier to add other html attributes
+                <form asp-action="Register">
+
                 <label asp-for="Username" class="control-label"></label>
                 <input asp-for="Username" class="form-control" />
                 <span asp-validation-for="Username" class="text-danger"></span>
+
+            */
+        }
+        <form asp-controller="Account" asp-action="Register" method="post">
+
+
+            @Html.ValidationSummary(true)
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label>
+                    Email
+                    @Html.TextBoxFor(x => x.Username, new { @type = "email", maxlength = "255" })
+                </label>
+                @Html.ValidationMessageFor(x => x.Username)
+
             </div>
             <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+                <label>
+                    Password
+                    @Html.PasswordFor(x => x.Password, new { maxlength = "255" })
+                </label>
+                @Html.ValidationMessageFor(x => x.Password)
             </div>
             <div class="form-group">
-                <label asp-for="ConfirmPassword" class="control-label"></label>
-                <input asp-for="ConfirmPassword" class="form-control" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+
+                <label>
+                    Confirm password
+                    @Html.PasswordFor(x => x.ConfirmPassword, new { maxlength = "255" })
+                </label>
+                @Html.ValidationMessageFor(x => x.ConfirmPassword)
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
-        </form>
+            </form>
     </div>
 </div>
 
