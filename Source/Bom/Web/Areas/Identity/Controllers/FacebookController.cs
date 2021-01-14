@@ -13,39 +13,43 @@ using Bom.Web.Areas.Identity.Models;
 using Bom.Core.Identity;
 using Bom.Core.Identity.DbModels;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bom.Web.Areas.Main.Controllers
 {
     [Area("Identity")]
-    [Route("account")]
+    [Route("facebook")]
     [Controller]
-    public class AccountController : BomBaseViewController
+    public class FacebookController : BomBaseViewController
     {
         private readonly ModelContext _context;
 
-        public AccountController(ModelContext context)
+        public FacebookController(ModelContext context)
         {
             _context = context;
         }
 
-        // GET: api/Paths
-        [HttpGet("register")]
+        //// GET: api/Paths
+        //[HttpGet("register")]
+        //public IActionResult Register()
+        //{
+        //    var model = new RegisterVm();
+
+        //    return View( model);
+        //    //  return View("~/Areas/Identity/Views/Account/Register", model);
+        //}
+
+        [Authorize]
+        [HttpPost("register")]
         public IActionResult Register()
         {
-            var model = new RegisterVm();
 
-            return View( model);
-            //  return View("~/Areas/Identity/Views/Account/Register", model);
-        }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterVm model)
-        {
-
+            // TODO
             if (this.ModelState.IsValid)
             {
                 // TODO -> validate confirm pw, validate if email is unique and return proper error message
-
+                /*
                 var pwHelper = new PasswordHelper();
                 var pwResult = pwHelper.HashPasswordWithRandomSalt(model.Password, true);
 
@@ -58,8 +62,9 @@ namespace Bom.Web.Areas.Main.Controllers
                 await this._context.SaveChangesAsync();
 
                 return RedirectToAction("Index", "Home");
+                */
             }
-            return View(model);
+            return View();
             //  return View("~/Areas/Identity/Views/Account/Register", model);
         }
 

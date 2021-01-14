@@ -12,7 +12,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Hosting;
 
-
 //using Microsoft.AspNetCore.JsonPatch;//rmatter.Json;
 
 using System.Text.Encodings.Web;
@@ -22,6 +21,8 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Bom.Web.Lib.Infrastructure.ErrorHandling;
 
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Facebook;
 
 using Bom.Core.Common;
 
@@ -44,7 +45,7 @@ namespace Bom.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(option => option.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+          //  services.AddMvc(option => option.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Latest);
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
@@ -61,6 +62,13 @@ namespace Bom.Web
                     options.UseSqlServer(connection);
                     options.UseLazyLoadingProxies();
                 });
+
+            // authentication
+
+            //----------
+            Bom.Web.Areas.Identity.IdentityConfig.ConfigureIdentityServices(services);
+
+            services.AddControllersWithViews(); // also needed for third party authentication/redirects
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -108,7 +116,11 @@ namespace Bom.Web
 
             app.UseRouting();
 
-            //app.UseAuthorization(); // must be between UseRouting and UseEndpoints
+
+
+            app.UseAuthentication();   // must be between UseRouting and UseEndpoints
+            app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {

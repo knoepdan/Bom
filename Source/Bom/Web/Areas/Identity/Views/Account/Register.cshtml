@@ -10,20 +10,23 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        @Html.BeginForm(FormMethod.Post){
+
 
         @{/*
 
-                different way: easier to add other html attributes
-                <form asp-action="Register">
+                    different way: easier to add other html attributes
+                    <form asp-action="Register">
 
-                <label asp-for="Username" class="control-label"></label>
-                <input asp-for="Username" class="form-control" />
-                <span asp-validation-for="Username" class="text-danger"></span>
+                    <label asp-for="Username" class="control-label"></label>
+                    <input asp-for="Username" class="form-control" />
+                    <span asp-validation-for="Username" class="text-danger"></span>
 
-            */
+                */
         }
-        <form asp-controller="Account" asp-action="Register" method="post">
+
+
+
+        <form  action="@Url.ActionLink("Register", "Account")" method="post">
 
 
             @Html.ValidationSummary(true)
@@ -54,7 +57,27 @@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
+        </form>
+    </div>
+</div>
+
+
+<br /><br /><br /><br />
+<div class="row">
+    <div class="col-md-4">
+
+        <form action="@Url.ActionLink("Register", "Facebook")" method="post">
+           
+
+                @Html.ValidationSummary(true)
+
+                <div class="form-group">
+                    <input type="submit" value="Register Facebook" class="btn btn-primary" />
+                </div>
             </form>
+
+
+
     </div>
 </div>
 
