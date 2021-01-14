@@ -55,7 +55,7 @@ namespace Bom.Web.Areas.Main.Controllers
                 user.Username = model.Username;
                 user.Salt = pwResult.SaltString;
                 user.PasswordHash = pwResult.HashString;
-                user.ActivationToken = CryptoUtility.GetPseudoRandomString(2) + DateTime.Now.Ticks.ToString() + CryptoUtility.GetPseudoRandomString(29);
+                user.ActivationToken = Guid.NewGuid() + DateTime.Now.Ticks.ToString() + CryptoUtility.GetPseudoRandomString(5);
                 this._context.Users.Add(user);
                 await this._context.SaveChangesAsync();
 
