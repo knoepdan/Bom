@@ -49,7 +49,7 @@ namespace Bom.Core.Identity.DbModels
                 Assert.True(savedUser != null && savedUser.Username == userName && savedUser.HasFeature(AppFeature.EditOther));
                 var savedRole = context.Roles.FirstOrDefault(x => x.RoleName == roleName);
                 Assert.True(savedRole != null && savedRole.RoleName == roleName);
-                var savedUserRoles = context.UserRoles.Where(x => x.Username == userName);
+                var savedUserRoles = context.UserRoles.Where(x => x.User.Username == userName);
                 Assert.True(savedUserRoles.Count() == 1 && savedUserRoles.First().RoleId == savedRole?.RoleId);
 
                 // clear up

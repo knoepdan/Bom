@@ -9,6 +9,8 @@ namespace Bom.Core.Identity.DbModels
     public class User
     {
 
+        public int UserId { get; set; }
+
         /// <summary>
         /// Username/Email
         /// </summary>
@@ -22,7 +24,11 @@ namespace Bom.Core.Identity.DbModels
 
         public string? FacebookId { get; set; }
 
-        public UserStatus UserStatus { get; set; } = UserStatus.MailConfirmationPending;
+        public UserStatus UserStatus { get; set; } = UserStatus.Initializing;
+
+        public string? Email2 { get; set; }
+
+        public string Name { get; set; } = "";
 
         internal virtual IList<UserRole> UserRoles { get; set; } = new List<UserRole>();
 

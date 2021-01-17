@@ -18,13 +18,13 @@ namespace Bom.Core.Identity.DbModels.Mapping
                 throw new ArgumentNullException(nameof(builder));
             }
             builder.ToTable(nameof(UserRole));
-            builder.HasKey(x => new { x.RoleId, x.Username });
+            builder.HasKey(x => new { x.RoleId, x.UserId });
             builder.Property(x => x.RoleId);
-            builder.Property(x => x.Username);
+            builder.Property(x => x.UserId);
 
 
             builder.HasOne(p => p.Role).WithMany().HasForeignKey(x => x.RoleId);
-            builder.HasOne(p => p.User).WithMany(us => us.UserRoles).HasForeignKey(x => x.Username);
+            builder.HasOne(p => p.User).WithMany(us => us.UserRoles).HasForeignKey(x => x.UserId);
             
         }
     }

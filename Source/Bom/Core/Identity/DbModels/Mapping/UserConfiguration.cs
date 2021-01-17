@@ -18,8 +18,9 @@ namespace Bom.Core.Identity.DbModels.Mapping
                 throw new ArgumentNullException(nameof(builder));
             }
             builder.ToTable(nameof(User));
-            builder.HasKey(x => x.Username);
+            builder.HasKey(x => x.UserId);
 
+            builder.Property(t => t.UserId);
 
             builder.Property(t => t.Username).HasMaxLength(255);
 
@@ -28,6 +29,10 @@ namespace Bom.Core.Identity.DbModels.Mapping
             builder.Property(x => x.ActivationToken);
             builder.Property(x => x.FacebookId);
             builder.Property(x => x.UserStatus).HasConversion<byte>();
+
+            builder.Property(t => t.Email2).HasMaxLength(255);
+            builder.Property(t => t.Name).HasMaxLength(255);
+
         }
     }
 }

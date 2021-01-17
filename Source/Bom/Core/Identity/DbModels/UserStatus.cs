@@ -8,8 +8,9 @@ namespace Bom.Core.Identity.DbModels
 {
     public enum UserStatus : byte
     {
-        MailConfirmationPending = 0,
-        Active = 1,
+        Initializing = 0,
+        MailConfirmationPending = 1,
+        Active = 2,
 
     }
 }

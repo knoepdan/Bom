@@ -31,14 +31,14 @@ namespace Bom.Core.Identity.DbModels
 
             this.User = user;
             this.Role = role;
-            this.Username = user.Username;
+            this.UserId = user.UserId;
             this.RoleId = role.RoleId;
         }
 
 
         public int RoleId { get; protected set; }
 
-        public string Username { get; protected set; } = default!;
+        public int UserId { get; protected set; }
 
         public virtual Role Role { get; protected set; } = default!;
 
