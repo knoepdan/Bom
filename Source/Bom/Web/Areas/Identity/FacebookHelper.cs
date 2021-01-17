@@ -21,7 +21,7 @@ using Microsoft.AspNetCore.Authentication.Facebook;
 
 namespace Bom.Web.Areas.Identity
 {
-    public class FacebookHelper
+    public static class FacebookHelper
     {
         public static void SetupFacebookAuthentication(FacebookOptions options)
         {
@@ -33,6 +33,30 @@ namespace Bom.Web.Areas.Identity
             options.Events.OnCreatingTicket = ctx =>
             {
                 Console.WriteLine("FB OnCreating Ticket");
+
+
+                var dto = new FacebookInfoDto();
+                dto.Identifier = ctx.TokenResponse.AccessToken; // its not this
+
+                var fbIdentity = ctx.Principal?.Identities.FirstOrDefault(x => x.IsAuthenticated && x.AuthenticationType == "Facebook");
+                if (fbIdentity != null)
+                {
+                    dto.Name = fbIdentity.Name;
+                    var emailType = fbIdentity.Claims.FirstOrDefault(x => x.Type.EndsWith("emailaddress"));
+                    var identifier = ctx.Principal?.Claims.FirstOrDefault(x => x.Type.EndsWith("nameidentifier"));
+
+
+
+                    if(fbIdentity == ctx.Identity)
+                    {
+                        Console.WriteLine("identity and fbIdentity seems to be the same");
+                    }
+                }
+
+
+
+                ctx.HttpContext.Items["FbTicketTmp"] = dto;
+
                 return Task.CompletedTask;
             };
             options.Events.OnRedirectToAuthorizationEndpoint = ctx =>
@@ -47,12 +71,33 @@ namespace Bom.Web.Areas.Identity
 
                 Console.WriteLine("FB OnRedirectToAuthorizationEndpoint");
 
-                ctx.Response.Redirect(ctx.RedirectUri); // important
+
+
+                if (ctx.Request.Path.HasValue && ctx.Request.Path.Value != null && ctx.Request.Path.Value.Contains("register/facebook"))
+                {
+                    // only in certain paths to we redirect (and actually trigger authentication)
+                    ctx.Response.Redirect(ctx.RedirectUri); // important
+
+                }
                 return Task.CompletedTask;
             };
             options.Events.OnTicketReceived = ctx =>
             {
                 Console.WriteLine("FB OnTicketReceived");
+
+                var dto = new FacebookInfoDto();
+                dto.Identifier = ctx.Result?.Ticket?.Properties?.ToString(); // seems to be always null
+
+                var fbIdentity  = ctx.Principal?.Identities.FirstOrDefault(x => x.IsAuthenticated && x.AuthenticationType == "Facebook");
+                if(fbIdentity != null)
+                {
+                    dto.Name = fbIdentity.Name;
+                    var emailType = fbIdentity.Claims.FirstOrDefault(x => x.Type.EndsWith("emailaddress"));
+                    var identifier = ctx.Principal?.Claims.FirstOrDefault(x => x.Type.EndsWith("nameidentifier"));
+                }
+                
+                ctx.HttpContext.Items["FbTicket"] = dto;
+
                 return Task.CompletedTask;
             };
             options.Events.OnRemoteFailure = ctx =>
@@ -68,6 +113,37 @@ namespace Bom.Web.Areas.Identity
 
         }
 
+
+        public static FacebookInfoDto? GetFacebookPreLoginInfo(this HttpContext context)
+        {
+            object? val;
+            if(context.Items.TryGetValue("FbTicketTmp", out val))
+            {
+                return val as FacebookInfoDto;
+            }
+            return null;
+        }
+
+        public static FacebookInfoDto? GetFacebookLoginInfo(this HttpContext context)
+        {
+            object? val;
+            if (context.Items.TryGetValue("FbTicket", out val))
+            {
+                return val as FacebookInfoDto;
+            }
+            return null;
+        }
+
+
+        public class FacebookInfoDto
+        {
+
+            public string? Identifier { get; set; }
+
+            public string? Email { get; set; }
+
+            public string? Name { get; set; }
+        }
 
     }
 }

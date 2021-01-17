@@ -119,6 +119,8 @@ namespace Bom.Web
 
 
             app.UseAuthentication();   // must be between UseRouting and UseEndpoints
+            app.UseMiddleware<Bom.Web.Areas.Identity.AuthenticationMiddleware>(); // custom stuff
+
             app.UseAuthorization();
 
 

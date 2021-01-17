@@ -41,8 +41,21 @@ namespace Bom.Web.Areas.Main.Controllers
 
         [Authorize]
         [HttpPost("register")]
-        public IActionResult Register()
+        public IActionResult Register(object dummy)
         {
+            var oAuthInfo = Bom.Web.Areas.Identity.IdentityHelper.GetFacebookType(this.User.Identities);
+            if (oAuthInfo != null)
+            {
+                // TODO check if identity is already taken
+                // TODO2 if no create user and safe (or best forward to another page to confirm etc. (and potentially change username emailaddress) 
+
+                this.GoToSecondRegisterPage();
+
+
+
+
+            }
+
 
 
             // TODO
@@ -68,5 +81,34 @@ namespace Bom.Web.Areas.Main.Controllers
             //  return View("~/Areas/Identity/Views/Account/Register", model);
         }
 
+       // [Authorize]
+        [HttpGet("register")]
+        public IActionResult Register()
+        {
+            // will return to this endpoint
+
+            var oAuthInfo = Bom.Web.Areas.Identity.IdentityHelper.GetFacebookType(this.User.Identities);
+            if (oAuthInfo != null)
+            {
+                // TODO check if identity is already taken
+                // TODO2 if no create user and safe (or best forward to another page to confirm etc. (and potentially change username emailaddress) 
+
+                this.GoToSecondRegisterPage();
+            }        
+            else
+            {
+                throw new Exception("Did not authentication to facebook");
+            }
+
+
+            return View();
+
+        }
+
+
+        private void GoToSecondRegisterPage()
+        {
+            // TODO
+        }
     }
 }

@@ -19,12 +19,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\**" />
+    <Content Remove="Models\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <None Remove="Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Areas\Main\Data\" />
     <Folder Include="Areas\Main\Views\" />
     <Folder Include="Areas\Testing\Data\" />
     <Folder Include="Areas\Testing\Models\" />
     <Folder Include="Areas\Testing\Views\" />
-    <Folder Include="Models\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

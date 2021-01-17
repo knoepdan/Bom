@@ -81,7 +81,18 @@
     </div>
 </div>
 
+
+<br /><br /><br /><br />
+  <form action="@Url.ActionLink("Logout", "Account")" method="post">
+           
+
+                @Html.ValidationSummary(true)
+
+                <div class="form-group">
+                    <input type="submit" value="Logout" class="btn btn-primary" />
+                </div>
+            </form>
+
 <div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 

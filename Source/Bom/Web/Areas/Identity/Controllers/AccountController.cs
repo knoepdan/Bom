@@ -28,6 +28,22 @@ namespace Bom.Web.Areas.Main.Controllers
             _context = context;
         }
 
+
+        [HttpGet("logout")]
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            if(this.User != null)
+            {
+                this.SignOut();
+            }
+
+            return RedirectToAction("register");
+            //  return View("~/Areas/Identity/Views/Account/Register", model);
+        }
+
+
+
         // GET: api/Paths
         [HttpGet("register")]
         public IActionResult Register()
