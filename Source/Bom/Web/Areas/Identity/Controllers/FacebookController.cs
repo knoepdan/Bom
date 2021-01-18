@@ -20,13 +20,13 @@ namespace Bom.Web.Areas.Main.Controllers
     [Area("Identity")]
     [Route("facebook")]
     [Controller]
-    public class FacebookController : BomBaseViewController
+    public class FacebookController : OAuthBaseController
     {
-        private readonly ModelContext _context;
+        //private readonly ModelContext _context;
 
-        public FacebookController(ModelContext context)
+        public FacebookController(ModelContext context) : base(context)
         {
-            _context = context;
+    //        _context = context;
         }
 
         //// GET: api/Paths
@@ -41,74 +41,68 @@ namespace Bom.Web.Areas.Main.Controllers
 
         [Authorize]
         [HttpPost("register")]
-        public IActionResult Register(object dummy)
+        public async Task<IActionResult> Register(object dummy)
         {
-            var oAuthInfo = Bom.Web.Areas.Identity.IdentityHelper.GetFacebookType(this.User.Identities);
-            if (oAuthInfo != null)
-            {
-                // TODO check if identity is already taken
-                // TODO2 if no create user and safe (or best forward to another page to confirm etc. (and potentially change username emailaddress) 
-
-                this.GoToSecondRegisterPage();
-
-
-
-
-            }
-
-
-
-            // TODO
             if (this.ModelState.IsValid)
             {
-                // TODO -> validate confirm pw, validate if email is unique and return proper error message
-                /*
-                var pwHelper = new PasswordHelper();
-                var pwResult = pwHelper.HashPasswordWithRandomSalt(model.Password, true);
-
-                var user = new User();
-                user.Username = model.Username;
-                user.Salt = pwResult.SaltString;
-                user.PasswordHash = pwResult.HashString;
-                user.ActivationToken = Guid.NewGuid() + DateTime.Now.Ticks.ToString() + CryptoUtility.GetPseudoRandomString(5);
-                this._context.Users.Add(user);
-                await this._context.SaveChangesAsync();
-
-                return RedirectToAction("Index", "Home");
-                */
+                throw new Exception("invalid model state");
             }
-            return View();
-            //  return View("~/Areas/Identity/Views/Account/Register", model);
+
+
+            var actionResult = await GoToSecondRegisterPage();
+            return actionResult;
         }
 
        // [Authorize]
         [HttpGet("register")]
-        public IActionResult Register()
+        public async Task<IActionResult> Register()
         {
-            // will return to this endpoint
-
-            var oAuthInfo = Bom.Web.Areas.Identity.IdentityHelper.GetFacebookType(this.User.Identities);
-            if (oAuthInfo != null)
+            // TODO try to find a way prevent dummy request
+            if (this.ModelState.IsValid)
             {
-                // TODO check if identity is already taken
-                // TODO2 if no create user and safe (or best forward to another page to confirm etc. (and potentially change username emailaddress) 
-
-                this.GoToSecondRegisterPage();
-            }        
-            else
-            {
-                throw new Exception("Did not authentication to facebook");
+                throw new Exception("invalid model state");
             }
 
+            // will return to this endpoint
 
-            return View();
+
+            var actionResult = await GoToSecondRegisterPage();
+            return actionResult;
+
 
         }
 
 
-        private void GoToSecondRegisterPage()
+        private async Task<IActionResult> GoToSecondRegisterPage()
         {
-            // TODO
+            var oAuthInfo = Bom.Web.Areas.Identity.IdentityHelper.GetFacebookType(this.User.Identities);
+            if (oAuthInfo != null)
+            {
+     
+
+                var existingId = await this.Context.Users.Where(x => x.FacebookId == oAuthInfo.Identifier).Select(x => x.FacebookId).FirstOrDefaultAsync();
+                if (string.IsNullOrEmpty(existingId))
+                {
+                    throw new Exception("Already exists");
+                }
+
+                var user = this.CreateNewOAuthUser(oAuthInfo);
+                user.FacebookId = oAuthInfo.Identifier;
+                this.Context.Users.Add(user);
+                await this.Context.SaveChangesAsync();
+
+
+
+                // redirect to
+                var regVm = new OAuthRegVm(user, "Facebook");
+
+
+                return this.View(regVm);
+            }
+            else
+            {
+                throw new Exception("Identities not found");  // or just a redirect to normal register??
+            }
         }
     }
 }
