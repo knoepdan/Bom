@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Html;
 using System.Web;
 
-using Ch.Knomes.Localization.Impl;
+using Ch.Knomes.Localization.Store;
+using Ch.Knomes.Localization.Resolver;
 using Ch.Knomes.Localization.Utils;
 
 namespace Ch.Knomes.Localization
@@ -12,12 +13,19 @@ namespace Ch.Knomes.Localization
     /// <remarks>When HtmlString is returned, values are encoded</remarks>
     public class Textservice : ITextService, IHtmlService
     {
-        public Textservice(ILocalizationStore store)
+        public Textservice(ILocalizationStore store, ITextResolver? resolver = null)
         {
-            this._store = store;
+            this.Store = store;
+            if(resolver == null)
+            {
+                resolver = new CurrentThreadTextResolver();
+            }
+            this.TextResolver = resolver;
         }
 
-        private readonly ILocalizationStore _store;
+        public ILocalizationStore Store;
+
+        public ITextResolver TextResolver;
 
         #region ITextService
 
@@ -34,10 +42,10 @@ namespace Ch.Knomes.Localization
 
         private ITextItem? GetTextItem(string code)
         {
-            ITranslationsContainer? foundTrans = this._store.GetTranslationsOfCode(code);
+            ITranslationsContainer? foundTrans = this.Store.GetTranslationsOfCode(code);
             if (foundTrans != null)
             {
-                return foundTrans.GetTextItem();
+                return foundTrans.GetTextItem(this.TextResolver);
             }
             return null;
         }

@@ -21,7 +21,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Localization\Impl\localization.json" />
+    <None Remove="Localization\Store\localization.json" />
   </ItemGroup>
 
   <ItemGroup>

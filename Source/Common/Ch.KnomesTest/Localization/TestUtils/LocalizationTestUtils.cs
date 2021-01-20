@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Ch.Knomes.TestUtils.Resources;
 using Ch.Knomes.Localization;
-using Ch.Knomes.Localization.Impl;
+using Ch.Knomes.Localization.Store;
 
 namespace Ch.Knomes.Localization.TestUtils
 {
@@ -13,7 +13,7 @@ namespace Ch.Knomes.Localization.TestUtils
     {
         public static string GetValidLocalizationJson()
         {
-            var content = ResourceUtility.ReadManifestData<Impl.LocalizationStoreProviderTests>("localization.json");
+            var content = ResourceUtility.ReadManifestData<Store.LocalizationStoreProviderTests>("localization.json");
             return content;
         }
 

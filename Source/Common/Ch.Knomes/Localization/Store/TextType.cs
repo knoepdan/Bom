@@ -1,4 +1,4 @@
-﻿namespace Ch.Knomes.Localization.Impl
+﻿namespace Ch.Knomes.Localization.Store
 {
     public enum TextType : byte
     {

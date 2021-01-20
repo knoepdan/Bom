@@ -27,14 +27,7 @@ namespace Ch.Knomes.Localization.Utils
             }
         }
 
-        private static string FormatString(string text, IEnumerable<object> args)
-        {
-            if (string.IsNullOrEmpty(text) || args == null)
-            {
-                return text;
-            }
-            return string.Format(text, args.ToArray()); // ToArray is important otherwise it will be treated as one object
-        }
+
 
         internal static IEnumerable<string> EncodedParams(IEnumerable<object> args)
         {
@@ -63,5 +56,49 @@ namespace Ch.Knomes.Localization.Utils
                 }
             }
         }
+
+        /// <summary>
+        /// Basic check whether passed language code is valid (eg: "en" or "en-US" or "en-us")
+        /// </summary>
+        /// <remarks>not a 100% check </remarks>
+        internal static bool IsProbablyValidLanguageCode(string langCode)
+        {
+            if (string.IsNullOrWhiteSpace(langCode))
+            {
+                return false;
+            }
+            langCode = langCode.Trim();
+            if (langCode.Length == 2 || langCode.Length > 3 && langCode[2] == '-')
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Transforms the language code into a more general form (eg: "de-ch" -> "de")
+        /// </summary>
+        ///<remarks>Currently only supports step from 2 level to one level (eg: "en-us" -> "en")</remarks>
+        internal static string? GetParentLanguageCode(string langCode)
+        {
+            if (langCode != null && langCode.Length > 2)
+            {
+                // passed langauge had local culture -> fallback to language only  (eg: "en-us" -> "en")
+                return langCode.Substring(0, 2);
+            }
+            return null;
+        }
+
+        #region private methods
+        private static string FormatString(string text, IEnumerable<object> args)
+        {
+            if (string.IsNullOrEmpty(text) || args == null)
+            {
+                return text;
+            }
+            return string.Format(text, args.ToArray()); // ToArray is important otherwise it will be treated as one object
+        }
+
+        #endregion
     }
 }

@@ -8,7 +8,7 @@ using Ch.Knomes.Localization.TestUtils;
 
 using Xunit;
 
-namespace Ch.Knomes.Localization.Impl
+namespace Ch.Knomes.Localization.Store
 {
     public class LocalizationStoreProviderTests
     {

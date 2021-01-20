@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ch.Knomes.Localization.Impl
+namespace Ch.Knomes.Localization.Store
 {
     public interface ITextItem
     {

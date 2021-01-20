@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Ch.Knomes.Localization.Impl
+namespace Ch.Knomes.Localization.Store
 {
     public class LocalizationStoreProvider
     {

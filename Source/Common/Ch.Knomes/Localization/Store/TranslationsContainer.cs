@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ch.Knomes.Localization.Resolver;
 
-namespace Ch.Knomes.Localization.Impl
+namespace Ch.Knomes.Localization.Store
 {
     public interface ITranslationsContainer
     {
-        ITextItem? GetTextItem();
-        ITextItem? GetTextItemByLanguage(string langCode);
+        ITextItem? GetTextItem(ITextResolver resolver);
     }
 
     public class TranslationsContainer : ITranslationsContainer
@@ -24,8 +24,6 @@ namespace Ch.Knomes.Localization.Impl
             this._translations.Add(item);
         }
 
-        public ITextResolver Resolver { get; } = new TextResolver();
-
         private List<ITextItem> _translations = new List<ITextItem>();
         internal IReadOnlyList<ITextItem> Translations => _translations;
 
@@ -36,14 +34,9 @@ namespace Ch.Knomes.Localization.Impl
 
         #region interface ITranslationsContainer
 
-        public ITextItem? GetTextItemByLanguage(string langCode)
+        public ITextItem? GetTextItem(ITextResolver resolver)
         {
-            return this.Resolver.GetTextItemByLanguage(langCode, this._translations);
-        }
-
-        public ITextItem? GetTextItem()
-        {
-            return this.Resolver.GetTextItem(this._translations);
+            return resolver.GetTextItem(this._translations);
         }
 
         #endregion
