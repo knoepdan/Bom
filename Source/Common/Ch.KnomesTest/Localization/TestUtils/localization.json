@@ -1,0 +1,52 @@
+﻿
+  [
+    {
+      "Code": "Common.Save",
+      "LangCode": "en",
+      "Text": "Save"
+    },
+    {
+      "Code": "Common.Save",
+      "LangCode": "DE",
+      "Text": "Speichern"
+    },
+    {
+      "Code": "Test.Hello",
+      "LangCode": "en-us",
+      "Text": "Hello"
+    },
+    {
+      "Code": "Common.Save",
+      "LangCode": "fr",
+      "Text": "Sauvgarder"
+    },
+    {
+      "Code": "Test.Hello",
+      "LangCode": "de",
+      "Text": "Haaaallloooo"
+    },
+    {
+      "Code": "Test.Translation",
+      "LangCode": "de",
+      "Text": "<div>Übersetzung </div>",
+      "Type": "Html"
+    },
+    {
+      "Code": "Test.Smile",
+      "LangCode": "en",
+      "Text": "<div>Smile {0}</div>",
+      "Type": "Text"
+    },
+    {
+      "Code": "Test.Smile",
+      "LangCode": "de",
+      "Text": "<div>Lachen {0}</div>",
+      "Type": "Html"
+    },
+    {
+      "Code": "Test.Jump",
+      "LangCode": "de",
+      "Text": "<div>Springen </div>",
+      "Type": "Undefined"
+    }
+  ]

@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
+using Microsoft.AspNetCore.Html;
+
+namespace Ch.Knomes.Localization
+{
+    /// <summary>
+    /// Service to localize text, already taking care of html encoding
+    /// </summary>
+    public interface IHtmlService
+    {
+        /// <summary>
+        /// Translate value in the corresponding language
+        /// </summary>
+        /// <param name="code">key</param>
+        /// <param name="fallbackValue">Fallback if no value was found</param>
+        /// <param name="args">param objects</param>
+        /// <returns></returns>
+        HtmlString LocalizeHtml(string code, string fallbackValue, params object[] args);
+
+        /// <summary>
+        /// Marker for text that don't need translation
+        /// </summary>
+        /// <param name="textValue"></param>
+        HtmlString FixedHtml(string textValue, params object[] args);
+
+        /// <summary>
+        /// Text that don't need translation
+        /// </summary>
+        /// <param name="textValue"></param>
+        HtmlString TodoHtml(string code, string fallbackValue, params object[] args);
+    }
+}

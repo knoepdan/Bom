@@ -62,7 +62,7 @@ namespace Bom.Web.Areas.Main.Controllers
 
         public IActionResult GetFirstStep()
         {
-
+            return View("OAuthRegistration");
         }
 
 

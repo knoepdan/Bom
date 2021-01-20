@@ -15,6 +15,9 @@ namespace Bom.Web.Controllers
     [ApiController]
     public class UploadController : BomBaseController
     {
+
+        // maybe check also: https://codewithmukesh.com/blog/file-upload-in-aspnet-core-mvc/
+
         //  private static readonly ILogger _logger = LoggerFactory.GetLogger(typeof(UploadController));
 
         #region static part
