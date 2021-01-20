@@ -17,7 +17,6 @@ namespace Ch.Knomes.Localization
         [Fact]
         public void Textservice_returns_expected_text_results_for_fixed_and_todo()
         {
-            // TODO and Fixed will not access store
             ITextService service = CreateTextservice();
 
             Assert.True(service.Fixed("aa") == "aa");
