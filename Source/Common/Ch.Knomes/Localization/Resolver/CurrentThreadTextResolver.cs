@@ -14,7 +14,7 @@ namespace Ch.Knomes.Localization.Resolver
             var transCulture = System.Threading.Thread.CurrentThread.CurrentUICulture;
             if (transCulture != null)
             {
-                return transCulture.Name.ToLowerInvariant(); // "en" or "en-us" ;
+                return LocalizationUtility.TrimmLangCodeForComparisons(transCulture.Name);  // "en" or "en-us" ;
             }
             return "en";
         }

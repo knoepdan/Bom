@@ -10,6 +10,8 @@ namespace Ch.Knomes.Localization.Store
     public interface ITranslationsContainer
     {
         ITextItem? GetTextItem(ITextResolver resolver);
+
+        IEnumerable<string> GetLanguageCodes();
     }
 
     public class TranslationsContainer : ITranslationsContainer
@@ -39,6 +41,12 @@ namespace Ch.Knomes.Localization.Store
             return resolver.GetTextItem(this._translations);
         }
 
+        public IEnumerable<string> GetLanguageCodes()
+        {
+            var allLangCodes = this._translations.Select(x => x.LangCode);
+            return allLangCodes;
+        }
+         
         #endregion
     }
 }

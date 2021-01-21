@@ -21,6 +21,19 @@ namespace Bom.Web.Lib.Infrastructure
         }
 
 
+        public string PassedLanguage
+        {
+            get
+            {
+                var passedLang = this.RouteData.Values[Const.RouteArgumentNames.Lang] as string;
+                if (passedLang != null && UiGlobals.LocalizationStore != null && UiGlobals.LocalizationStore.HasTranslationsForLangCode(passedLang, false))
+                {
+                    return passedLang;
+                }
+                return Const.DefaultLang;
+            }
+        }
+
         protected LayoutData LayoutData
         {
             get

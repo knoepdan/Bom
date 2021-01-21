@@ -89,6 +89,21 @@ namespace Ch.Knomes.Localization.Utils
             return null;
         }
 
+
+        /// <summary>
+        /// Ensures langCode can be compared easily via == (trimmes, toLowerInvariatne etc)
+        /// </summary>
+        /// <param name="langCode">langCode</param>
+        /// <returns>langCode, trimmed and lowercase for simpler comparisons</returns>
+        internal static string TrimmLangCodeForComparisons(string langCode)
+        {
+            if (string.IsNullOrEmpty(langCode))
+            {
+                return langCode;
+            }
+            return langCode.Trim().ToLowerInvariant();
+        }
+
         #region private methods
         private static string FormatString(string text, IEnumerable<object> args)
         {

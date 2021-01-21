@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
+using Ch.Knomes.Localization.Utils;
+
 namespace Ch.Knomes.Localization.Store
 {
     public class LocalizationStoreProvider
@@ -45,7 +47,7 @@ namespace Ch.Knomes.Localization.Store
 
         private static void EnsureLangCodeIsLowercase(CodeTextItem item)
         {
-            item.LangCode = item.LangCode.ToLowerInvariant();
+            item.LangCode = LocalizationUtility.TrimmLangCodeForComparisons(item.LangCode);
         }
     }
 }

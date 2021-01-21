@@ -3,12 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ch.Knomes.Localization.Utils;
 
 namespace Ch.Knomes.Localization.Store
 {
     public interface ILocalizationStore
     {
         ITranslationsContainer? GetTranslationsOfCode(string code);
+    }
+
+    public interface IInfoLocalizationStore : ILocalizationStore
+    {
+        IReadOnlyList<LanguageCodeInfo> GetAvailableLanguageStatistics();
+
+        IReadOnlyList<string> GetAvailableLanguageCodes();
+
+        bool HasTranslationsForLangCode(string? langCode, bool exactMatchIncludingCulture);
     }
 
     public class LocalizationStore : ILocalizationStore
@@ -86,6 +96,74 @@ namespace Ch.Knomes.Localization.Store
                 return itemsforCode;
             }
             return null;
+        }
+
+
+        private List<LanguageCodeInfo>? _languageCodeInfos = null;
+        public IReadOnlyList<LanguageCodeInfo> GetAvailableLanguageStatistics()
+        {
+            if(this._languageCodeInfos == null)
+            {
+                this._languageCodeInfos = CalculateAvailableLanguages().ToList();
+            }
+            return this._languageCodeInfos;
+        }
+
+        public IReadOnlyList<string> GetAvailableLanguageCodes()
+        {
+            var stats = GetAvailableLanguageStatistics();
+            var langCodes = stats.Select(x => x.LanguageCode);
+            return langCodes.ToList();
+        }
+
+        public bool HasTranslationsForLangCode(string? langCode, bool exactMatchIncludingCulture)
+        {
+            if (string.IsNullOrEmpty(langCode))
+            {
+                return false;
+            }
+            var trimmedCode = LocalizationUtility.TrimmLangCodeForComparisons(langCode);
+            if (exactMatchIncludingCulture)
+            {
+                return GetAvailableLanguageCodes().Any(x => x == langCode);
+            }
+
+            var parentLangCode = LocalizationUtility.GetParentLanguageCode(langCode);
+            if(parentLangCode != null)
+            {
+                return GetAvailableLanguageCodes().Any(x => x == langCode);
+            }
+            return false;
+        }
+
+
+
+        #endregion
+
+        #region other methods
+
+        public void ResetLanguageStatisticsCache()
+        {
+            this._languageCodeInfos = null;
+        }
+
+        public IEnumerable<LanguageCodeInfo> CalculateAvailableLanguages()
+        {
+            var allLanguageCodes = new List<string>();
+            foreach (var trans in this._codeTranslationDic.Values)
+            {
+                var langCodes = trans.GetLanguageCodes();
+                allLanguageCodes.AddRange(langCodes);
+            }
+
+            // group and count
+            var grouped = allLanguageCodes.GroupBy(s => s)
+                .Select(g => new { Symbol = g.Key, Count = g.Count() });
+
+            foreach (var g in grouped)
+            {
+                yield return new LanguageCodeInfo(g.Symbol, g.Count);
+            }
         }
 
         #endregion

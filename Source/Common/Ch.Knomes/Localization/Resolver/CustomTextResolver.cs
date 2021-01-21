@@ -15,7 +15,7 @@ namespace Ch.Knomes.Localization.Resolver
             {
                 throw new ArgumentException("Passed langCode is not valid: " + langCode, nameof(langCode));
             }
-            this.LanguageCode = langCode.Trim().ToLowerInvariant(); ;
+            this.LanguageCode = LocalizationUtility.TrimmLangCodeForComparisons(langCode);  // "en" or "en-us"
         }
 
         public string LanguageCode { get; private set; }

@@ -43,6 +43,5 @@ namespace Ch.Knomes.Localization.Resolver
             }
             return null;
         }
-
     }
 }
