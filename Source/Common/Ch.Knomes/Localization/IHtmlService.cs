@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Html;
+using Ch.Knomes.Localization.Resolver;
 
 namespace Ch.Knomes.Localization
 {
     /// <summary>
     /// Service to localize text, already taking care of html encoding
     /// </summary>
-    public interface IHtmlService
+    public interface IHtmlService : IGetTemporaryLanguageSwitch
     {
         /// <summary>
         /// Translate value in the corresponding language

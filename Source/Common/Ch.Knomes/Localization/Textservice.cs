@@ -106,5 +106,14 @@ namespace Ch.Knomes.Localization
         }
 
         #endregion
+
+        #region IGetTemporaryLanguageSwitch
+        public ITemporaryLanguageSwitch? GetTemporayLanguageSwitch(string langCode)
+        {
+            var langSwitch = this.TextResolver.GetTemporayLanguageSwitch(langCode);
+            return langSwitch;
+        }
+
+        #endregion
     }
 }

@@ -81,7 +81,7 @@ namespace Ch.Knomes.Localization.Utils
         ///<remarks>Currently only supports step from 2 level to one level (eg: "en-us" -> "en")</remarks>
         internal static string? GetParentLanguageCode(string langCode)
         {
-            if (langCode != null && langCode.Length > 2)
+            if (langCode != null && langCode.Length > 2 && langCode[2] == '-')
             {
                 // passed langauge had local culture -> fallback to language only  (eg: "en-us" -> "en")
                 return langCode.Substring(0, 2);

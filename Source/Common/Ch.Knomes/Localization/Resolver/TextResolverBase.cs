@@ -27,8 +27,7 @@ namespace Ch.Knomes.Localization.Resolver
             return item;
         }
 
-        protected abstract string GetCurrentLangCode();
-
+        public abstract string GetCurrentLangCode();
 
         /// <summary>
         /// Transforms the language code into a more general form (eg: "de-ch" -> "de")
@@ -43,5 +42,7 @@ namespace Ch.Knomes.Localization.Resolver
             }
             return null;
         }
+
+        public abstract ITemporaryLanguageSwitch? GetTemporayLanguageSwitch(string langCode);
     }
 }

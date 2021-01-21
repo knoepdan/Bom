@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Html;
 using System.Web;
 using Ch.Knomes.Localization.Utils;
+using Ch.Knomes.Localization.Resolver;
 
 namespace Ch.Knomes.Localization
 {
@@ -76,6 +77,24 @@ namespace Ch.Knomes.Localization
             }
             return new HtmlString($"Todo-{HttpUtility.HtmlEncode(code)}: {htmlText}");
         }
+
+        #endregion
+
+        #region IGetTemporaryLanguageSwitch
+
+        public ITemporaryLanguageSwitch? GetTemporayLanguageSwitch(string langCode)
+        {
+            return new DummySwitch();
+        }
+
+        public class DummySwitch: ITemporaryLanguageSwitch
+        {
+            public void Dispose()
+            {
+                // nothing to do
+            }
+        }
+
         #endregion
     }
 }

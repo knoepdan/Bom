@@ -18,7 +18,7 @@ namespace Ch.Knomes.Localization.Store
 
         IReadOnlyList<string> GetAvailableLanguageCodes();
 
-        bool HasTranslationsForLangCode(string? langCode, bool exactMatchIncludingCulture);
+        bool HasTranslationsForLangCode(string? langCode, bool exactMatchIncludingCulture = false);
     }
 
     public class LocalizationStore : ILocalizationStore
@@ -102,7 +102,7 @@ namespace Ch.Knomes.Localization.Store
         private List<LanguageCodeInfo>? _languageCodeInfos = null;
         public IReadOnlyList<LanguageCodeInfo> GetAvailableLanguageStatistics()
         {
-            if(this._languageCodeInfos == null)
+            if (this._languageCodeInfos == null)
             {
                 this._languageCodeInfos = CalculateAvailableLanguages().ToList();
             }
@@ -116,27 +116,31 @@ namespace Ch.Knomes.Localization.Store
             return langCodes.ToList();
         }
 
-        public bool HasTranslationsForLangCode(string? langCode, bool exactMatchIncludingCulture)
+        public bool HasTranslationsForLangCode(string? langCode, bool exactMatchIncludingCulture = false)
         {
             if (string.IsNullOrEmpty(langCode))
             {
                 return false;
             }
             var trimmedCode = LocalizationUtility.TrimmLangCodeForComparisons(langCode);
-            if (exactMatchIncludingCulture)
+            var availableLangCodes = GetAvailableLanguageCodes();
+            bool isExactMatch = availableLangCodes.Any(x => x == trimmedCode);
+            if (isExactMatch)
             {
-                return GetAvailableLanguageCodes().Any(x => x == langCode);
+                return true;
             }
-
-            var parentLangCode = LocalizationUtility.GetParentLanguageCode(langCode);
-            if(parentLangCode != null)
+            else if (exactMatchIncludingCulture)
             {
-                return GetAvailableLanguageCodes().Any(x => x == langCode);
+                return false;
+            }
+            var parentLangCode = LocalizationUtility.GetParentLanguageCode(trimmedCode);
+            if (parentLangCode != null)
+            {
+                var val = GetAvailableLanguageCodes().Any(x => x == parentLangCode);
+                return val;
             }
             return false;
         }
-
-
 
         #endregion
 

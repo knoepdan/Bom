@@ -12,5 +12,10 @@ namespace Ch.Knomes.Localization.Store
         public string LanguageCode { get; } = default!;
 
         public int Count { get; } = default!;
+
+        public override string ToString()
+        {
+            return $"[{nameof(LanguageCodeInfo)}] {this.LanguageCode}: {this.Count}";
+        }
     }
 }

@@ -21,7 +21,7 @@ namespace Bom.Web.Lib.Infrastructure
         }
 
 
-        public string PassedLanguage
+        public string CurrentLanguage
         {
             get
             {
@@ -51,8 +51,8 @@ namespace Bom.Web.Lib.Infrastructure
             IHtmlService htmlService = new DummyTextservice();
             if (UiGlobals.LocalizationStore != null)
             {
-
-                htmlService = new Textservice(UiGlobals.LocalizationStore);
+                var resolver = new Ch.Knomes.Localization.Resolver.CustomTextResolver(this.CurrentLanguage);
+                htmlService = new Textservice(UiGlobals.LocalizationStore, resolver);
             }
             var layoutData = new LayoutData(htmlService);
             return layoutData;
