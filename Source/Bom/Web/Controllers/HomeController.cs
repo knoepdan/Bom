@@ -8,11 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using Bom.Web.Areas.Main.Models;
 using Bom.Web.Lib.Infrastructure;
 using Bom.Web.Areas.Identity.Models;
+using Bom.Web.Lib;
 
 namespace Bom.Web.Controllers
 {
     [Route("/")]
-    [Route("Home")]
+    [Route("/Home")]
+    [Route("/{"+Const.RouteArgumentNames.Lang + "}/Home")]
     [Controller]
     public class HomeController : BomBaseViewController
     {

@@ -16,6 +16,10 @@ namespace Bom.Web.Lib.Infrastructure
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
+
+
+            var temp = CurrentLanguage;
+
             base.OnActionExecuting(context);
             LayoutData = GetLayoutData();
         }
@@ -26,9 +30,17 @@ namespace Bom.Web.Lib.Infrastructure
             get
             {
                 var passedLang = this.RouteData.Values[Const.RouteArgumentNames.Lang] as string;
-                if (passedLang != null && UiGlobals.LocalizationStore != null && UiGlobals.LocalizationStore.HasTranslationsForLangCode(passedLang, false))
-                {
-                    return passedLang;
+                if (passedLang != null){
+                    if (UiGlobals.LocalizationStore != null && UiGlobals.LocalizationStore.HasTranslationsForLangCode(passedLang, false))
+                    {
+                        return passedLang;
+                    }
+                    #if DEBUG
+                    Utils.Dev.PossibleImprovment("Remove this debug code once we have localized data");
+                    if(passedLang == "de"){
+                        return passedLang;
+                    }
+                    #endif
                 }
                 return Const.DefaultLang;
             }
