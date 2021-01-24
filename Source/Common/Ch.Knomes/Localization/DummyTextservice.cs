@@ -14,6 +14,7 @@ namespace Ch.Knomes.Localization
         public DummyTextservice(bool alwaysUseFallback = true)
         {
             this.AlwaysUseFallback = alwaysUseFallback;
+            this.Resolver = new CurrentThreadTextResolver(); // doesnt really matter which type of resolver because this is just a summy
         }
 
         public bool AlwaysUseFallback { get; }
@@ -42,6 +43,8 @@ namespace Ch.Knomes.Localization
             }
             return $"TODO-{code}: {LocalizationUtility.FormatStringFailsafe(fallbackValue, args)}";
         }
+
+        public ITextResolver Resolver { get; }
 
         #endregion
 
@@ -80,21 +83,5 @@ namespace Ch.Knomes.Localization
 
         #endregion
 
-        #region IGetTemporaryLanguageSwitch
-
-        public ITemporaryLanguageSwitch? GetTemporayLanguageSwitch(string langCode)
-        {
-            return new DummySwitch();
-        }
-
-        public class DummySwitch: ITemporaryLanguageSwitch
-        {
-            public void Dispose()
-            {
-                // nothing to do
-            }
-        }
-
-        #endregion
     }
 }

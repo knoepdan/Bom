@@ -12,15 +12,16 @@ using Bom.Web.Lib.Infrastructure;
 using Bom.Web.Areas.Identity.Models;
 using Bom.Core.Identity;
 using Bom.Core.Identity.DbModels;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Bom.Web.Lib;
 
 namespace Bom.Web.Areas.Main.Controllers
 {
     [Area("Identity")]
-    [Route("account")]
+    [Route("/{" + Const.RouteArgumentNames.Lang + "}/{" + Const.RouteArgumentNames.Controller  + "}")]
     [Controller]
     public class AccountController : BomBaseViewController
     {
+
         private readonly ModelContext _context;
 
         public AccountController(ModelContext context)

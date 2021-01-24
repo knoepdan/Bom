@@ -54,6 +54,15 @@ namespace Ch.Knomes.Localization.Store
 
     public class CodeTextItem : ITextItemWithCode
     {
+        public CodeTextItem() { }
+
+        public CodeTextItem(string code, string langCode, string text, TextType textType = TextType.Undefined) {
+            this.Code = code;
+            this.LangCode = langCode;
+            this.Text = text;
+            this.Type = textType;
+        }
+
         public string Code { get; set; } = default!;
 
         public string LangCode { get; set; } = default!;

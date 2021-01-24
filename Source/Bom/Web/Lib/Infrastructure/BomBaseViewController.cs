@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Bom.Web.Lib.Mvc;
 using Ch.Knomes.Localization;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Bom.Web.Lib.Mvc;
 
 namespace Bom.Web.Lib.Infrastructure
 {
@@ -16,10 +16,6 @@ namespace Bom.Web.Lib.Infrastructure
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-
-
-            var temp = CurrentLanguage;
-
             base.OnActionExecuting(context);
             LayoutData = GetLayoutData();
         }
@@ -35,12 +31,12 @@ namespace Bom.Web.Lib.Infrastructure
                     {
                         return passedLang;
                     }
-                    #if DEBUG
-                    Utils.Dev.PossibleImprovment("Remove this debug code once we have localized data");
-                    if(passedLang == "de"){
-                        return passedLang;
-                    }
-                    #endif
+                }
+                else
+                {
+                    // try to guess language from broser
+
+
                 }
                 return Const.DefaultLang;
             }
@@ -60,13 +56,19 @@ namespace Bom.Web.Lib.Infrastructure
 
         protected virtual LayoutData GetLayoutData()
         {
-            IHtmlService htmlService = new DummyTextservice();
+            IHtmlService htmlService;
             if (UiGlobals.LocalizationStore != null)
             {
                 var resolver = new Ch.Knomes.Localization.Resolver.CustomTextResolver(this.CurrentLanguage);
                 htmlService = new Textservice(UiGlobals.LocalizationStore, resolver);
             }
-            var layoutData = new LayoutData(htmlService);
+            else
+            {
+                htmlService = new DummyTextservice();
+            }
+         
+            // create layout data
+            var layoutData = new LayoutData(htmlService, UiGlobals.AvailableLangCodes);
             return layoutData;
         }
     }

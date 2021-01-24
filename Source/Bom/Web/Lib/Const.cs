@@ -14,6 +14,16 @@ namespace Bom.Web.Lib
         public static class RouteArgumentNames
         {
             public const string Lang = "lang";
+
+            /// <summary>
+            /// action: built in
+            /// </summary>
+            public const string Action = "action";
+
+            /// <summary>
+            /// controller  -> built in
+            /// </summary>
+            public const string Controller = "controller";
         }
     }
 }

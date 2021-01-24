@@ -69,6 +69,9 @@ namespace Bom.Web
             Bom.Web.Areas.Identity.IdentityConfig.ConfigureIdentityServices(services);
 
             services.AddControllersWithViews(); // also needed for third party authentication/redirects
+
+            Utils.Dev.PossibleImprovment("Call from a better place", Utils.Dev.ImproveArea.ToCheck, Utils.Dev.Urgency.Low);
+            Lib.UiGlobals.InitGlobals();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

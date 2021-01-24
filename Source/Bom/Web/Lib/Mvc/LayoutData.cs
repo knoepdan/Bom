@@ -9,18 +9,25 @@ namespace Bom.Web.Lib.Mvc
     public class LayoutData
     {
 
-        public LayoutData(IHtmlService? htmlService)
+        public LayoutData(IHtmlService? htmlService, IReadOnlyCollection<string> availableLangCodes)
         {
             if (htmlService == null)
             {
                 throw new ArgumentNullException(nameof(htmlService));
             }
             this.HtmlService = htmlService;
-
+            this.AvailableLanguageCodes = availableLangCodes;
         }
 
-
         public IHtmlService HtmlService { get; }
+
+        public IReadOnlyCollection<string> AvailableLanguageCodes { get; }
+
+        public string GetCurrentLangCode()
+        {
+            var code = HtmlService.Resolver.GetCurrentLangCode(); // method is simply convenience
+            return code;
+        }
 
     }
 }

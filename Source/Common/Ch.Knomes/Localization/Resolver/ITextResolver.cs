@@ -13,5 +13,10 @@ namespace Ch.Knomes.Localization.Resolver
         /// Returns text item for the correct language (depending on the revolver with fallbacks or defaults)
         /// </summary>
         ITextItem? GetTextItem(IEnumerable<ITextItem> translations);
+
+        /// <summary>
+        /// Returns current language Code (example: "en" or "en-us"
+        /// </summary>
+        string GetCurrentLangCode();
     }
 }

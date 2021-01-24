@@ -20,12 +20,12 @@ namespace Ch.Knomes.Localization
             {
                 resolver = new CurrentThreadTextResolver();
             }
-            this.TextResolver = resolver;
+            this.Resolver = resolver;
         }
 
         public ILocalizationStore Store;
 
-        public ITextResolver TextResolver;
+        public ITextResolver Resolver { get; }
 
         #region ITextService
 
@@ -45,7 +45,7 @@ namespace Ch.Knomes.Localization
             ITranslationsContainer? foundTrans = this.Store.GetTranslationsOfCode(code);
             if (foundTrans != null)
             {
-                return foundTrans.GetTextItem(this.TextResolver);
+                return foundTrans.GetTextItem(this.Resolver);
             }
             return null;
         }
@@ -58,6 +58,11 @@ namespace Ch.Knomes.Localization
         public string Todo(string code, string fallbackValue, params object[] args)
         {
             return LocalizationUtility.FormatStringFailsafe(fallbackValue, args);
+        }
+
+        public string GetCurrentLangCode()
+        {
+            return this.Resolver.GetCurrentLangCode();
         }
 
         #endregion
@@ -110,7 +115,7 @@ namespace Ch.Knomes.Localization
         #region IGetTemporaryLanguageSwitch
         public ITemporaryLanguageSwitch? GetTemporayLanguageSwitch(string langCode)
         {
-            var langSwitch = this.TextResolver.GetTemporayLanguageSwitch(langCode);
+            var langSwitch = this.Resolver.GetTemporayLanguageSwitch(langCode);
             return langSwitch;
         }
 

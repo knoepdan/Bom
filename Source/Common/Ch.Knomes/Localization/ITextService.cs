@@ -7,7 +7,7 @@ using Ch.Knomes.Localization.Resolver;
 
 namespace Ch.Knomes.Localization
 {
-    public interface ITextService : IGetTemporaryLanguageSwitch
+    public interface ITextService
     {
         /// <summary>
         /// Translate value in the corresponding language
@@ -29,5 +29,10 @@ namespace Ch.Knomes.Localization
         /// </summary>
         /// <param name="textValue"></param>
         string Todo(string code, string fallbackValue, params object[] args);
+
+        /// <summary>
+        /// Resolver choosing the language
+        /// </summary>
+        ITextResolver Resolver { get; }
     }
 }

@@ -44,12 +44,12 @@ namespace Ch.Knomes.Localization
             Assert.True(service.Localize("code", "aa {0} {1}", 1, 2) == "aa 1 2");
 
             // Test code that exists
-            using (var langSwitch = service.GetTemporayLanguageSwitch("en"))
+            using (var langSwitch = service.Resolver.GetTemporayLanguageSwitch("en"))
             {
                 Assert.True(service.Localize("Common.Save", "aa") == "Save");
                 Assert.True(service.Localize("Test.Smile", "aa {0}", 1, 2) == "<div>Smile 1</div>"); // <div>Smile {0}</div>   (TEXT)
             }
-            using (var langSwitch = service.GetTemporayLanguageSwitch("de"))
+            using (var langSwitch = service.Resolver.GetTemporayLanguageSwitch("de"))
             {
                 Assert.True(service.Localize("Common.Save", "aa") == "Speichern");
                 Assert.True(service.Localize("Test.Smile", "aa {0}", 1, 2) == "<div>Lachen 1</div>"); // <div>Lachen {0}</div>   (HTML)
@@ -89,7 +89,7 @@ namespace Ch.Knomes.Localization
             IHtmlService service = CreateTextservice();
 
             // Test code that exists
-            using (var langSwitch = service.GetTemporayLanguageSwitch("en"))
+            using (var langSwitch = service.Resolver.GetTemporayLanguageSwitch("en"))
             {
                 Assert.True(service.LocalizeHtml("Common.Save", "aa").ToString() == "Save"); // basic
 
@@ -104,7 +104,7 @@ namespace Ch.Knomes.Localization
                 var decoded = HttpUtility.HtmlDecode(localizedString2);
                 Assert.True(decoded == "<div>Smile <div>PARAM</div></div>");
             }
-            using (var langSwitch = service.GetTemporayLanguageSwitch("de"))
+            using (var langSwitch = service.Resolver.GetTemporayLanguageSwitch("de"))
             {
                 Assert.True(service.LocalizeHtml("Common.Save", "aa").ToString() == "Speichern");
 

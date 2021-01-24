@@ -8,10 +8,12 @@
 
     var layoutData = this.ViewData.LayoutData();
     var htmlService = layoutData.HtmlService;
-    // this.HtmlEncoder
+
+    var linkProvider = new Bom.Web.Areas.Identity.IdentityLinkProvider(this.Url, layoutData);
+
 }
 
 
 @htmlService.FixedHtml("<h1>Bom</h1>")
 
-<a href="@Url.Content("~/account/register")" >Register</a>
+<a href="@linkProvider.AccountRegisterLink" >Register</a>

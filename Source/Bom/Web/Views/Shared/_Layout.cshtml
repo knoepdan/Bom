@@ -1,7 +1,6 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Bom.Web.Lib.Mvc;
 @{
+    var layoutData = this.ViewData.LayoutData();
 }
 
 <!DOCTYPE html>
@@ -16,6 +15,42 @@
 
     <header>
         <h2>Layout-Page</h2>
+
+        @if (layoutData.AvailableLanguageCodes.Count > 1)
+        {
+            <span style="float:left">
+                @foreach (var langCode in layoutData.AvailableLanguageCodes)
+                {
+                    var currentLang = layoutData.GetCurrentLangCode();
+                    var langName = layoutData.HtmlService.LocalizeHtml("Common.LangUntranslated." + langCode, langCode); // should not be translated (depends on localization store)
+                    if (currentLang == langCode)
+                    {
+                        // no ling
+                        <b>@langName</b>
+                    }
+                    else
+                    {
+                        var request = this.ViewContext.HttpContext.Request;
+                        var path = request.Path.Value!; // "/de/Home/Index" or  in case of Home: "/Home/Index" or "/"
+                        var basePath = request.PathBase; // /BomApi
+
+                        string url = $"{basePath}/{Html.UrlEncoder.Encode(langCode)}/home"; // default -> only when no controller or action
+                        if (!string.IsNullOrEmpty(path))
+                        {
+                            string newPath = $"{Html.UrlEncoder.Encode(langCode)}/{path.TrimStart('/')}";
+                            if (request.RouteValues.ContainsKey(Bom.Web.Lib.Const.RouteArgumentNames.Lang))
+                            {
+                                var parts = path.Split('/', StringSplitOptions.RemoveEmptyEntries);
+                                parts[0] = Html.UrlEncoder.Encode(langCode);
+                                newPath = $"/{string.Join('/', parts)}";
+                            }
+                            url = $"{basePath}/{newPath.TrimStart('/')}";
+                        }
+                        <a href="@url">@langName</a>
+                    }
+                }
+            </span>
+        }
     </header>
     <div>
         @RenderBody()

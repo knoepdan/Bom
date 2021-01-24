@@ -8,54 +8,31 @@ using Microsoft.AspNetCore.Html;
 
 namespace Ch.Knomes.Localization.Utils
 {
-    internal static class LocalizationUtility
+    public static class LocalizationUtility
     {
+        #region public methods
+
         /// <summary>
-        /// Formats string similar to string.Format but is failsafe (in case string does not provide enough params: it will 
+        /// Trims passed languageCode to language part. Example: "en-Us" -> "en"
         /// </summary>
-        internal static string FormatStringFailsafe(string text, IEnumerable<object> args)
+        /// <remarks>does no validation if it is a language string. Just a best guess to get the languagePart</remarks>
+        public static string TrimToLanguagePart(string languageCode)
         {
-            try
+            if (string.IsNullOrEmpty(languageCode))
             {
-                return FormatString(text, args);
+                return languageCode;
             }
-            catch (FormatException)
+            languageCode = languageCode.TrimStart();
+            if(languageCode.Length  > 2)
             {
-                // Example: 2 params passed but string only has one placeholder
-                System.Diagnostics.Debug.WriteLine($"Swallowed FormatException in '{nameof(FormatStringFailsafe)}'. Passed text: '{text}'");
-                return text;
+                return languageCode.Substring(0, 2);
             }
+            return languageCode;
         }
 
+        #endregion
 
-
-        internal static IEnumerable<string> EncodedParams(IEnumerable<object> args)
-        {
-            if (args == null)
-            {
-                yield return "";
-            }
-            else
-            {
-#pragma warning disable CS8603 // Possible null reference return.
-                foreach (object a in args)
-                {
-                    if (a == null)
-                    {
-                        yield return "";
-                    }
-                    else if (a is HtmlString)
-                    {
-                        yield return a.ToString(); // no need to encode as this is intended
-                    }
-                    else
-                    {
-                        yield return HttpUtility.HtmlEncode(a.ToString());
-                    }
-#pragma warning restore CS8603 // Possible null reference return.
-                }
-            }
-        }
+        #region internal but quite generic
 
         /// <summary>
         /// Basic check whether passed language code is valid (eg: "en" or "en-US" or "en-us")
@@ -89,6 +66,55 @@ namespace Ch.Knomes.Localization.Utils
             return null;
         }
 
+        #endregion
+
+        #region intern 
+
+        /// <summary>
+        /// Formats string similar to string.Format but is failsafe (in case string does not provide enough params: it will 
+        /// </summary>
+        internal static string FormatStringFailsafe(string text, IEnumerable<object> args)
+        {
+            try
+            {
+                return FormatString(text, args);
+            }
+            catch (FormatException)
+            {
+                // Example: 2 params passed but string only has one placeholder
+                System.Diagnostics.Debug.WriteLine($"Swallowed FormatException in '{nameof(FormatStringFailsafe)}'. Passed text: '{text}'");
+                return text;
+            }
+        }
+        internal static IEnumerable<string> EncodedParams(IEnumerable<object> args)
+        {
+            if (args == null)
+            {
+                yield return "";
+            }
+            else
+            {
+#pragma warning disable CS8603 // Possible null reference return.
+                foreach (object a in args)
+                {
+                    if (a == null)
+                    {
+                        yield return "";
+                    }
+                    else if (a is HtmlString)
+                    {
+                        yield return a.ToString(); // no need to encode as this is intended
+                    }
+                    else
+                    {
+                        yield return HttpUtility.HtmlEncode(a.ToString());
+                    }
+#pragma warning restore CS8603 // Possible null reference return.
+                }
+            }
+        }
+
+       
 
         /// <summary>
         /// Ensures langCode can be compared easily via == (trimmes, toLowerInvariatne etc)
@@ -103,6 +129,8 @@ namespace Ch.Knomes.Localization.Utils
             }
             return langCode.Trim().ToLowerInvariant();
         }
+
+        #endregion
 
         #region private methods
         private static string FormatString(string text, IEnumerable<object> args)

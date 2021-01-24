@@ -21,7 +21,7 @@ namespace Ch.Knomes.Localization.Store
         bool HasTranslationsForLangCode(string? langCode, bool exactMatchIncludingCulture = false);
     }
 
-    public class LocalizationStore : ILocalizationStore
+    public class LocalizationStore : IInfoLocalizationStore
     {
         public LocalizationStore(IEnumerable<ITextItemWithCode> allItems)
         {

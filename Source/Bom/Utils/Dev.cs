@@ -12,7 +12,7 @@ namespace Bom.Utils
             Undefined = 0,
             Performance = 1,
             CodeQuality = 2,
-            Othe = 3,
+            Other = 3,
             ToCheck = 4,
         }
 

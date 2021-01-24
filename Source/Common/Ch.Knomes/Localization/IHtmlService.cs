@@ -12,7 +12,7 @@ namespace Ch.Knomes.Localization
     /// <summary>
     /// Service to localize text, already taking care of html encoding
     /// </summary>
-    public interface IHtmlService : IGetTemporaryLanguageSwitch
+    public interface IHtmlService
     {
         /// <summary>
         /// Translate value in the corresponding language
@@ -34,5 +34,10 @@ namespace Ch.Knomes.Localization
         /// </summary>
         /// <param name="textValue"></param>
         HtmlString TodoHtml(string code, string fallbackValue, params object[] args);
+
+        /// <summary>
+        /// Resolver choosing the language
+        /// </summary>
+        ITextResolver Resolver { get; }
     }
 }
