@@ -122,10 +122,10 @@ namespace Ch.Knomes.Localization
             }
         }
 
-        private Textservice CreateTextservice()
+        private Textservice<LocalizationStore, CurrentThreadTextResolver>  CreateTextservice()
         {
             var store = LocalizationTestUtils.GetLocacationStore()!;
-            return new Textservice(store);
+            return new Textservice<LocalizationStore, CurrentThreadTextResolver>(store, new CurrentThreadTextResolver());
         }
 
     }

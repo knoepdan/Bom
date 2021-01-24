@@ -11,7 +11,7 @@ namespace Ch.Knomes.Localization
     /// Dummy implementention of Text-/Htmlservice not translating anything but more or less returning the fallback value
     /// </summary>
     /// <remarks>When HtmlString is returned, values are encoded</remarks>
-    public class Textservice : ITextService, IHtmlService
+    public class Textservice: ITextService, IHtmlService
     {
         public Textservice(ILocalizationStore store, ITextResolver? resolver = null)
         {
@@ -23,7 +23,7 @@ namespace Ch.Knomes.Localization
             this.Resolver = resolver;
         }
 
-        public ILocalizationStore Store;
+        public ILocalizationStore Store { get; }
 
         public ITextResolver Resolver { get; }
 
@@ -74,16 +74,16 @@ namespace Ch.Knomes.Localization
             string? htmlText;
             var encodedParams = LocalizationUtility.EncodedParams(args);
             ITextItem? item = this.GetTextItem(code);
-            if(item != null)
+            if (item != null)
             {
                 if (item.Type == TextType.Html)
                 {
                     htmlText = LocalizationUtility.FormatStringFailsafe(item.Text, encodedParams);
-                 }
+                }
                 else
                 {
                     // is not html -> we need to encode the language
-                    htmlText = LocalizationUtility.FormatStringFailsafe(HttpUtility.HtmlEncode(item.Text), encodedParams);  HttpUtility.HtmlEncode(item.Text);
+                    htmlText = LocalizationUtility.FormatStringFailsafe(HttpUtility.HtmlEncode(item.Text), encodedParams); HttpUtility.HtmlEncode(item.Text);
                 }
             }
             else
@@ -95,7 +95,7 @@ namespace Ch.Knomes.Localization
             return new HtmlString(htmlText);
         }
 
-        HtmlString IHtmlService.FixedHtml(string htmlText, params object[] args)
+        public HtmlString FixedHtml(string htmlText, params object[] args)
         {
             var encodedParams = LocalizationUtility.EncodedParams(args);
             var htmlTextWithParams = LocalizationUtility.FormatStringFailsafe(htmlText, encodedParams);
@@ -103,7 +103,7 @@ namespace Ch.Knomes.Localization
 
         }
 
-        HtmlString IHtmlService.TodoHtml(string code, string htmlFallbackValue, params object[] args)
+        public HtmlString TodoHtml(string code, string htmlFallbackValue, params object[] args)
         {
             var encodedParams = LocalizationUtility.EncodedParams(args);
             var htmlText = LocalizationUtility.FormatStringFailsafe(htmlFallbackValue, encodedParams);
@@ -111,14 +111,20 @@ namespace Ch.Knomes.Localization
         }
 
         #endregion
-
-        #region IGetTemporaryLanguageSwitch
-        public ITemporaryLanguageSwitch? GetTemporayLanguageSwitch(string langCode)
+    }
+    public class Textservice<TLocalizationStore, TResolver> : Textservice, ITextService<TResolver>, IHtmlService<TResolver> where TLocalizationStore : ILocalizationStore where TResolver : ITextResolver
+    {
+        public Textservice(TLocalizationStore store, TResolver resolver) : base(store, resolver)
         {
-            var langSwitch = this.Resolver.GetTemporayLanguageSwitch(langCode);
-            return langSwitch;
+
         }
 
-        #endregion
+        public TLocalizationStore LocalizationSTroe => (TLocalizationStore)base.Store;
+
+        public TResolver TextResolver => (TResolver)base.Resolver;
+
+        TResolver ITextService<TResolver>.Resolver => (TResolver)base.Resolver;
+
+        TResolver IHtmlService<TResolver>.Resolver => (TResolver)base.Resolver;
     }
 }

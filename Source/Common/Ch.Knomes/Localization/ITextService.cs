@@ -35,4 +35,11 @@ namespace Ch.Knomes.Localization
         /// </summary>
         ITextResolver Resolver { get; }
     }
+    public interface ITextService<TResolver> where TResolver : ITextResolver
+    {
+        /// <summary>
+        /// Resolver choosing the language
+        /// </summary>
+        TResolver Resolver { get; }
+    }
 }

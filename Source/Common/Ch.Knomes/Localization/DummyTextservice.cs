@@ -62,14 +62,14 @@ namespace Ch.Knomes.Localization
             return new HtmlString($"{HttpUtility.HtmlEncode(code)}: {htmlText}");
         }
 
-        HtmlString IHtmlService.FixedHtml(string htmlText, params object[] args)
+        public HtmlString FixedHtml(string htmlText, params object[] args)
         {
             var encodedParams = LocalizationUtility.EncodedParams(args);
             var htmlTextWithParams = LocalizationUtility.FormatStringFailsafe(htmlText, encodedParams);
             return new HtmlString(htmlTextWithParams);
         }
 
-        HtmlString IHtmlService.TodoHtml(string code, string htmlFallbackValue, params object[] args)
+        public HtmlString TodoHtml(string code, string htmlFallbackValue, params object[] args)
         {
             var encodedParams = LocalizationUtility.EncodedParams(args);
             var htmlText = LocalizationUtility.FormatStringFailsafe(htmlFallbackValue, encodedParams);
