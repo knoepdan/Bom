@@ -18,6 +18,7 @@
 
         @if (layoutData.AvailableLanguageCodes.Count > 1)
         {
+            var request = this.ViewContext.HttpContext.Request;
             <span style="float:left">
                 @foreach (var langCode in layoutData.AvailableLanguageCodes)
                 {
@@ -30,12 +31,11 @@
                     }
                     else
                     {
-                        var request = this.ViewContext.HttpContext.Request;
                         var path = request.Path.Value!; // "/de/Home/Index" or  in case of Home: "/Home/Index" or "/"
                         var basePath = request.PathBase; // /BomApi
 
                         string url = $"{basePath}/{Html.UrlEncoder.Encode(langCode)}/home"; // default -> only when no controller or action
-                        if (!string.IsNullOrEmpty(path))
+                        if (!string.IsNullOrEmpty(path) && path != "/")
                         {
                             string newPath = $"{Html.UrlEncoder.Encode(langCode)}/{path.TrimStart('/')}";
                             if (request.RouteValues.ContainsKey(Bom.Web.Lib.Const.RouteArgumentNames.Lang))
@@ -46,6 +46,13 @@
                             }
                             url = $"{basePath}/{newPath.TrimStart('/')}";
                         }
+
+                        // add query string
+                        if (!string.IsNullOrEmpty(request.QueryString.Value))
+                        {
+                            url = url + "?" + request.QueryString.Value.TrimStart('?');
+                        }
+
                         <a href="@url">@langName</a>
                     }
                 }

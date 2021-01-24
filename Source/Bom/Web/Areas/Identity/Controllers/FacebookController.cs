@@ -14,11 +14,13 @@ using Bom.Core.Identity;
 using Bom.Core.Identity.DbModels;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Authorization;
+using Bom.Web.Lib;
 
 namespace Bom.Web.Areas.Main.Controllers
 {
     [Area("Identity")]
-    [Route("facebook")]
+  //  [Route("facebook")]
+    [Route("/{" + Const.RouteArgumentNames.Lang + "}/{" + Const.RouteArgumentNames.Controller + "}")]
     [Controller]
     public class FacebookController : OAuthBaseController
     {
@@ -43,7 +45,7 @@ namespace Bom.Web.Areas.Main.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(object dummy)
         {
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
                 throw new Exception("invalid model state");
             }
@@ -53,12 +55,12 @@ namespace Bom.Web.Areas.Main.Controllers
             return actionResult;
         }
 
-       // [Authorize]
+        [Authorize]
         [HttpGet("register")]
         public async Task<IActionResult> Register()
         {
             // TODO try to find a way prevent dummy request
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
                 throw new Exception("invalid model state");
             }
@@ -78,10 +80,8 @@ namespace Bom.Web.Areas.Main.Controllers
             var oAuthInfo = Bom.Web.Areas.Identity.IdentityHelper.GetFacebookType(this.User.Identities);
             if (oAuthInfo != null)
             {
-     
-
                 var existingId = await this.Context.Users.Where(x => x.FacebookId == oAuthInfo.Identifier).Select(x => x.FacebookId).FirstOrDefaultAsync();
-                if (string.IsNullOrEmpty(existingId))
+                if (!string.IsNullOrEmpty(existingId))
                 {
                     throw new Exception("Already exists");
                 }
@@ -91,13 +91,13 @@ namespace Bom.Web.Areas.Main.Controllers
                 this.Context.Users.Add(user);
                 await this.Context.SaveChangesAsync();
 
-
-
                 // redirect to
                 var regVm = new OAuthRegVm(user, "Facebook");
 
+                // TODO -> probably do a redirect !! (and pass info as query string)
 
-                return this.View(regVm);
+                var result = base.GetOAuthRegistrationSuccessView(regVm);
+                return result;
             }
             else
             {

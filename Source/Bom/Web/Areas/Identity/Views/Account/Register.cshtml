@@ -1,7 +1,12 @@
 ﻿@model Bom.Web.Areas.Identity.Models.RegisterVm
-
+@using Bom.Web.Lib.Mvc;
 @{
     ViewData["Title"] = "Register";
+
+    var layoutData = this.ViewData.LayoutData();
+    var htmlService = layoutData.HtmlService;
+
+    var linkProvider = new Bom.Web.Areas.Identity.IdentityLinkProvider(this.Url, layoutData);
 }
 
 <h1>Register</h1>
@@ -14,19 +19,19 @@
 
         @{/*
 
-                    different way: easier to add other html attributes
-                    <form asp-action="Register">
+                              different way: easier to add other html attributes
+                              <form asp-action="Register">
 
-                    <label asp-for="Username" class="control-label"></label>
-                    <input asp-for="Username" class="form-control" />
-                    <span asp-validation-for="Username" class="text-danger"></span>
+                              <label asp-for="Username" class="control-label"></label>
+                              <input asp-for="Username" class="form-control" />
+                              <span asp-validation-for="Username" class="text-danger"></span>
 
-                */
+                          */
         }
 
 
 
-        <form  action="@Url.ActionLink("Register", "Account")" method="post">
+        <form action="@linkProvider.AccountRegisterLink" method="post">
 
 
             @Html.ValidationSummary(true)
@@ -62,19 +67,22 @@
 </div>
 
 
-<br /><br /><br /><br />
+<br />
+<br />
+<br />
+<br />
 <div class="row">
     <div class="col-md-4">
 
-        <form action="@Url.ActionLink("Register", "Facebook")" method="post">
-           
+        <form action="@linkProvider.FacebookRegisterLink" method="post">
 
-                @Html.ValidationSummary(true)
 
-                <div class="form-group">
-                    <input type="submit" value="Register Facebook" class="btn btn-primary" />
-                </div>
-            </form>
+            @Html.ValidationSummary(true)
+
+            <div class="form-group">
+                <input type="submit" value="Register Facebook" class="btn btn-primary" />
+            </div>
+        </form>
 
 
 
@@ -82,17 +90,18 @@
 </div>
 
 
-<br /><br /><br /><br />
-  <form action="@Url.ActionLink("Logout", "Account")" method="post">
-           
+<br />
+<br />
+<br />
+<br />
+<form action="@linkProvider.AccountLogoutLink" method="post">
 
-                @Html.ValidationSummary(true)
 
-                <div class="form-group">
-                    <input type="submit" value="Logout" class="btn btn-primary" />
-                </div>
-            </form>
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        <input type="submit" value="Logout" class="btn btn-primary" />
+    </div>
+</form>
 
 <div>
-
-

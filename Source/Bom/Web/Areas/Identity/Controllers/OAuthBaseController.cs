@@ -60,9 +60,10 @@ namespace Bom.Web.Areas.Main.Controllers
         }
 
 
-        public IActionResult GetFirstStep()
+        public IActionResult GetOAuthRegistrationSuccessView(OAuthRegVm oauthView)
         {
-            return View("OAuthRegistration");
+            const string viewName = "~/Areas/Identity/Views/Shared/OAuthRegistration.cshtml";
+            return View(viewName, oauthView);
         }
 
 

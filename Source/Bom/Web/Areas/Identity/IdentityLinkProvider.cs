@@ -43,6 +43,8 @@ namespace Bom.Web.Areas.Identity
 
         public string AccountRegisterLink => this._urlHelper.Content($"~/{this._langCode}/account/register")!;
 
+        public string AccountLogoutLink => this._urlHelper.Content($"~/{this._langCode}/account/logout")!;
+
         public string FacebookRegisterLink => this._urlHelper.Content($"~/{this._langCode}/facebook/register")!;
 
 

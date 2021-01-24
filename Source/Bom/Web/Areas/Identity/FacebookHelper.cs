@@ -73,7 +73,7 @@ namespace Bom.Web.Areas.Identity
 
 
 
-                if (ctx.Request.Path.HasValue && ctx.Request.Path.Value != null && ctx.Request.Path.Value.Contains("register/facebook"))
+                if (ctx.Request.Path.HasValue && ctx.Request.Path.Value != null && ctx.Request.Path.Value.Contains("facebook/register"))
                 {
                     // only in certain paths to we redirect (and actually trigger authentication)
                     ctx.Response.Redirect(ctx.RedirectUri); // important
