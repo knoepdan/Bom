@@ -20,6 +20,21 @@ namespace Bom.Web.Lib.Infrastructure
             LayoutData = GetLayoutData();
         }
 
+        public override void OnActionExecuted(ActionExecutedContext context)
+        {
+            base.OnActionExecuted(context);
+            if (context.Exception != null)
+            {
+
+                Bom.Utils.Dev.Todo("Log error"); // because here 
+
+                // Redirect to error page
+                context.ExceptionHandled = true;
+                const string errorView = "~/Views/Shared/Error.cshtml";
+                context.Result = View(errorView, context.Exception);
+            }
+        }
+
 
         public string CurrentLanguage
         {

@@ -106,6 +106,7 @@ namespace Bom.Web
                     {
                         _logger.LogError($"Unknown error: {requestInfo}");
                     }
+                   
                         
                     // request
                     await ErrorUtility.SetErrorResponse(context);
