@@ -119,7 +119,7 @@ namespace Bom.Web
 
 
             app.UseRouting();
-
+            app.UseMiddleware<Lib.LocalizationMiddleware>(); // set current language
 
 
             app.UseAuthentication();   // must be between UseRouting and UseEndpoints

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Threading;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,10 +19,10 @@ namespace Bom.Web.Areas.Identity
 {
     public class IdentityLinkProvider
     {
-        public IdentityLinkProvider(IUrlHelper urlHelper, Lib.Mvc.LayoutData layoutData)
+        public IdentityLinkProvider(IUrlHelper urlHelper)
         {
             this._urlHelper = urlHelper;
-            this._langCode = layoutData.GetCurrentLangCode();
+            this._langCode = GetLangCode();
         }
 
         public IdentityLinkProvider(IUrlHelper urlHelper, string currentLangCode)
@@ -34,7 +34,7 @@ namespace Bom.Web.Areas.Identity
         public IdentityLinkProvider(BomBaseViewController controller)
         {
             this._urlHelper = controller.Url;
-            this._langCode = controller.CurrentLanguage;
+            this._langCode = GetLangCode();
         }
 
         private readonly IUrlHelper _urlHelper;
@@ -48,5 +48,9 @@ namespace Bom.Web.Areas.Identity
         public string FacebookRegisterLink => this._urlHelper.Content($"~/{this._langCode}/facebook/register")!;
 
 
+        private string GetLangCode()
+        {
+            return Thread.CurrentThread.CurrentUICulture.Name;
+        }
     }
 }

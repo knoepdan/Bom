@@ -33,7 +33,7 @@ namespace Bom.Web.Lib
             }
 
             // set global textservice (otherwise it attribute localization would not work properly)
-            Func<ITextService> getTextServiceFunc = () => { Textservice textservice = GetTextservice(null)!; return textservice; };
+            Func<ITextService> getTextServiceFunc = () => { Textservice textservice = GetTextservice()!; return textservice; };
             LocalizationGlobals.GetDefaultTextServiceFunc = getTextServiceFunc;
         }
 
@@ -64,24 +64,16 @@ namespace Bom.Web.Lib
         public static IReadOnlyCollection<string> AvailableLangCodes { get; private set; } = new List<string>() { Const.DefaultLang };
 
 
-        internal static Textservice? GetTextservice(string? langCode = null)
+        internal static Textservice? GetTextservice()
         {
-            if(langCode == null)
-            {
-                // should always be alligned with current UI culture, especially for attribute localization
-                langCode = System.Threading.Thread.CurrentThread.CurrentUICulture.Name;
-            }
             if (UiGlobals.LocalizationStore != null)
             {
                 var resolver = new Ch.Knomes.Localization.Resolver.CurrentThreadTextResolver();
                 var service = new Textservice(UiGlobals.LocalizationStore, resolver);
                 return service;
             }
-            
             return null;
         }
-
-
 
     }
 }
