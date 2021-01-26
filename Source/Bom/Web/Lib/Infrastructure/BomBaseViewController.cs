@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Threading;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Ch.Knomes.Localization;
@@ -16,6 +16,12 @@ namespace Bom.Web.Lib.Infrastructure
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
+            // set culture in thread (necessary for attribute localization, and generally good to be consistent) 
+            Thread.CurrentThread.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(CurrentLanguage);
+            Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture;
+            Bom.Utils.Dev.Todo("make sure we set the culture before this code is called (and probably CurrentLanguage logic) because attribute logic does not work like this)");
+
+
             base.OnActionExecuting(context);
             LayoutData = GetLayoutData();
         }
@@ -71,13 +77,9 @@ namespace Bom.Web.Lib.Infrastructure
 
         protected virtual LayoutData GetLayoutData()
         {
-            IHtmlService htmlService;
-            if (UiGlobals.LocalizationStore != null)
-            {
-                var resolver = new Ch.Knomes.Localization.Resolver.CustomTextResolver(this.CurrentLanguage);
-                htmlService = new Textservice(UiGlobals.LocalizationStore, resolver);
-            }
-            else
+            IHtmlService? htmlService;
+            htmlService = UiGlobals.GetTextservice(CurrentLanguage);
+            if (htmlService == null)
             {
                 htmlService = new DummyTextservice();
             }
