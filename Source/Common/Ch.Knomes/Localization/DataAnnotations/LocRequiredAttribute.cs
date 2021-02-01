@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using Ch.Knomes.Localization;
 
-namespace Ch.Knomes.ComponentModel.DataAnnotations
+namespace Ch.Knomes.Localization.DataAnnotations
 {
     /// <summary>
     /// Like RequiredAttribute but uses <see cref="LocalizationGlobals.GetDefaultTextServiceFunc"/> for localization
