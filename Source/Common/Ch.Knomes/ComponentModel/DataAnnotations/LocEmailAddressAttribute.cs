@@ -3,26 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Ch.Knomes.Localization;
 
 namespace Ch.Knomes.ComponentModel.DataAnnotations
 {
-    /// <summary>
-    /// Like RequiredAttribute but uses <see cref="LocalizationGlobals.GetDefaultTextServiceFunc"/> for localization
-    /// </summary>
-    public class ExtRequiredAttribute : RequiredAttribute
+    public class LocEmailAddressAttribute : DataTypeAttribute
     {
+
+        public LocEmailAddressAttribute() : base(DataType.EmailAddress)
+        {
+
+        }
+
         public override string FormatErrorMessage(string name)
         {
-            // ensure default value
-            string errorMessage = "The {0} field is required."; //base.FormatErrorMessage(name);
+            string errorMessage = "The email address is not valid.";
 
             // translate using localizer
             if (!string.IsNullOrEmpty(this.ErrorMessageResourceName) && LocalizationGlobals.GetDefaultTextServiceFunc != null)
             {
                 var textService = LocalizationGlobals.GetDefaultTextServiceFunc();
-                if(textService != null)
+                if (textService != null)
                 {
                     errorMessage = textService.Localize(this.ErrorMessageResourceName, errorMessage, name);
                 }

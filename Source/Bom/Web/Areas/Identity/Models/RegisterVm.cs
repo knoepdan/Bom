@@ -11,18 +11,18 @@ namespace Bom.Web.Areas.Identity.Models
     {
 
 
-        [Required]
-        [EmailAddress]
-        [StringLength(255)]
+        [LocRequired]
+        [LocEmailAddress]
+        [LocStringLength(255)]
         public string Username { get; set; } = default!;
 
         // [Required]
-        [ExtRequired(ErrorMessageResourceName = "MVC.Validation.Required")]
-        [Display(Name ="TODO - also provide localization support")]
-        [StringLength(255)]
+        [LocRequired(ErrorMessageResourceName = "MVC.Validation.Required")]
+        [LocDisplayName("Password")]
+        [LocStringLength(255)]
         public string Password { get; set; } = default!;
 
-        [Required]
+        [LocRequired]
         public string ConfirmPassword { get; set; } = default!;
     }
 }
