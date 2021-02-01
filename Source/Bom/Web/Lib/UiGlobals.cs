@@ -68,7 +68,7 @@ namespace Bom.Web.Lib
         {
             if (UiGlobals.LocalizationStore != null)
             {
-                var resolver = new Ch.Knomes.Localization.Resolver.CurrentThreadTextResolver();
+                var resolver = new Ch.Knomes.Localization.Resolver.CurrentThreadTextResolver(); // works even with async/await as thread culture stays the same (was not the case with early versions of .Net)
                 var service = new Textservice(UiGlobals.LocalizationStore, resolver);
                 return service;
             }

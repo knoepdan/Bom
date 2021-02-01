@@ -18,6 +18,7 @@ namespace Bom.Web.Lib.Infrastructure
         {
             base.OnActionExecuting(context);
             LayoutData = GetLayoutData();
+            this.TempDataHelper = new TempDataHelper(this.TempData);
         }
 
         public override void OnActionExecuted(ActionExecutedContext context)
@@ -34,6 +35,8 @@ namespace Bom.Web.Lib.Infrastructure
                 context.Result = View(errorView, context.Exception);
             }
         }
+
+        protected TempDataHelper TempDataHelper { get; private set; } = default!;
 
 
         protected LayoutData LayoutData

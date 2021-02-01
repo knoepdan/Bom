@@ -60,6 +60,26 @@
         }
     </header>
     <div>
+
+
+        <div>
+            @{
+                var tempDataRegistry = new TempDataHelper(TempData);
+                var messages = tempDataRegistry.GetMessages();
+                if (messages.Any())
+                {
+                    <div id="messages" class="message-area">
+                        @foreach (var message in messages)
+                        {
+                            <div>@message</div>
+                        }
+                    </div>
+                }
+            }
+
+        </div>
+
+
         @RenderBody()
     </div>
 
