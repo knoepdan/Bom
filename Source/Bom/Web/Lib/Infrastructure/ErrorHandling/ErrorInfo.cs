@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Bom.Core.Error;
+using Bom.Core.Common.Error;
 
 namespace Bom.Web.Lib.Infrastructure.ErrorHandling
 {

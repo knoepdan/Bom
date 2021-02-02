@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Bom.Core.Common.Error;
 
 
 namespace Bom.Web.Lib.Infrastructure.ErrorHandling
@@ -41,9 +42,9 @@ namespace Bom.Web.Lib.Infrastructure.ErrorHandling
             {
                 switch (appEx.ErrorCode)
                 {
-                    case Core.Error.ErrorCode.NotFound:
+                    case ErrorCode.NotFound:
                         return 404;
-                    case Core.Error.ErrorCode.Forbidden:
+                    case ErrorCode.Forbidden:
                         return 403;
                     default:
                         return 400;
@@ -95,11 +96,11 @@ namespace Bom.Web.Lib.Infrastructure.ErrorHandling
             return info;
         }
 
-        private static Core.Error.BomException? GetAppException(Exception? ex)
+        private static BomException? GetAppException(Exception? ex)
         {
             while (ex != null)
             {
-                var appEx = ex as Core.Error.BomException;
+                var appEx = ex as BomException;
                 if (appEx != null)
                 {
                     return appEx;

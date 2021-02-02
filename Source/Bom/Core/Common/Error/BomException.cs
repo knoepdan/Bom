@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Bom.Core.Error
+namespace Bom.Core.Common.Error
 {
 #pragma warning disable CA1032 // Implement standard exception constructors
     public class BomException : Exception

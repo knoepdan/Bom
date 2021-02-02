@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Bom.Core.Error
+namespace Bom.Core.Common.Error
 {
     public enum ErrorCode
     {
