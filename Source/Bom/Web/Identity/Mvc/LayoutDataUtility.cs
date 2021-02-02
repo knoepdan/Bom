@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
-namespace Bom.Web.Common.Mvc
+namespace Bom.Web.Identity.Mvc
 {
     public static class LayoutDataUtility
     {

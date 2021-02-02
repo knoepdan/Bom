@@ -6,9 +6,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Ch.Knomes.Localization;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Bom.Web.Common.Mvc;
+using Bom.Web.Identity.Mvc;
+using Bom.Web.Common;
 
-namespace Bom.Web.Common.Infrastructure
+namespace Bom.Web.Identity.Controllers
 {
     [Controller]
     public class BomBaseViewController : Controller

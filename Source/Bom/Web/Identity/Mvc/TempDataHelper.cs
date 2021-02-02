@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Bom.Web.Common.Mvc
+namespace Bom.Web.Identity.Mvc
 {
     public class TempDataHelper
     {

@@ -10,6 +10,7 @@ using Bom.Core.Nodes;
 using Bom.Core.Nodes.DbModels;
 using Bom.Web.Nodes.Models;
 using Bom.Web.Common.Infrastructure;
+using Bom.Web.Common.Controllers;
 
 namespace Bom.Web.Nodes.Controllers
 {

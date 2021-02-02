@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ch.Knomes.Localization;
 
-namespace Bom.Web.Common.Mvc
+namespace Bom.Web.Identity.Mvc
 {
     public class LayoutData
     {

@@ -12,6 +12,7 @@ using Bom.Web.Identity.Models;
 using Bom.Core.Identity;
 using Bom.Core.Identity.DbModels;
 using Bom.Web.Common;
+using Bom.Web.Identity.Controllers;
 
 
 namespace Bom.Web.Identity

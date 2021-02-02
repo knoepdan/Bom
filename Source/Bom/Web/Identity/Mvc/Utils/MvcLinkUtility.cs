@@ -7,7 +7,7 @@ using System.Text;
 using Microsoft.AspNetCore.Routing;
 
 
-namespace Bom.Web.Common.Mvc.Utils
+namespace Bom.Web.Identity.Mvc.Utils
 {
     public static class MvcLinkUtility
     {
