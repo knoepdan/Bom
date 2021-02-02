@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[DbPicture] (
+﻿CREATE TABLE [dbo].[nDbPicture] (
     [DbPictureId]		INT            IDENTITY (1, 1) NOT NULL,
     [Name]				NVARCHAR (255) NOT NULL,
     [PictureUid]		NVARCHAR (255) NOT NULL,
@@ -10,8 +10,8 @@
 	[Height]			INT NOT NULL,
 	[FileLenght]		BIGINT NOT NULL,
 	[BlobDataId] INT NOT NULL,
-    CONSTRAINT [PK_DbPicture] PRIMARY KEY CLUSTERED ([DbPictureId] ASC),
-	CONSTRAINT [FK_DbPicture_BlobDataId] FOREIGN KEY ([BlobDataId]) REFERENCES [dbo].[BlobData] ([BlobDataId]) ON DELETE CASCADE,
+    CONSTRAINT [PK_nDbPicture] PRIMARY KEY CLUSTERED ([DbPictureId] ASC),
+	CONSTRAINT [FK_DbPicture_BlobDataId] FOREIGN KEY ([BlobDataId]) REFERENCES [dbo].[nBlobData] ([BlobDataId]) ON DELETE CASCADE,
 	CONSTRAINT [Uc_DbPicture_PictureUid] UNIQUE([PictureUid]) 
 
 );

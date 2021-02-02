@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
 
-namespace Bom.Core.Nodes.DbModels
+namespace Bom.Core.Configuration.DbModels
 {
     /// <summary>
     /// Setting

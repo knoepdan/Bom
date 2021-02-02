@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[User] (
+﻿CREATE TABLE [dbo].[iUser] (
     [UserId]		    INT            IDENTITY (1, 1) NOT NULL,
     [Username]		        NVARCHAR (255)  NOT NULL,
 	[PasswordHash]      NVARCHAR (MAX)  NULL,
@@ -14,7 +14,7 @@
 
     -- TODO - information about lockout etc. adit staff etc.
 
-    CONSTRAINT [PK_User] PRIMARY KEY CLUSTERED ([UserId] ASC),
+    CONSTRAINT [PK_iUser] PRIMARY KEY CLUSTERED ([UserId] ASC),
 
 
    
@@ -25,8 +25,8 @@
 GO
 
 
-CREATE UNIQUE NONCLUSTERED INDEX [IX_User_Username] ON [dbo].[User]  ([Username] ASC) WHERE ([Username] IS NOT NULL);
+CREATE UNIQUE NONCLUSTERED INDEX [IX_User_Username] ON [dbo].[iUser]  ([Username] ASC) WHERE ([Username] IS NOT NULL);
 GO
 
-CREATE UNIQUE NONCLUSTERED INDEX [IX_User_FacebookId] ON [dbo].[User]  ([FaceBookId] ASC) WHERE ([FaceBookId] IS NOT NULL);
+CREATE UNIQUE NONCLUSTERED INDEX [IX_User_FacebookId] ON [dbo].[iUser]  ([FaceBookId] ASC) WHERE ([FaceBookId] IS NOT NULL);
 GO

@@ -23,18 +23,18 @@ BEGIN
 	BEGIN TRY
 
 		DECLARE @nodeId INT
-		SELECT  @nodeId = NodeId FROM dbo.[Path] WHERE PathId = @pathId
+		SELECT  @nodeId = NodeId FROM dbo.[nPath] WHERE PathId = @pathId
 
 		-- ## 1. Set mainPath Node
 		IF NOT @newMainPathId IS NULL 
 		BEGIN
-			IF NOT EXISTS (SELECT PathId FROM dbo.[Path] WHERE PathId = @newMainPathId AND NodeId = @nodeId)
+			IF NOT EXISTS (SELECT PathId FROM dbo.[nPath] WHERE PathId = @newMainPathId AND NodeId = @nodeId)
 			BEGIN
 				print 'error 1. execution aborted';
 				THROW 50101, 'passed replacement pathId does not exist or does not belong to node', 1;
 			END
 
-			UPDATE dbo.[Node]
+			UPDATE dbo.[nNode]
 				SET MainPathId = @newMainPathId
 				WHERE NodeId = @nodeId AND MainPathId = @pathId
 		END
@@ -42,10 +42,10 @@ BEGIN
 		BEGIN
 			DECLARE @otherPathId INT
 			SET @otherPathId = 0
-			SELECT @otherPathId = PathId FROM dbo.[Path] WHERE PathId <> pathId AND NodeId = @nodeId
+			SELECT @otherPathId = PathId FROM dbo.[nPath] WHERE PathId <> pathId AND NodeId = @nodeId
 
 			IF @otherPathId > 0 
-				UPDATE dbo.[Node] SET MainPathId = @otherPathId WHERE NodeId = @nodeId AND MainPathId = @pathId
+				UPDATE dbo.[nNode] SET MainPathId = @otherPathId WHERE NodeId = @nodeId AND MainPathId = @pathId
 			ELSE
 				IF @alsoDeleteNode = 0 
 				BEGIN
@@ -53,7 +53,7 @@ BEGIN
 					THROW 50104, 'No replacement for main path id found and node is not to be deleted.. will not work', 1;
 				END
 				-- set to null
-				UPDATE dbo.[Node] SET MainPathId = NULL WHERE NodeId = @nodeId AND MainPathId = @pathId
+				UPDATE dbo.[nNode] SET MainPathId = NULL WHERE NodeId = @nodeId AND MainPathId = @pathId
 
 		END
 
@@ -63,11 +63,11 @@ BEGIN
 		DECLARE @parentPath HIERARCHYID
 		DECLARE @parentPathId INT
 		DECLARE @currentLevel INT
-		SELECT  @currentPath = NodePath, @currentLevel = [Level], @parentPath = NodePath.GetAncestor(1) FROM dbo.[Path] WHERE PathId = @pathId
-		SELECT @parentPathId = PathId FROM dbo.[Path] WHERE NodePath = @parentPath
+		SELECT  @currentPath = NodePath, @currentLevel = [Level], @parentPath = NodePath.GetAncestor(1) FROM dbo.[nPath] WHERE PathId = @pathId
+		SELECT @parentPathId = PathId FROM dbo.[nPath] WHERE NodePath = @parentPath
 
 		-- special rule: root paths cannot be deleted when they have children
-		IF @currentLevel <= 1 AND EXISTS(SELECT PathId FROM dbo.[Path] WHERE NodePath.IsDescendantOf(@currentPath) = 1 AND [Level] = (@currentLevel + 1))
+		IF @currentLevel <= 1 AND EXISTS(SELECT PathId FROM dbo.[nPath] WHERE NodePath.IsDescendantOf(@currentPath) = 1 AND [Level] = (@currentLevel + 1))
 		BEGIN
 				print 'error execution aborted because root node is to be deleted and has children';
 				THROW 50151, 'root was about to be deleted but had children. First delete children before deleting before root node', 1;
@@ -76,7 +76,7 @@ BEGIN
 		-- loop over all child nodes and call sp recursivly
 		DECLARE @childPathId INT
 		DECLARE db_cursor CURSOR FOR 
-		SELECT PathId FROM dbo.[Path]
+		SELECT PathId FROM dbo.[nPath]
 			WHERE NodePath.IsDescendantOf(@currentPath) = 1
 			AND [Level] =  (@currentLevel + 1)
 
@@ -93,10 +93,10 @@ BEGIN
 		DEALLOCATE db_cursor 
 	
 		-- ## 3. Delete Path (and node)
-		DELETE FROM [dbo].[Path] WHERE PathId = @pathId
+		DELETE FROM [dbo].[nPath] WHERE PathId = @pathId
 		IF @alsoDeleteNode = 0 
 		BEGIN
-			DELETE FROM dbo.[Node] WHERE NodeId = @nodeId
+			DELETE FROM dbo.[nNode] WHERE NodeId = @nodeId
 		END
 
 		COMMIT TRANSACTION 

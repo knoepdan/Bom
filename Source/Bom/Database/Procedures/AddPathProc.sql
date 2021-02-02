@@ -27,7 +27,7 @@ BEGIN
 		DECLARE @depth INT
 		SET @depth = LEN(@path) - LEN(REPLACE(@path, '/', '')) - 1 -- example: /12/46/45/ -> depth: 3  (always starts/ends with /)
 
-		INSERT INTO [dbo].[Path]
+		INSERT INTO [dbo].[nPath]
 			   ([NodePath],
 			   [SetParentPath] ,[SetDepth] ,[NodeId])
 				VALUES (CAST(@path AS Hierarchyid),
@@ -36,7 +36,7 @@ BEGIN
 
 		-- insert as main  paht
 		IF @setAsMainPath IS NULL AND @setAsMainPath = 1 
-			UPDATE [dbo].[Node]
+			UPDATE [dbo].[nNode]
 				SET [MainPathId] =  @genPathId
 				WHERE NodeId = @nodeId;
 

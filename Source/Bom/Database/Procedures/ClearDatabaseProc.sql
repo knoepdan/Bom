@@ -7,18 +7,18 @@ BEGIN
 	BEGIN TRY
 
 		DECLARE @version NVARCHAR(255)
-		SELECT  @version = [Value] FROM dbo.[Setting] WHERE [Key] = 'Version' AND [Value] LIKE 'test%'
+		SELECT  @version = [Value] FROM dbo.[cSetting] WHERE [Key] = 'Version' AND [Value] LIKE 'test%'
 
 
 		-- ## 1. Set mainPath Node
 			IF NOT @version IS NULL AND  NOT @version = ''
 				BEGIN
-					UPDATE dbo.[Node] SET MainPathId = NULL;
-					DELETE FROM dbo.[Path];
-					DELETE FROM dbo.[Node];
+					UPDATE dbo.[nNode] SET MainPathId = NULL;
+					DELETE FROM dbo.[nPath];
+					DELETE FROM dbo.[nNode];
 				
-					DELETE FROM dbo.DbPicture;
-					DELETE FROM dbo.BlobData;
+					DELETE FROM dbo.nDbPicture;
+					DELETE FROM dbo.nBlobData;
 				END
 			ELSE
 				BEGIN

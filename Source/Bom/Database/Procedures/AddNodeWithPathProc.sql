@@ -11,7 +11,7 @@ BEGIN
 		
 		-- insert node
 		DECLARE @genId INT
-		INSERT INTO [dbo].[Node] ([Title] ,[MainPathId])
+		INSERT INTO [dbo].[nNode] ([Title] ,[MainPathId])
 		VALUES (@title, NULL);
 		SELECT @genId =   (SELECT SCOPE_IDENTITY());
 
@@ -19,7 +19,7 @@ BEGIN
 		DECLARE @pathIdOutput INT
 		EXEC  [dbo].[AddPathProc] @genId, @parentPath, @setAsMainPath, @pathIdOutput OUTPUT
 
-		SELECT * FROM  [dbo].[Path] WHERE PathId = @pathIdOutput
+		SELECT * FROM  [dbo].[nPath] WHERE PathId = @pathIdOutput
 		COMMIT TRANSACTION
 	END TRY
     BEGIN CATCH

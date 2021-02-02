@@ -17,7 +17,7 @@ namespace Bom.Core.Identity.DbModels.Mapping
             {
                 throw new ArgumentNullException(nameof(builder));
             }
-            builder.ToTable(nameof(Role));
+            builder.ToTable("iRole");
             builder.HasKey(x => x.RoleId);
 
 

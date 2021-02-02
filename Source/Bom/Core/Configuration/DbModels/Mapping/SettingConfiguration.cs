@@ -6,9 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Bom.Core.Nodes.DbModels;
 
-namespace Bom.Core.Nodes.DbModels.Mapping
+namespace Bom.Core.Configuration.DbModels.Mapping
 {
     public class SettingConfiguration : IEntityTypeConfiguration<Setting>
     {
@@ -18,7 +17,7 @@ namespace Bom.Core.Nodes.DbModels.Mapping
             {
                 throw new ArgumentNullException(nameof(builder));
             }
-            builder.ToTable(nameof(Setting));
+            builder.ToTable("cSetting");
             builder.HasKey(x => x.SettingId);
             builder.Property(x => x.Key);
             builder.Property(x => x.Value);

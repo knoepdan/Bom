@@ -13,7 +13,7 @@ BEGIN
 		DECLARE @pathIdOutput INT
 		EXEC  [dbo].[AddPathProc] @nodeId, @parentPath, @setAsMainPath, @pathIdOutput OUTPUT
 
-		SELECT * FROM  [dbo].[Path] WHERE PathId = @pathIdOutput
+		SELECT * FROM  [dbo].[nPath] WHERE PathId = @pathIdOutput
 		COMMIT TRANSACTION
 	END TRY
     BEGIN CATCH

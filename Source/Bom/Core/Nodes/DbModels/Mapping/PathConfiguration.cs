@@ -18,7 +18,7 @@ namespace Bom.Core.Nodes.DbModels.Mapping
             {
                 throw new ArgumentNullException(nameof(builder));
             }
-            builder.ToTable(nameof(Path));
+            builder.ToTable("nPath");
             builder.HasKey(x => x.PathId);
 
             builder.Property(x => x.Level).ValueGeneratedNever();// calculated column

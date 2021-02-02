@@ -41,9 +41,9 @@ BEGIN
 		DECLARE @oldParentPath HIERARCHYID
 		DECLARE @newParentPath HIERARCHYID
 		DECLARE @moveNodePath HIERARCHYID
-		SELECT  @oldParentPath = NodePath.GetAncestor(1), @moveNodePath = NodePath FROM dbo.[Path] WHERE PathId = @pathId
-		SELECT @oldParentPathId = pp.PathId FROM dbo.[Path] pp  WHERE pp.NodePath = @oldParentPath
-		SELECT @newParentPath = pp.NodePath FROM dbo.[Path] pp  WHERE pp.PathId = @newParentPathId
+		SELECT  @oldParentPath = NodePath.GetAncestor(1), @moveNodePath = NodePath FROM dbo.[nPath] WHERE PathId = @pathId
+		SELECT @oldParentPathId = pp.PathId FROM dbo.[nPath] pp  WHERE pp.NodePath = @oldParentPath
+		SELECT @newParentPath = pp.NodePath FROM dbo.[nPath] pp  WHERE pp.PathId = @newParentPathId
 
 		IF @moveChildrenToo = 0
 		BEGIN
@@ -51,12 +51,12 @@ BEGIN
 
 			DECLARE @currentPath HIERARCHYID
 			DECLARE @currentLevel INT
-			SELECT  @currentPath = NodePath, @currentLevel = [Level] FROM dbo.[Path] WHERE PathId = @pathId
+			SELECT  @currentPath = NodePath, @currentLevel = [Level] FROM dbo.[nPath] WHERE PathId = @pathId
 
 			-- loop over all child nodes and call sp recursivly
 			DECLARE @childPathId INT
 			DECLARE db_cursor CURSOR FOR 
-			SELECT PathId FROM dbo.[Path]
+			SELECT PathId FROM dbo.[nPath]
 				WHERE NodePath.IsDescendantOf(@currentPath) = 1
 				AND [Level] =  (@currentLevel + 1)
 
@@ -73,19 +73,19 @@ BEGIN
 			DEALLOCATE db_cursor 
 
 			-- move node that is childless now (we need to requery the paths because when we move a node down the paths of the new parents also change)
-			SELECT  @oldParentPath = NodePath.GetAncestor(1), @moveNodePath = NodePath FROM dbo.[Path] WHERE PathId = @pathId
-			SELECT @oldParentPathId = pp.PathId FROM dbo.[Path] pp  WHERE pp.NodePath = @oldParentPath
-			SELECT @newParentPath = pp.NodePath FROM dbo.[Path] pp  WHERE pp.PathId = @newParentPathId
+			SELECT  @oldParentPath = NodePath.GetAncestor(1), @moveNodePath = NodePath FROM dbo.[nPath] WHERE PathId = @pathId
+			SELECT @oldParentPathId = pp.PathId FROM dbo.[nPath] pp  WHERE pp.NodePath = @oldParentPath
+			SELECT @newParentPath = pp.NodePath FROM dbo.[nPath] pp  WHERE pp.PathId = @newParentPathId
 			print @moveNodePath.GetReparentedValue(@oldParentPath, @newParentPath).ToString()
 
 			IF @newParentPathId > 0  
-				UPDATE dbo.[Path] 
+				UPDATE dbo.[nPath] 
 					SET NodePath = @moveNodePath.GetReparentedValue(@oldParentPath, @newParentPath).ToString()
 					WHERE PathId = @pathId
 			ELSE
 				BEGIN
 				print 'path ' + CAST(@pathId AS NVARCHAR(MAX)) + ' is set as a new root';
-				UPDATE dbo.[Path] 
+				UPDATE dbo.[nPath] 
 					SET NodePath = '/' + CAST(NodeId AS NVARCHAR(MAX)) + '/'
 					WHERE PathId = @pathId
 				END
@@ -104,18 +104,18 @@ BEGIN
 			IF @newParentPathId <= 0  
 			BEGIN
 				print 'path ' + CAST(@pathId AS NVARCHAR(MAX)) + ' is set as a new root (including children)';
-				SELECT @newParentPath = '/' FROM dbo.[Path] WHERE PathId = @pathId
+				SELECT @newParentPath = '/' FROM dbo.[nPath] WHERE PathId = @pathId
 			END
 
-			UPDATE dbo.[Path] 
+			UPDATE dbo.[nPath] 
 			SET NodePath = t.NewNodePath
 					FROM (
 			
 						SELECT PathId, NodePath.GetReparentedValue(@oldParentPath, @newParentPath).ToString() AS NewNodePath
-						FROM dbo.[Path] p
+						FROM dbo.[nPath] p
 						WHERE     p.PathId = @pathId OR p.NodePath.IsDescendantOf(@moveNodePath) = 1
 						) t
-						WHERE t.PathId = dbo.[Path].PathId
+						WHERE t.PathId = dbo.[nPath].PathId
 
 			-- no need to return changed node (besides.. this seemed not always to be correct)-> SELECT * FROM  [dbo].[Path] WHERE PathId = @pathId
 

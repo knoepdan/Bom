@@ -17,7 +17,7 @@ namespace Bom.Core.Nodes.DbModels.Mapping
             {
                 throw new ArgumentNullException(nameof(builder));
             }
-            builder.ToTable(nameof(Node));
+            builder.ToTable("nNode");
             builder.HasKey(x => x.NodeId);
 
 
