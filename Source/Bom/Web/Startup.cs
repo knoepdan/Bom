@@ -19,7 +19,7 @@ using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Diagnostics;
 //using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Bom.Web.Lib.Infrastructure.ErrorHandling;
+using Bom.Web.Common.ErrorHandling;
 
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Facebook;
@@ -66,12 +66,12 @@ namespace Bom.Web
             // authentication
 
             //----------
-            Bom.Web.Areas.Identity.IdentityConfig.ConfigureIdentityServices(services);
+            Bom.Web.Identity.IdentityConfig.ConfigureIdentityServices(services);
 
             services.AddControllersWithViews(); // also needed for third party authentication/redirects
 
             Utils.Dev.PossibleImprovment("Call from a better place", Utils.Dev.ImproveArea.ToCheck, Utils.Dev.Urgency.Low);
-            Lib.UiGlobals.InitGlobals();
+            Common.UiGlobals.InitGlobals();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -120,11 +120,11 @@ namespace Bom.Web
 
 
             app.UseRouting();
-            app.UseMiddleware<Lib.LocalizationMiddleware>(); // set current language
+            app.UseMiddleware<Common.LocalizationMiddleware>(); // set current language
 
 
             app.UseAuthentication();   // must be between UseRouting and UseEndpoints
-            app.UseMiddleware<Bom.Web.Areas.Identity.AuthenticationMiddleware>(); // custom stuff
+            app.UseMiddleware<Bom.Web.Identity.AuthenticationMiddleware>(); // custom stuff
 
             app.UseAuthorization();
 

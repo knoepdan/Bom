@@ -1,0 +1,107 @@
+﻿@model Bom.Web.Identity.Models.RegisterVm
+@using Bom.Web.Common.Mvc;
+@{
+    ViewData["Title"] = "Register";
+
+    var layoutData = this.ViewData.LayoutData();
+    var htmlService = layoutData.HtmlService;
+
+    var linkProvider = new Bom.Web.Identity.IdentityLinkProvider(this.Url);
+}
+
+<h1>Register</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+
+
+        @{/*
+
+                              different way: easier to add other html attributes
+                              <form asp-action="Register">
+
+                              <label asp-for="Username" class="control-label"></label>
+                              <input asp-for="Username" class="form-control" />
+                              <span asp-validation-for="Username" class="text-danger"></span>
+
+                          */
+        }
+
+
+
+        <form action="@linkProvider.AccountRegisterLink" method="post">
+
+
+            @Html.ValidationSummary(true)
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label>
+                    Email
+                    @Html.TextBoxFor(x => x.Username, new { @type = "email", maxlength = "255" })
+                </label>
+                @Html.ValidationMessageFor(x => x.Username)
+
+            </div>
+            <div class="form-group">
+                <label>
+                    Password
+                    @Html.PasswordFor(x => x.Password, new { maxlength = "255" })
+                </label>
+                @Html.ValidationMessageFor(x => x.Password)
+            </div>
+            <div class="form-group">
+
+                <label>
+                    Confirm password
+                    @Html.PasswordFor(x => x.ConfirmPassword, new { maxlength = "255" })
+                </label>
+                @Html.ValidationMessageFor(x => x.ConfirmPassword)
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<br />
+<br />
+<br />
+<br />
+<div class="row">
+    <div class="col-md-4">
+
+        <form action="@linkProvider.FacebookRegisterLink" method="post">
+
+
+            @Html.ValidationSummary(true)
+
+            <div class="form-group">
+                <input type="submit" value="Register Facebook" class="btn btn-primary" />
+            </div>
+        </form>
+
+
+
+    </div>
+</div>
+
+
+<br />
+<br />
+<br />
+<br />
+<form action="@linkProvider.AccountLogoutLink" method="post">
+
+
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        <input type="submit" value="Logout" class="btn btn-primary" />
+    </div>
+</form>
+
+<div>

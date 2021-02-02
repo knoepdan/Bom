@@ -19,29 +19,29 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Areas\Main\Data\**" />
-    <Compile Remove="Areas\Main\Views\**" />
-    <Compile Remove="Areas\Testing\Data\**" />
-    <Compile Remove="Areas\Testing\Models\**" />
-    <Compile Remove="Areas\Testing\Views\**" />
+    <Compile Remove="Nodes\Data\**" />
+    <Compile Remove="Nodes\Views\**" />
+    <Compile Remove="Testing\Data\**" />
+    <Compile Remove="Testing\Models\**" />
+    <Compile Remove="Testing\Views\**" />
     <Compile Remove="Models\**" />
-    <Content Remove="Areas\Main\Data\**" />
-    <Content Remove="Areas\Main\Views\**" />
-    <Content Remove="Areas\Testing\Data\**" />
-    <Content Remove="Areas\Testing\Models\**" />
-    <Content Remove="Areas\Testing\Views\**" />
+    <Content Remove="Nodes\Data\**" />
+    <Content Remove="Nodes\Views\**" />
+    <Content Remove="Testing\Data\**" />
+    <Content Remove="Testing\Models\**" />
+    <Content Remove="Testing\Views\**" />
     <Content Remove="Models\**" />
-    <EmbeddedResource Remove="Areas\Main\Data\**" />
-    <EmbeddedResource Remove="Areas\Main\Views\**" />
-    <EmbeddedResource Remove="Areas\Testing\Data\**" />
-    <EmbeddedResource Remove="Areas\Testing\Models\**" />
-    <EmbeddedResource Remove="Areas\Testing\Views\**" />
+    <EmbeddedResource Remove="Nodes\Data\**" />
+    <EmbeddedResource Remove="Nodes\Views\**" />
+    <EmbeddedResource Remove="Testing\Data\**" />
+    <EmbeddedResource Remove="Testing\Models\**" />
+    <EmbeddedResource Remove="Testing\Views\**" />
     <EmbeddedResource Remove="Models\**" />
-    <None Remove="Areas\Main\Data\**" />
-    <None Remove="Areas\Main\Views\**" />
-    <None Remove="Areas\Testing\Data\**" />
-    <None Remove="Areas\Testing\Models\**" />
-    <None Remove="Areas\Testing\Views\**" />
+    <None Remove="Nodes\Data\**" />
+    <None Remove="Nodes\Views\**" />
+    <None Remove="Testing\Data\**" />
+    <None Remove="Testing\Models\**" />
+    <None Remove="Testing\Views\**" />
     <None Remove="Models\**" />
   </ItemGroup>
 

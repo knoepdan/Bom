@@ -1,0 +1,19 @@
+﻿@model Bom.Web.Identity.Models.ErrorVm
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1>Error</h1>
+
+@if(Model != null)
+{
+     @Model.Error.GetType().Name
+
+    if (Model.ShowDebugInfo)
+    {
+        <p>
+            @Model.Error
+        </p>
+    }
+}
+
