@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Bom.Core.Common;
 using Bom.Web.Lib.Infrastructure;
+using Bom.Core.Common.Error;
 
 #pragma warning disable IDE0060 // Remove unused parameter
 
@@ -40,7 +41,7 @@ namespace Bom.Web.Controllers
         [HttpGet("ex")]
         public ActionResult<string> Ex(int id)
         {
-            throw new Core.Error.BomException(Core.Error.ErrorCode.NotFound, "blabla", null, "this is the usermessage");
+            throw new BomException(ErrorCode.NotFound, "blabla", null, "this is the usermessage");
            // return "value";
         }
 

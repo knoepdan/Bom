@@ -8,7 +8,7 @@ namespace Bom.Web.Lib.Infrastructure.ErrorHandling
 {
     public class ErrorInfo
     {
-        public int ErrorCode { get; set; } = (int)Core.Error.ErrorCode.UnexpectedError;
+        public int ErrorCode { get; set; } = (int)Core.Common.Error.ErrorCode.UnexpectedError;
         public string Message { get; set; } = "Error has occured";
 
         public string UserMessage { get; set; } = "";
