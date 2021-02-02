@@ -13,7 +13,7 @@ namespace Bom.Web.Lib.Infrastructure.ErrorHandling
     public static class ErrorUtility
     {
 
-        public static async Task SetErrorResponse(HttpContext context)
+        public static async Task SetErrorResponse(HttpContext context, bool fullExInfo)
         {
             if(context == null)
             {
@@ -23,7 +23,7 @@ namespace Bom.Web.Lib.Infrastructure.ErrorHandling
             context.Response.ContentType = "application/json"; // "text/html";
             var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
             context.Response.StatusCode = GetHttpStatusCodeFromException(exceptionHandlerPathFeature?.Error); // default
-            var errorInfo = GetErrorInfo(exceptionHandlerPathFeature?.Error, exceptionHandlerPathFeature?.Path);
+            var errorInfo = GetErrorInfo(exceptionHandlerPathFeature?.Error, exceptionHandlerPathFeature?.Path, fullExInfo);
 
             // get error info
             var json = JsonConvert.SerializeObject(errorInfo);
@@ -81,7 +81,7 @@ namespace Bom.Web.Lib.Infrastructure.ErrorHandling
             return sb.ToString();
         }
 
-        private static ErrorInfo GetErrorInfo(Exception? ex, string? path)
+        private static ErrorInfo GetErrorInfo(Exception? ex, string? path, bool fullExInfo)
         {
             var info = new ErrorInfo();
             info.Message = $"Error in path {path}, ex: {ex?.GetType()?.Name}";
@@ -91,6 +91,10 @@ namespace Bom.Web.Lib.Infrastructure.ErrorHandling
                 info.ErrorCode = (int)appEx.ErrorCode;
                 info.UserMessage = appEx.UserMessage;
                 // info.Message.. maybe also give a better technical error message (but not for now)
+            }
+            if (fullExInfo)
+            {
+                info.Message = info.Message + Environment.NewLine + "   " + ex?.ToString();
             }
 
             return info;

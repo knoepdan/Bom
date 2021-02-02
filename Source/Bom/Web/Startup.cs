@@ -77,7 +77,8 @@ namespace Bom.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            bool isDeveloptment = env.IsDevelopment();
+            if (isDeveloptment)
             {
                 _logger.LogInformation("In Development environment");
                 app.UseDeveloperExceptionPage();
@@ -97,7 +98,7 @@ namespace Bom.Web
                 {
                     // logging
                     var exFeature = context.Features.Get<IExceptionHandlerPathFeature>();
-                    var requestInfo = ErrorUtility.GetRequestInfo(context, false);
+                    var requestInfo = ErrorUtility.GetRequestInfo(context, isDeveloptment);
                     if (exFeature != null && exFeature.Error != null)
                     {
                         _logger.LogError(exFeature.Error, $"Error (Path: {exFeature.Path}, requestInfo: {requestInfo})");
@@ -109,7 +110,7 @@ namespace Bom.Web
                    
                         
                     // request
-                    await ErrorUtility.SetErrorResponse(context);
+                    await ErrorUtility.SetErrorResponse(context, isDeveloptment);
                 });
             });
 

@@ -19,18 +19,33 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Main\Data\**" />
+    <Compile Remove="Areas\Main\Views\**" />
+    <Compile Remove="Areas\Testing\Data\**" />
+    <Compile Remove="Areas\Testing\Models\**" />
+    <Compile Remove="Areas\Testing\Views\**" />
     <Compile Remove="Models\**" />
+    <Content Remove="Areas\Main\Data\**" />
+    <Content Remove="Areas\Main\Views\**" />
+    <Content Remove="Areas\Testing\Data\**" />
+    <Content Remove="Areas\Testing\Models\**" />
+    <Content Remove="Areas\Testing\Views\**" />
     <Content Remove="Models\**" />
+    <EmbeddedResource Remove="Areas\Main\Data\**" />
+    <EmbeddedResource Remove="Areas\Main\Views\**" />
+    <EmbeddedResource Remove="Areas\Testing\Data\**" />
+    <EmbeddedResource Remove="Areas\Testing\Models\**" />
+    <EmbeddedResource Remove="Areas\Testing\Views\**" />
     <EmbeddedResource Remove="Models\**" />
+    <None Remove="Areas\Main\Data\**" />
+    <None Remove="Areas\Main\Views\**" />
+    <None Remove="Areas\Testing\Data\**" />
+    <None Remove="Areas\Testing\Models\**" />
+    <None Remove="Areas\Testing\Views\**" />
     <None Remove="Models\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Main\Data\" />
-    <Folder Include="Areas\Main\Views\" />
-    <Folder Include="Areas\Testing\Data\" />
-    <Folder Include="Areas\Testing\Models\" />
-    <Folder Include="Areas\Testing\Views\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
