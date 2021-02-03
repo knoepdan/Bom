@@ -39,7 +39,7 @@ namespace Bom.Core.TestUtils
             get
             {
                 var config = GetIConfigurationRoot();
-                var connection = config.GetConnectionString("DbContext");
+                var connection = config.GetConnectionString("DbContext"); // example: "Data Source=localhost;Initial Catalog=aa;persist security info=True;user id=sa;password=abc123%"
                 return connection;
             }
         }
