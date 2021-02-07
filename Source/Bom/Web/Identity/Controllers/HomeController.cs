@@ -38,7 +38,7 @@ namespace Bom.Web.Identity.Controllers
             var urlxxxxxx = url;
 
 
-            // 
+                     // 
             var cccc = new Microsoft.AspNetCore.Mvc.Routing.UrlRouteContext();
             var urlHelper = new Microsoft.AspNetCore.Mvc.Routing.UrlHelper(this.ControllerContext);
 

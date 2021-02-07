@@ -1,0 +1,156 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    img {
+        border: 0;
+    }
+
+    body {
+
+        /*
+        background-attachment: fixed;
+        background-color: #ccc;
+        background-image: url(../pics/portal_background.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+    */
+            }
+
+
+    body, p, td, input, textarea, select {
+        color: #000;
+        font-size: 12px;
+        font-family: sans-serif, Verdana;
+        line-height: 1.3em;
+    }
+
+
+
+
+    .topBar {
+        width: 100%;
+        overflow: hidden;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        min-height: 20px;
+        z-index: 1;
+        z-index: 4;
+        font-size: 18px !important;
+        color: #fff !important;
+        background-color: #000 !important;
+    }
+
+
+    .mainContent{
+
+        background-color: lightblue;
+
+        width:100%;
+        max-width: 900px;
+        margin-left: 2%;
+        margin-right: 2%;
+
+        margin-top: 20px;
+        padding: 5px;
+
+    }
+
+
+
+/* Mobile only (media query would not really be necessary as css would be overwritten by later css, but we leave it here for clarity */
+@@media (max-width: 640px) {
+    .mobileOnly {
+        visibility: visible;
+    }
+    .tabletAndSmaller {
+        visibility: collapse;
+    }
+    .tabletOnly {
+        visibility: collapse;
+    }
+    .tabletAndBigger {
+        visibility: collapse;
+    }
+    .desktopOnly {
+        visibility: collapse;
+    }
+
+    /* specific */
+    .mainContent {
+
+    }
+}
+
+/* Mobile and Tablet */
+@@media (max-width: 992px) {
+    .tabletAndSmaller {
+        visibility: visible;
+    }
+
+    /* specific */
+    .mainContent {
+
+    }
+}
+
+/* Tablet */
+@@media (min-width: 641px) and (max-width: 992px) {
+    .mobileOnly {
+        visibility: collapse;
+    }
+    .tabletOnly {
+        visibility: visible;
+    }
+
+    /* specific */
+    .mainContent {
+        background-color: aquamarine;
+        margin-left: 6%;
+        margin-right: 6%;
+    }
+}
+
+/* Tablet and desktop*/
+@@media (min-width: 641px) {
+    .tabletAndBigger {
+        visibility: visible;
+    }
+}
+
+/* Desktop*/
+@@media (min-width: 993px) {
+    .mobileOnly {
+        visibility: collapse;
+    }
+    .tabletAndSmaller {
+        visibility: collapse;
+    }
+    .tabletOnly {
+        visibility: collapse;
+    }
+    .desktopOnly {
+        visibility: visible;
+    }
+
+    /* specific */
+    /* specific */
+    .mainContent {
+        background-color: aliceblue;
+        margin-left: 20%;
+        margin-right: 20%;
+    }
+}
+
+
+
+</style>

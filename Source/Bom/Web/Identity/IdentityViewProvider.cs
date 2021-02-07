@@ -12,6 +12,8 @@ namespace Bom.Web.Identity
     /// 
     public class IdentityViewProvider
     {
+        public const string AccountLogin= "~/Identity/Views/Account/Login.cshtml";
+
 
         public const string AccountRegister = "~/Identity/Views/Account/Register.cshtml"; 
 

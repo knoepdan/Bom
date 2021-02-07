@@ -10,11 +10,54 @@
     <title>Bom</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    @{ 
+
+        //
+        Bom.Utils.Dev.Todo("separate css file");
+     }
+
+    @await Html.PartialAsync("~/Identity/Views/Shared/CssView.cshtml")
+
+
 </head>
 <body>
 
     <header>
-        <h2>Layout-Page</h2>
+        <div class="topBar"> </div>
+
+    </header>
+    
+    
+    
+    
+    <div>
+        <div class="mainContent">
+        <div>
+            @{
+                var tempDataRegistry = new TempDataHelper(TempData);
+                var messages = tempDataRegistry.GetMessages();
+                if (messages.Any())
+                {
+                    <div id="messages" class="message-area">
+                        @foreach (var message in messages)
+                        {
+                            <div>@message</div>
+                        }
+                    </div>
+                }
+            }
+
+        </div>
+
+
+        @RenderBody()
+
+
+        </div>
+    <div>
+
+
 
         @if (layoutData.AvailableLanguageCodes.Count > 1)
         {
@@ -58,29 +101,9 @@
                 }
             </span>
         }
-    </header>
-    <div>
 
+    </div>
 
-        <div>
-            @{
-                var tempDataRegistry = new TempDataHelper(TempData);
-                var messages = tempDataRegistry.GetMessages();
-                if (messages.Any())
-                {
-                    <div id="messages" class="message-area">
-                        @foreach (var message in messages)
-                        {
-                            <div>@message</div>
-                        }
-                    </div>
-                }
-            }
-
-        </div>
-
-
-        @RenderBody()
     </div>
 
 </body>

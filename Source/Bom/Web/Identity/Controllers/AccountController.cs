@@ -30,6 +30,29 @@ namespace Bom.Web.Identity.Controllers
         }
 
 
+
+        [HttpGet("login")]
+        public IActionResult Login()
+        {
+            if (this.User != null)
+            {
+                this.SignOut();
+            }
+            return View(IdentityViewProvider.AccountLogin);
+        }
+
+        [HttpPost("login")]
+        public IActionResult Login(LoginVm loginModel)
+        {
+            if (this.ModelState.IsValid)
+            {
+
+            }
+            return View(IdentityViewProvider.AccountLogin);
+
+        }
+
+
         [HttpGet("logout")]
         [HttpPost("logout")]
         public IActionResult Logout()
