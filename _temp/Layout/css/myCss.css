@@ -1,0 +1,212 @@
+.main-background,
+.main-background:hover {
+  color: #000 !important;
+  background-color: #f1f1f1 !important;
+}
+
+/*  basic stuff */
+html,
+body {
+  font-family: sans-serif, Verdana;
+  font-size: 16px;
+  line-height: 1.5;
+}
+html {
+  overflow-x: hidden;
+}
+h1 {
+  font-size: 36px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 20px;
+}
+h5 {
+  font-size: 18px;
+}
+h6 {
+  font-size: 16px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-weight: 400;
+  margin: 10px 0;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #eee;
+  margin: 20px 0;
+}
+
+/* top */
+.topBar {
+  width: 100%;
+  overflow: hidden;
+
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+  z-index: 4;
+
+  font-size: 18px !important;
+  color: #fff !important;
+  background-color: #000 !important;
+
+  min-height: 30px;
+}
+
+.title {
+  padding: 8px 16px;
+
+  width: auto;
+  border: none;
+  display: block;
+  outline: 0;
+}
+
+/* Start main content */
+/*
+@media (max-width: 992px) {
+  #mainContent {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+@media (min-width: 993px) {
+  #mainContent {
+    margin-left: 300px;
+  }
+}
+*/
+/* ******************************************33 */
+
+.mainContent {
+  background-color: lightblue;
+
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  max-width: 900px;
+  margin-left: 2%;
+  margin-right: 2%;
+
+  margin-top: 40px;
+  padding: 5px;
+}
+
+.footer {
+  background-color: lightgray;
+}
+
+/* Mobile only (media query would not really be necessary as css would be overwritten by later css, but we leave it here for clarity */
+@media (max-width: 640px) {
+  .mobileOnly {
+    visibility: visible;
+  }
+  .tabletAndSmaller {
+    visibility: collapse;
+  }
+  .tabletOnly {
+    visibility: collapse;
+  }
+  .tabletAndBigger {
+    visibility: collapse;
+  }
+  .desktopOnly {
+    visibility: collapse;
+  }
+
+  /* specific */
+  /*
+  .mainContent {
+  }*/
+}
+
+/* Mobile and Tablet */
+@media (max-width: 992px) {
+  .tabletAndSmaller {
+    visibility: visible;
+  }
+
+  /* specific */
+  /*
+  .mainContent {
+  }*/
+}
+
+/* Tablet */
+@media (min-width: 641px) and (max-width: 992px) {
+  .mobileOnly {
+    visibility: collapse;
+  }
+  .tabletOnly {
+    visibility: visible;
+  }
+
+  /* specific */
+  .mainContent {
+    background-color: aquamarine;
+    margin-left: 6%;
+    margin-right: 6%;
+  }
+}
+
+/* Tablet and desktop*/
+@media (min-width: 641px) {
+  .tabletAndBigger {
+    visibility: visible;
+  }
+}
+
+/* Desktop*/
+@media (min-width: 993px) {
+  .mobileOnly {
+    visibility: collapse;
+  }
+  .tabletAndSmaller {
+    visibility: collapse;
+  }
+  .tabletOnly {
+    visibility: collapse;
+  }
+  .desktopOnly {
+    visibility: visible;
+  }
+
+  /* specific */
+  /* specific */
+  .mainContent {
+    background-color: aliceblue;
+    margin-left: 20%;
+    margin-right: 20%;
+  }
+}
+
+/*
+#mainContent {
+  margin-top: 43px;
+
+  transition: margin-left 0.4s;
+}
+
+
+@media (min-width: 993px) {
+  .hideLarge {
+    display: none !important;
+  }
+}
+
+*/
