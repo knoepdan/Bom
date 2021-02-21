@@ -1,49 +1,67 @@
-.main-background,
-.main-background:hover {
-  color: #000 !important;
-  background-color: #f1f1f1 !important;
+/*--- variables--*/
+:root {
+  --default-border: #000;
+  --default-font-color: #000;
+
+  --header-bck-color: #000;
+  --header-font-color: #fff;
+
+  --nav-bck-color: #fff;
+  --nav-font-color: #000;
+  --nav-hover-bck-color: #efefef;
+
+  /* font size */
+  --default-font-size: 1rem;
+  --title-font-size: 1.15rem;
+  --bigtitle-font-size: 1.4rem;
+  --secondary-font-size: 0.8rem;
+
+  /* responsive limits (attention, wont work in variables!!) 
+  -> these variables can therefore not be used in media queries and are mainly just to look up the limits!!
+  -> in the future env might be used to centralize these limits 
+  */
+  --mobile-limit-max: 640px;
+  --tablet-limit-min: 641px;
+  --tablet-limit-max: 992px;
+  --desktop-limit-min: 993px;
 }
 
 /*  basic stuff */
-html,
-body {
-  font-family: sans-serif, Verdana;
+/*--- general global settings--*/
+html {
+  overflow-x: hidden;
   font-size: 16px;
-  line-height: 1.5;
 
   height: 100%;
-  margin: 0;
-  padding: 0;
+  width: 100%;
+}
+body {
+  font-family: sans-serif, Verdana;
+  color: var(--default-font-color);
+  line-height: 1.5;
+  font-size: var(--default-font-size, 16px);
+
+  height: 100%;
+  width: 100%;
+}
+
+input[type="text"] {
+  font-size: 1rem;
+}
+select {
+  font-size: 1rem;
 }
 
 h1 {
-  font-size: 36px;
+  font-size: var(--bigtitle-font-size, 2rem);
 }
 h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 20px;
-}
-h5 {
-  font-size: 18px;
-}
-h6 {
-  font-size: 16px;
+  font-size: var(--title-font-size, 2rem);
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Segoe UI", Arial, sans-serif;
-  font-weight: 400;
-  margin: 10px 0;
+hr {
+  border: 0;
+  border-top: 1px solid #eee;
 }
 
 .cont {
@@ -51,6 +69,7 @@ h6 {
   height: 100%;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
 
   background-color: lightsalmon;
 }
@@ -65,7 +84,7 @@ hr {
 /* top */
 .topBar {
   order: 1;
-  width: 100%;
+
   overflow: hidden;
   display: inline-block;
 
@@ -108,9 +127,9 @@ hr {
   background-color: lightblue;
 
   order: 2;
+  flex-grow: 999;
   margin: 0 auto;
 
-  height: calc(100% - 49px);
   width: 95%;
   max-width: 960px;
 
