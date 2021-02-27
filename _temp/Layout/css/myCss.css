@@ -10,6 +10,9 @@
   --nav-font-color: #000;
   --nav-hover-bck-color: #efefef;
 
+  --bom-brown: #fdbb2d;
+
+
   /* font size */
   --default-font-size: 1rem;
   --title-font-size: 1.15rem;
@@ -43,13 +46,38 @@ body {
 
   height: 100%;
   width: 100%;
+
+  background-color: #f0f2f4;
+  /*
+  background-color: #FCF7FF;
+  */
+}
+
+.xxBox{
+  max-width: 300px;
+  width:70%;
+}
+
+.lightBox{
+  /*border-color: #565656;*/
+  background-color: #D8D8D8;
+  padding:7px;
+}
+
+label{
+  width: 100%;
 }
 
 input[type="text"] {
-  font-size: 1rem;
+  font-size:  var(--default-font-size, 1rem);
+  background-color: #fff;
+  width:98%;
+  max-width: 100%;
 }
 select {
-  font-size: 1rem;
+  font-size: var(--default-font-size, 1rem);
+  background-color: #fff;
+  width: 98%;
 }
 
 h1 {
@@ -71,7 +99,7 @@ hr {
   flex-direction: column;
   align-items: stretch;
 
-  background-color: lightsalmon;
+ /* background-color: lightsalmon;*/
 }
 
 /*
@@ -92,7 +120,7 @@ hr {
   z-index: 4;
 
   font-size: 18px !important;
-  color: #fff !important;
+  color: var(--bom-brown, #fdbb2d) !important;
   background-color: #000 !important;
 
   min-height: 30px;
@@ -124,26 +152,39 @@ hr {
 /* ******************************************33 */
 
 .mainContent {
-  background-color: lightblue;
+ /* background-color: lightblue;*/
 
   order: 2;
   flex-grow: 999;
   margin: 0 auto;
 
-  width: 95%;
+  width: 98%;
   max-width: 960px;
 
   padding: 4px;
 }
 
-.footer {
-  background-color: #f2f2f2;
+footer {
+  background-color: var(--bom-brown, #fdbb2d);
 
   order: 3;
   align-self: flex-end;
   min-height: 50px;
   width: 100%;
   text-align: center;
+
+  padding: 5px;
+  font-size: var(--secondary-font-size, 9px);
+  
+}
+
+footer a{
+  padding: 0 4px;
+  text-decoration:unset;
+}
+
+footer a:hover{
+  text-decoration:underline;
 }
 
 /* Mobile only (media query would not really be necessary as css would be overwritten by later css, but we leave it here for clarity */
