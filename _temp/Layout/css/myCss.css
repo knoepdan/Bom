@@ -12,7 +12,6 @@
 
   --bom-brown: #fdbb2d;
 
-
   /* font size */
   --default-font-size: 1rem;
   --title-font-size: 1.15rem;
@@ -53,31 +52,51 @@ body {
   */
 }
 
-.xxBox{
-  max-width: 300px;
-  width:70%;
+.centerBox {
+  max-width: 440px;
+  margin: 0 auto;
+
+  width: 85%;
 }
 
-.lightBox{
+.lightBox {
   /*border-color: #565656;*/
-  background-color: #D8D8D8;
-  padding:7px;
+  background-color: #d8d8d8;
+  padding: 7px;
+  border-radius: 5px;
 }
 
-label{
+label {
   width: 100%;
 }
 
-input[type="text"] {
-  font-size:  var(--default-font-size, 1rem);
+input {
+  font-size: var(--default-font-size, 1rem);
   background-color: #fff;
-  width:98%;
+  width: 98%;
   max-width: 100%;
+
+  border-radius: 3px;
+  border-style: solid;
+
+  margin-bottom: 5px;
 }
 select {
   font-size: var(--default-font-size, 1rem);
   background-color: #fff;
   width: 98%;
+
+  border-radius: 3px;
+  border-style: solid;
+
+  margin-bottom: 5px;
+}
+
+button {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  min-width: 100px;
+  max-width: 100%;
 }
 
 h1 {
@@ -99,7 +118,7 @@ hr {
   flex-direction: column;
   align-items: stretch;
 
- /* background-color: lightsalmon;*/
+  /* background-color: lightsalmon;*/
 }
 
 /*
@@ -152,7 +171,7 @@ hr {
 /* ******************************************33 */
 
 .mainContent {
- /* background-color: lightblue;*/
+  /* background-color: lightblue;*/
 
   order: 2;
   flex-grow: 999;
@@ -175,16 +194,15 @@ footer {
 
   padding: 5px;
   font-size: var(--secondary-font-size, 9px);
-  
 }
 
-footer a{
+footer a {
   padding: 0 4px;
-  text-decoration:unset;
+  text-decoration: unset;
 }
 
-footer a:hover{
-  text-decoration:underline;
+footer a:hover {
+  text-decoration: underline;
 }
 
 /* Mobile only (media query would not really be necessary as css would be overwritten by later css, but we leave it here for clarity */
@@ -289,3 +307,13 @@ footer a:hover{
 }
 
 */
+
+.infoText {
+  /* color: var(--default-font-color);
+  
+  */
+  font-weight: bold;
+  color: var(--bom-brown, black);
+
+  font-size: var(--secondary-font-size, 15px);
+}
