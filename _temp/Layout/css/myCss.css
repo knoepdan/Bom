@@ -47,27 +47,10 @@ body {
   width: 100%;
 
   background-color: #f0f2f4;
-  /*
-  background-color: #FCF7FF;
-  */
-}
-
-.centerBox {
-  max-width: 440px;
-  margin: 0 auto;
-
-  width: 85%;
-}
-
-.lightBox {
-  /*border-color: #565656;*/
-  background-color: #d8d8d8;
-  padding: 7px;
-  border-radius: 5px;
 }
 
 label {
-  width: 100%;
+  max-width: 100%;
 }
 
 input {
@@ -117,17 +100,8 @@ hr {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-
-  /* background-color: lightsalmon;*/
 }
 
-/*
-hr {
-  border: 0;
-  border-top: 1px solid #eee;
-  margin: 20px 0;
-}
-*/
 /* top */
 .topBar {
   order: 1;
@@ -155,24 +129,10 @@ hr {
 }
 
 /* Start main content */
-/*
-@media (max-width: 992px) {
-  #mainContent {
-    margin-left: 0;
-    margin-right: 0;
-  }
-}
-@media (min-width: 993px) {
-  #mainContent {
-    margin-left: 300px;
-  }
-}
-*/
+
 /* ******************************************33 */
 
 .mainContent {
-  /* background-color: lightblue;*/
-
   order: 2;
   flex-grow: 999;
   margin: 0 auto;
@@ -222,11 +182,6 @@ footer a:hover {
   .desktopOnly {
     visibility: collapse;
   }
-
-  /* specific */
-  /*
-  .mainContent {
-  }*/
 }
 
 /* Mobile and Tablet */
@@ -234,11 +189,6 @@ footer a:hover {
   .tabletAndSmaller {
     visibility: visible;
   }
-
-  /* specific */
-  /*
-  .mainContent {
-  }*/
 }
 
 /* Tablet */
@@ -249,15 +199,6 @@ footer a:hover {
   .tabletOnly {
     visibility: visible;
   }
-
-  /* specific */
-  /*
-  .mainContent {
-    background-color: aquamarine;
-    margin-left: 6%;
-    margin-right: 6%;
-  }
-  */
 }
 
 /* Tablet and desktop*/
@@ -281,32 +222,21 @@ footer a:hover {
   .desktopOnly {
     visibility: visible;
   }
-
-  /* specific */
-  /*
-  .mainContent {
-    background-color: aliceblue;
-    margin-left: 20%;
-    margin-right: 20%;
-  }
-  */
 }
 
-/*
-#mainContent {
-  margin-top: 43px;
+.centerBox {
+  max-width: 440px;
+  margin: 0 auto;
 
-  transition: margin-left 0.4s;
+  width: 85%;
 }
 
-
-@media (min-width: 993px) {
-  .hideLarge {
-    display: none !important;
-  }
+.lightBox {
+  /*border-color: #565656;*/
+  background-color: #d8d8d8;
+  padding: 7px;
+  border-radius: 5px;
 }
-
-*/
 
 .infoText {
   /* color: var(--default-font-color);

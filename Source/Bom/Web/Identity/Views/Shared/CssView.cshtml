@@ -4,153 +4,243 @@
 @{
 }
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+
+
+    /*--- variables--*/
+    :root {
+        --default-border: #000;
+        --default-font-color: #000;
+        --header-bck-color: #000;
+        --header-font-color: #fff;
+        --nav-bck-color: #fff;
+        --nav-font-color: #000;
+        --nav-hover-bck-color: #efefef;
+        --bom-brown: #fdbb2d;
+        /* font size */
+        --default-font-size: 1rem;
+        --title-font-size: 1.15rem;
+        --bigtitle-font-size: 1.4rem;
+        --secondary-font-size: 0.8rem;
+        /* responsive limits (attention, wont work in variables!!) 
+  -> these variables can therefore not be used in media queries and are mainly just to look up the limits!!
+  -> in the future env might be used to centralize these limits 
+  */
+        --mobile-limit-max: 640px;
+        --tablet-limit-min: 641px;
+        --tablet-limit-max: 992px;
+        --desktop-limit-min: 993px;
     }
 
-    img {
-        border: 0;
+    /*  basic stuff */
+    /*--- general global settings--*/
+    html {
+        overflow-x: hidden;
+        font-size: 16px;
+        height: 100%;
+        width: 100%;
     }
 
     body {
-
-        /*
-        background-attachment: fixed;
-        background-color: #ccc;
-        background-image: url(../pics/portal_background.jpg);
-        background-repeat: no-repeat;
-        background-size: cover;
-    */
-            }
-
-
-    body, p, td, input, textarea, select {
-        color: #000;
-        font-size: 12px;
         font-family: sans-serif, Verdana;
-        line-height: 1.3em;
-    }
-
-
-
-
-    .topBar {
+        color: var(--default-font-color);
+        line-height: 1.5;
+        font-size: var(--default-font-size, 16px);
+        height: 100%;
         width: 100%;
-        overflow: hidden;
-        position: fixed;
-        top: 0;
-        width: 100%;
-        min-height: 20px;
-        z-index: 1;
-        z-index: 4;
-        font-size: 18px !important;
-        color: #fff !important;
-        background-color: #000 !important;
+        background-color: #f0f2f4;
     }
 
 
-    .mainContent{
+    label {
+        max-width: 100%;
+    }
 
-        background-color: lightblue;
+    input {
+        font-size: var(--default-font-size, 1rem);
+        background-color: #fff;
+        width: 98%;
+        max-width: 100%;
+        border-radius: 3px;
+        border-style: solid;
+        margin-bottom: 5px;
+    }
 
-        width:100%;
-        max-width: 900px;
-        margin-left: 2%;
-        margin-right: 2%;
+    select {
+        font-size: var(--default-font-size, 1rem);
+        background-color: #fff;
+        width: 98%;
+        border-radius: 3px;
+        border-style: solid;
+        margin-bottom: 5px;
+    }
 
-        margin-top: 20px;
-        padding: 5px;
+    button {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        min-width: 100px;
+        max-width: 100%;
+    }
 
+    h1 {
+        font-size: var(--bigtitle-font-size, 2rem);
+    }
+
+    h2 {
+        font-size: var(--title-font-size, 2rem);
+    }
+
+    hr {
+        border: 0;
+        border-top: 1px solid #eee;
     }
 
 
+</style>
+
+<style>
+
+.cont {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+
+/* top */
+.topBar {
+  order: 1;
+
+  overflow: hidden;
+  display: inline-block;
+
+  width: 100%;
+  z-index: 4;
+
+  font-size: 18px !important;
+  color: var(--bom-brown, #fdbb2d) !important;
+  background-color: #000 !important;
+
+  min-height: 30px;
+}
+
+.title {
+  padding: 8px 16px;
+
+  width: auto;
+  border: none;
+  display: block;
+  outline: 0;
+}
+
+/* Start main content */
+/* ******************************************33 */
+
+.mainContent {
+
+  order: 2;
+  flex-grow: 999;
+  margin: 0 auto;
+
+  width: 98%;
+  max-width: 960px;
+
+  padding: 4px;
+}
+
+footer {
+  background-color: var(--bom-brown, #fdbb2d);
+
+  order: 3;
+  align-self: flex-end;
+  min-height: 50px;
+  width: 100%;
+  text-align: center;
+
+  padding: 5px;
+  font-size: var(--secondary-font-size, 9px);
+}
+
+footer a {
+  padding: 0 4px;
+  text-decoration: unset;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
 
 /* Mobile only (media query would not really be necessary as css would be overwritten by later css, but we leave it here for clarity */
-@@media (max-width: 640px) {
-    .mobileOnly {
-        visibility: visible;
-    }
-    .tabletAndSmaller {
-        visibility: collapse;
-    }
-    .tabletOnly {
-        visibility: collapse;
-    }
-    .tabletAndBigger {
-        visibility: collapse;
-    }
-    .desktopOnly {
-        visibility: collapse;
-    }
-
-    /* specific */
-    .mainContent {
-
-    }
+media (max-width: 640px) {
+  .mobileOnly {
+    visibility: visible;
+  }
+  .tabletAndSmaller {
+    visibility: collapse;
+  }
+  .tabletOnly {
+    visibility: collapse;
+  }
+  .tabletAndBigger {
+    visibility: collapse;
+  }
+  .desktopOnly {
+    visibility: collapse;
+  }
 }
 
 /* Mobile and Tablet */
-@@media (max-width: 992px) {
-    .tabletAndSmaller {
-        visibility: visible;
-    }
+media (max-width: 992px) {
+  .tabletAndSmaller {
+    visibility: visible;
+  }
 
-    /* specific */
-    .mainContent {
 
-    }
 }
 
 /* Tablet */
-@@media (min-width: 641px) and (max-width: 992px) {
-    .mobileOnly {
-        visibility: collapse;
-    }
-    .tabletOnly {
-        visibility: visible;
-    }
-
-    /* specific */
-    .mainContent {
-        background-color: aquamarine;
-        margin-left: 6%;
-        margin-right: 6%;
-    }
+media (min-width: 641px) and (max-width: 992px) {
+  .mobileOnly {
+    visibility: collapse;
+  }
+  .tabletOnly {
+    visibility: visible;
+  }
 }
 
 /* Tablet and desktop*/
-@@media (min-width: 641px) {
-    .tabletAndBigger {
-        visibility: visible;
-    }
+media (min-width: 641px) {
+  .tabletAndBigger {
+    visibility: visible;
+  }
 }
 
 /* Desktop*/
-@@media (min-width: 993px) {
-    .mobileOnly {
-        visibility: collapse;
-    }
-    .tabletAndSmaller {
-        visibility: collapse;
-    }
-    .tabletOnly {
-        visibility: collapse;
-    }
-    .desktopOnly {
-        visibility: visible;
-    }
+media (min-width: 993px) {
+  .mobileOnly {
+    visibility: collapse;
+  }
+  .tabletAndSmaller {
+    visibility: collapse;
+  }
+  .tabletOnly {
+    visibility: collapse;
+  }
+  .desktopOnly {
+    visibility: visible;
+  }
 
-    /* specific */
-    /* specific */
-    .mainContent {
-        background-color: aliceblue;
-        margin-left: 20%;
-        margin-right: 20%;
-    }
 }
 
+</style>
 
+<style>
+
+    .infoText {
+        font-weight: bold;
+        color: var(--bom-brown, black);
+        font-size: var(--secondary-font-size, 15px);
+    }
 
 </style>
