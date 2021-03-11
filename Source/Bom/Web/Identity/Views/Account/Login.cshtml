@@ -11,12 +11,16 @@
 
 
 <br />
-<br />
 <div class="centerBox">
+
     <div class="lightBox">
-
+        <div>
+          <button class="fbButton" onclick="alert('not implemented yet)')" >Login via Facebook</button>
+        </div>
+    </div>
+    <div style="text-align:center">or</div>
+    <div class="lightBox">
         <form action="@linkProvider.AccountLoginLink" method="post">
-
 
             @Html.ValidationSummary(true)
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -40,12 +44,13 @@
 
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button type="submit" >Login</button>
             </div>
         </form>
     </div>
-    <div class="infoText">
-        Welcome to 'Bom'. Login and enjoy.
-    </div>
+    <span class="infoText">
+        @htmlService.LocalizeHtml("Login.NoAccountYet", "You don't have an account yet?")
+        <a href="@linkProvider.AccountRegisterLink" >@htmlService.LocalizeHtml("Login.Register", "Register")</a>
+    </span>
 </div>
 

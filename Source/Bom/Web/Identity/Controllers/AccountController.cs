@@ -17,7 +17,8 @@ using Bom.Web.Common;
 namespace Bom.Web.Identity.Controllers
 {
     [Area("Identity")]
-    [Route("/{" + Const.RouteArgumentNames.Lang + "}/{" + Const.RouteArgumentNames.Controller  + "}")]
+    [Route("/")]
+    [Route("/{" + Const.RouteArgumentNames.Lang + "}/{" + Const.RouteArgumentNames.Controller + "}")]
     [Controller]
     public class AccountController : BomBaseViewController
     {
@@ -30,6 +31,11 @@ namespace Bom.Web.Identity.Controllers
         }
 
 
+        [HttpGet("")]
+        public IActionResult Index()
+        {
+            return Login();
+        }
 
         [HttpGet("login")]
         public IActionResult Login()

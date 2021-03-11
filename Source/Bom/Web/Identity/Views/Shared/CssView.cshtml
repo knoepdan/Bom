@@ -237,6 +237,7 @@
         --nav-hover-bck-color: #efefef;
         --bom-brown: #fdbb2d;
         --bom-light-grey: rgb(239, 239, 239);
+        --bom-dark-grey: #666666;
         /* font size */
         --default-font-size: 1rem;
         --title-font-size: 1.15rem;
@@ -300,6 +301,10 @@
         margin-bottom: 5px;
         min-width: 100px;
         max-width: 100%;
+        border: solid;
+        border-width: 1px;
+        border-radius: 2px;
+        border-color: var(--bom-dark-grey, darkgray);
     }
 
     h1 {
@@ -472,5 +477,11 @@
         font-weight: bold;
         color: var(--bom-brown, black);
         font-size: var(--secondary-font-size, 15px);
+    }
+
+    .fbButton {
+        background-color: #1877f2;
+        color: white;
+        width: 100%
     }
 </style>

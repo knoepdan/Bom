@@ -76,7 +76,7 @@
                                     var path = request.Path.Value!; // "/de/Home/Index" or  in case of Home: "/Home/Index" or "/"
                                     var basePath = request.PathBase; // /BomApi
 
-                                    string url = $"{basePath}/{Html.UrlEncoder.Encode(langCode)}/home"; // default -> only when no controller or action
+                                    string url = $"{basePath}/{Html.UrlEncoder.Encode(langCode)}/account"; // default -> only when no controller or action
                                     if (!string.IsNullOrEmpty(path) && path != "/")
                                     {
                                         string newPath = $"{Html.UrlEncoder.Encode(langCode)}/{path.TrimStart('/')}";

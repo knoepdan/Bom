@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Http.Extensions;
 
 namespace Bom.Web.Identity.Controllers
 {
-    [Route("/")]
+   // [Route("/")]
     [Route("/{" + Const.RouteArgumentNames.Lang + "}/home/")]
     //  [Route("/{" + Const.RouteArgumentNames.Lang + "}/home/{" + Const.RouteArgumentNames.Action + "}")] // Important to have action explicitly defined.
     [Route("/{" + Const.RouteArgumentNames.Lang + "}/{" + Const.RouteArgumentNames.Controller + "}/{" + Const.RouteArgumentNames.Action + "}")]
