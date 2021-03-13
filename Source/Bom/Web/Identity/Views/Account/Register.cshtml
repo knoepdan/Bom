@@ -9,99 +9,70 @@
     var linkProvider = new Bom.Web.Identity.IdentityLinkProvider(this.Url);
 }
 
-<h1>Register</h1>
 
+<br />
+<div class="centerBox">
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-
-
-        @{/*
-
-                              different way: easier to add other html attributes
-                              <form asp-action="Register">
-
-                              <label asp-for="Username" class="control-label"></label>
-                              <input asp-for="Username" class="form-control" />
-                              <span asp-validation-for="Username" class="text-danger"></span>
-
-                          */
-        }
-
-
-
+    <div class="lightBox">
+        <form action="@linkProvider.FacebookRegisterLink" method="post">
+            @Html.ValidationSummary(true)
+            <div class="form-group">
+                <button type="submit" class="fbButton">@htmlService.LocalizeHtml("Register.Register", "Register via Facebook")</button>
+</div>
+        </form>
+    </div>
+    <div style="text-align:center">or</div>
+    <div class="lightBox">
         <form action="@linkProvider.AccountRegisterLink" method="post">
 
 
             @Html.ValidationSummary(true)
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div asp-validation-summary="ModelOnly" ></div>
+            <div>
                 <label>
-                    Email
+                    Email (used as username)
                     @Html.TextBoxFor(x => x.Username, new { @type = "email", maxlength = "255" })
                 </label>
                 @Html.ValidationMessageFor(x => x.Username)
 
             </div>
-            <div class="form-group">
+            <div>
                 <label>
                     Password
                     @Html.PasswordFor(x => x.Password, new { maxlength = "255" })
                 </label>
                 @Html.ValidationMessageFor(x => x.Password)
             </div>
-            <div class="form-group">
-
+            <div>
                 <label>
                     Confirm password
                     @Html.PasswordFor(x => x.ConfirmPassword, new { maxlength = "255" })
                 </label>
                 @Html.ValidationMessageFor(x => x.ConfirmPassword)
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-
-<br />
-<br />
-<br />
-<br />
-<div class="row">
-    <div class="col-md-4">
-
-        <form action="@linkProvider.FacebookRegisterLink" method="post">
-
-
-            @Html.ValidationSummary(true)
-
-            <div class="form-group">
-                <input type="submit" value="Register Facebook" class="btn btn-primary" />
+            <div>
+                <button type="submit">@htmlService.LocalizeHtml("Register.Register", "Register")</button>
+                <a href="@linkProvider.AccountLoginLink">@htmlService.LocalizeHtml("Common.Cancel", "Cancel")</a>
             </div>
         </form>
 
-
-
     </div>
+
+
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <form action="@linkProvider.AccountLogoutLink" method="post">
+
+
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            <button type="submit" value="Logout" >Logout (temp)</button>
+        </div>
+    </form>
+
+
 </div>
-
-
-<br />
-<br />
-<br />
-<br />
-<form action="@linkProvider.AccountLogoutLink" method="post">
-
-
-    @Html.ValidationSummary(true)
-
-    <div class="form-group">
-        <input type="submit" value="Logout" class="btn btn-primary" />
-    </div>
-</form>
-
-<div>
