@@ -30,29 +30,27 @@
             <div asp-validation-summary="ModelOnly" ></div>
             <div>
                 <label>
-                    Email (used as username)
+                    @Html.DisplayNameFor(x => x.Username)   <span style="text-align:right">  @Html.ValidationMessageFor(x => x.Username) </span>
                     @Html.TextBoxFor(x => x.Username, new { @type = "email", maxlength = "255" })
                 </label>
-                @Html.ValidationMessageFor(x => x.Username)
-
             </div>
             <div>
                 <label>
-                    Password
-                    @Html.PasswordFor(x => x.Password, new { maxlength = "255" })
+                    @Html.DisplayNameFor(x => x.Password)   <span style="text-align:right">
+                        @Html.ValidationMessageFor(x => x.Password) </span>
+                        @Html.PasswordFor(x => x.Password, new { maxlength = "255" })
                 </label>
-                @Html.ValidationMessageFor(x => x.Password)
             </div>
             <div>
                 <label>
-                    Confirm password
-                    @Html.PasswordFor(x => x.ConfirmPassword, new { maxlength = "255" })
-                </label>
-                @Html.ValidationMessageFor(x => x.ConfirmPassword)
+                    @Html.DisplayNameFor(x => x.ConfirmPassword) <span style="text-align:right">
+    @Html.ValidationMessageFor(x => x.ConfirmPassword) </span>
+    @Html.PasswordFor(x => x.ConfirmPassword, new { maxlength = "255" })
+</label>
             </div>
             <div>
                 <button type="submit">@htmlService.LocalizeHtml("Register.Register", "Register")</button>
-                <a href="@linkProvider.AccountLoginLink">@htmlService.LocalizeHtml("Common.Cancel", "Cancel")</a>
+                <a href="@linkProvider.AccountRegisterLink">@htmlService.LocalizeHtml("Common.Cancel", "Cancel")</a>
             </div>
         </form>
 

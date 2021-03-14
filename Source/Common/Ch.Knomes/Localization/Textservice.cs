@@ -65,6 +65,12 @@ namespace Ch.Knomes.Localization
             return this.Resolver.GetCurrentLangCode();
         }
 
+        public bool HasTranslation(string code)
+        {
+            var item = GetTextItem(code);
+            return item != null && item.Text != null;
+        }
+
         #endregion
 
         #region IHtmlService

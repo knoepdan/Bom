@@ -43,10 +43,8 @@ namespace Bom.Web.Identity.Controllers
                 context.Result = View(errorView, errorModel);
             }
         }
-        
 
         protected TempDataHelper TempDataHelper { get; private set; } = default!;
-
 
         protected LayoutData LayoutData
         {
@@ -60,7 +58,7 @@ namespace Bom.Web.Identity.Controllers
             }
         }
 
-        protected virtual LayoutData GetLayoutData()
+        private LayoutData GetLayoutData()
         {
             IHtmlService? htmlService;
             htmlService = UiGlobals.GetTextservice();
@@ -73,5 +71,7 @@ namespace Bom.Web.Identity.Controllers
             var layoutData = new LayoutData(htmlService, UiGlobals.AvailableLangCodes);
             return layoutData;
         }
+
+        protected ITextService TextService => UiGlobals.GetTextservice() as ITextService ?? new DummyTextservice();
     }
 }

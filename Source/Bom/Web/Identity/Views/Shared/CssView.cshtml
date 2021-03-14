@@ -222,7 +222,6 @@
         -webkit-appearance: button;
         font: inherit;
     }
-
 </style>
 
 <style>
@@ -238,6 +237,7 @@
         --bom-brown: #fdbb2d;
         --bom-light-grey: rgb(239, 239, 239);
         --bom-dark-grey: #666666;
+        --bom-validation-red: #FF0000:
         /* font size */
         --default-font-size: 1rem;
         --title-font-size: 1.15rem;
@@ -387,38 +387,32 @@
 
     /* Mobile only (media query would not really be necessary as css would be overwritten by later css, but we leave it here for clarity */
     @@media (max-width: 640px) {
-        .mobileOnly
+        .mobileOnly {
+            visibility: visible;
+        }
 
-    {
-        visibility: visible;
-    }
+        .tabletAndSmaller {
+            visibility: collapse;
+        }
 
-    .tabletAndSmaller {
-        visibility: collapse;
-    }
+        .tabletOnly {
+            visibility: collapse;
+        }
 
-    .tabletOnly {
-        visibility: collapse;
-    }
+        .tabletAndBigger {
+            visibility: collapse;
+        }
 
-    .tabletAndBigger {
-        visibility: collapse;
-    }
-
-    .desktopOnly {
-        visibility: collapse;
-    }
-
+        .desktopOnly {
+            visibility: collapse;
+        }
     }
 
     /* Mobile and Tablet */
     @@media (max-width: 992px) {
-        .tabletAndSmaller
-
-    {
-        visibility: visible;
-    }
-
+        .tabletAndSmaller {
+            visibility: visible;
+        }
     }
 
     /* Tablet */
@@ -483,5 +477,27 @@
         background-color: #1877f2;
         color: white;
         width: 100%
+    }
+</style>
+<style>
+
+    /* mvc predefined styles (we need to redefine variables here because its in a separate style)*/
+    :root {
+        --bom-validation-red: #FF0000;
+        /* font size */
+        --default-font-size: 1rem;
+        --title-font-size: 1.15rem;
+        --bigtitle-font-size: 1.4rem;
+        --secondary-font-size: 0.8rem;
+    }
+
+    /* mvc predefined styles */
+    .field-validation-error {
+        color: var(--bom-validation-red, red);
+        font-size: var(--secondary-font-size, 10px);
+    }
+
+    .input-validation-error {
+        border-color: var(--bom-validation-red, red);
     }
 </style>

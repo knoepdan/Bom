@@ -7,7 +7,7 @@ using Ch.Knomes.Localization.Resolver;
 
 namespace Ch.Knomes.Localization
 {
-    public interface ITextService
+    public interface IBasicTextService
     {
         /// <summary>
         /// Translate value in the corresponding language
@@ -17,7 +17,10 @@ namespace Ch.Knomes.Localization
         /// <param name="args">param objects</param>
         /// <returns></returns>
         string Localize(string code, string fallbackValue, params object[] args);
+    }
 
+    public interface ITextService : IBasicTextService
+    {
         /// <summary>
         /// Marker for text that don't need translation
         /// </summary>
@@ -34,6 +37,8 @@ namespace Ch.Knomes.Localization
         /// Resolver choosing the language
         /// </summary>
         ITextResolver Resolver { get; }
+
+        public bool HasTranslation(string code);
     }
     public interface ITextService<TResolver> where TResolver : ITextResolver
     {

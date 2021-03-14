@@ -10,18 +10,18 @@ namespace Bom.Web.Identity.Models
     public class RegisterVm
     {
 
-
+        [LocDisplayName("E-Mail")]
         [LocRequired]
         [LocEmailAddress]
         [LocStringLength(255)]
         public string Username { get; set; } = default!;
 
-        // [Required]
-        [LocRequired(ErrorMessageResourceName = "MVC.Validation.Required")]
         [LocDisplayName("Password")]
+        [LocRequired(ErrorMessageResourceName = "MVC.Validation.Required")]
         [LocStringLength(255)]
         public string Password { get; set; } = default!;
 
+        [LocDisplayName("Confirm Password")]
         [LocRequired]
         public string ConfirmPassword { get; set; } = default!;
     }

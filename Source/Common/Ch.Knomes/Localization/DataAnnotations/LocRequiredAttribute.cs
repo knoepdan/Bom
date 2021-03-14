@@ -15,19 +15,13 @@ namespace Ch.Knomes.Localization.DataAnnotations
     {
         public override string FormatErrorMessage(string name)
         {
-            // ensure default value
-            string errorMessage = "The {0} field is required."; //base.FormatErrorMessage(name);
+            string errorMessage = "The '{0}' field is required."; // fallback value
 
             // translate using localizer
-            if (!string.IsNullOrEmpty(this.ErrorMessageResourceName) && LocalizationGlobals.GetDefaultTextServiceFunc != null)
-            {
-                var textService = LocalizationGlobals.GetDefaultTextServiceFunc();
-                if(textService != null)
-                {
-                    errorMessage = textService.Localize(this.ErrorMessageResourceName, errorMessage, name);
-                }
-            }
+            ITextService textService = AnnotationHelper.GetTextService(this);
+            errorMessage = textService.Localize(this.ErrorMessageResourceName ?? "", errorMessage, name);
             return errorMessage;
         }
+
     }
 }

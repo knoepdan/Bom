@@ -9,10 +9,8 @@ using Ch.Knomes.Localization.Resolver;
 
 namespace Ch.Knomes.Localization
 {
-    /// <summary>
-    /// Service to localize text, already taking care of html encoding
-    /// </summary>
-    public interface IHtmlService
+
+    public interface IBasicHtmlService
     {
         /// <summary>
         /// Translate value in the corresponding language
@@ -22,7 +20,13 @@ namespace Ch.Knomes.Localization
         /// <param name="args">param objects</param>
         /// <returns></returns>
         HtmlString LocalizeHtml(string code, string fallbackValue, params object[] args);
+    }
 
+    /// <summary>
+    /// Service to localize text, already taking care of html encoding
+    /// </summary>
+    public interface IHtmlService : IBasicHtmlService
+    {
         /// <summary>
         /// Marker for text that don't need translation
         /// </summary>

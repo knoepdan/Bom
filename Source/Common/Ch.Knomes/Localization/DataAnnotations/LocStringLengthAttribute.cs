@@ -27,17 +27,17 @@ namespace Ch.Knomes.Localization.DataAnnotations
             {
                 if(this.MaximumLength == MinimumLength)
                 {
-                    errorMessage = "The {0} value must have " + this.MaximumLength + " characters.";
+                    errorMessage = "The '{0}' value must have " + this.MaximumLength + " characters.";
                     localizationKey = "Common.Validation.String.FixedLength";
                 }
                 else if (this.MaximumLength > this.MaximumLength)
                 {
-                    errorMessage = "The {0} value must have a minimum length of " + this.MinimumLength + " and may not exceed " + this.MaximumLength + " characters.";
+                    errorMessage = "The '{0}' value must have a minimum length of " + this.MinimumLength + " and may not exceed " + this.MaximumLength + " characters.";
                     localizationKey = "Common.Validation.String.MinMaxLength";
                 }
                 else
                 {
-                    errorMessage = "The {0} value must have a minimum length of " + this.MinimumLength + ".";
+                    errorMessage = "The '{0}' value must have a minimum length of " + this.MinimumLength + ".";
                     localizationKey = "Common.Validation.String.MinLength";
                 }
             }
@@ -48,20 +48,14 @@ namespace Ch.Knomes.Localization.DataAnnotations
             }
 
             // translate using localizer
-            if (LocalizationGlobals.GetDefaultTextServiceFunc != null)
+            var textService = AnnotationHelper.GetTextService(this);
+            if (!string.IsNullOrEmpty(base.ErrorMessageResourceName))
             {
-                var textService = LocalizationGlobals.GetDefaultTextServiceFunc();
-                if (textService != null)
-                {
-                    if (!string.IsNullOrEmpty(base.ErrorMessageResourceName))
-                    {
-                        errorMessage = textService.Localize(this.ErrorMessageResourceName, errorMessage, name);
-                    }
-                    else
-                    {
-                        errorMessage = textService.Localize(localizationKey, errorMessage, name);
-                    }
-                }
+                errorMessage = textService.Localize(this.ErrorMessageResourceName, errorMessage, name);
+            }
+            else
+            {
+                errorMessage = textService.Localize(localizationKey, errorMessage, name);
             }
             return errorMessage;
         }

@@ -23,23 +23,22 @@ namespace Ch.Knomes.Localization.DataAnnotations
             get
             {
                 var name = base.DisplayName;
-                if (LocalizationGlobals.GetDefaultTextServiceFunc != null)
-                {
-                    var textService = LocalizationGlobals.GetDefaultTextServiceFunc();
-                    if (textService != null)
-                    {
-                        if (!string.IsNullOrEmpty(this.LocalizationKey))
-                        {
-                            name = textService.Localize(this.LocalizationKey, name);
-                        }
-                        else
-                        {
-                            name = textService.Localize($"Common.Display.Model.{name}", name); // by convention
-                        }
-                    }
-                }
+                var localizationKey = GetLocalizationKey(name);
+                var textService = AnnotationHelper.GetTextService(localizationKey);
+                var localizedName = textService.Localize(this.LocalizationKey, name);
+                return localizedName;
+            }
+        }
 
-                return name;
+        private string GetLocalizationKey(string baseDisplayName)
+        {
+            if (!string.IsNullOrEmpty(this.LocalizationKey))
+            {
+                return this.LocalizationKey;
+            }
+            else
+            {
+                return ($"Common.Display.Model.{baseDisplayName}"); // by convention
             }
         }
     }

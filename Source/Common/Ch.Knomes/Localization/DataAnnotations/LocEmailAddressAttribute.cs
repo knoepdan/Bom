@@ -22,14 +22,8 @@ namespace Ch.Knomes.Localization.DataAnnotations
             string errorMessage = "The email address is not valid.";
 
             // translate using localizer
-            if (!string.IsNullOrEmpty(this.ErrorMessageResourceName) && LocalizationGlobals.GetDefaultTextServiceFunc != null)
-            {
-                var textService = LocalizationGlobals.GetDefaultTextServiceFunc();
-                if (textService != null)
-                {
-                    errorMessage = textService.Localize(this.ErrorMessageResourceName, errorMessage, name);
-                }
-            }
+            ITextService textService = AnnotationHelper.GetTextService(this);
+            errorMessage = textService.Localize(this.ErrorMessageResourceName ?? "", errorMessage, name);
             return errorMessage;
         }
     }

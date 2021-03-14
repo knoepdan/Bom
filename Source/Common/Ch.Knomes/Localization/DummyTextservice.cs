@@ -46,6 +46,16 @@ namespace Ch.Knomes.Localization
 
         public ITextResolver Resolver { get; }
 
+        public bool HasTranslation(string code)
+        {
+            return false;
+        }
+
+        public bool HasAnyTranslation(string code)
+        {
+            return false;
+        }
+
         #endregion
 
         #region IHtmlService
