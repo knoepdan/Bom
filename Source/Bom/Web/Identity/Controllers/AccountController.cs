@@ -117,6 +117,8 @@ namespace Bom.Web.Identity.Controllers
                 this._context.Users.Add(user);
                 await this._context.SaveChangesAsync();
 
+                // TODO send email
+
                 return RedirectToAction("Index", "Home");
             }
             return View(IdentityViewProvider.AccountRegister, model);
