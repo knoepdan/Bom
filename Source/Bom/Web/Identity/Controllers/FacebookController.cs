@@ -70,6 +70,28 @@ namespace Bom.Web.Identity.Controllers
 
             var actionResult = await GoToSecondRegisterPage();
             return actionResult;
+        }
+
+
+        [Authorize]
+        [HttpGet("alreadyregistered")]
+        public IActionResult AlreadyRegistered()
+        {
+            const string viewName = Bom.Web.Identity.IdentityViewProvider.SharedOAuthRegistration; ; //  "~/Areas/Identity/Views/Shared/OAuthRegistration.cshtml";
+            return View(viewName, null);
+        }
+
+        [Authorize]
+        [HttpGet("success")]
+        public IActionResult Success()
+        {
+
+
+            // will return to this endpoint
+            const string viewName = Bom.Web.Identity.IdentityViewProvider.SharedOAuthRegistration; ; //  "~/Areas/Identity/Views/Shared/OAuthRegistration.cshtml";
+
+
+            return View(viewName, null);
 
 
         }
@@ -83,7 +105,7 @@ namespace Bom.Web.Identity.Controllers
                 var existingId = await this.Context.Users.Where(x => x.FacebookId == oAuthInfo.Identifier).Select(x => x.FacebookId).FirstOrDefaultAsync();
                 if (!string.IsNullOrEmpty(existingId))
                 {
-                    throw new Exception("Already exists");
+                    return RedirectToAction("alreadyregistered");
                 }
 
                 var user = this.CreateNewOAuthUser(oAuthInfo);
@@ -94,15 +116,15 @@ namespace Bom.Web.Identity.Controllers
                 // redirect to
                 var regVm = new OAuthRegVm(user, "Facebook");
 
-                // TODO -> probably do a redirect !! (and pass info as query string)
-
-                var result = base.GetOAuthRegistrationSuccessView(regVm);
-                return result;
+                return RedirectToAction("success");
             }
             else
             {
                 throw new Exception("Identities not found");  // or just a redirect to normal register??
             }
         }
+
+        
+
     }
 }

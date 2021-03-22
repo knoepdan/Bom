@@ -66,15 +66,6 @@ namespace Bom.Web.Identity.Controllers
         }
 
 
-        //// GET: api/Paths
-        //[HttpGet("register")]
-        //public IActionResult Register()
-        //{
-        //    var model = new RegisterVm();
-
-        //    return View( model);
-        //    //  return View("~/Areas/Identity/Views/Account/Register", model);
-        //}
 
     }
 }

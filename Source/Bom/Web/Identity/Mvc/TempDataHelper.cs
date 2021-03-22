@@ -15,49 +15,40 @@ namespace Bom.Web.Identity.Mvc
         /// <param name="data">TempData (or possibly other dic)</param>
         public TempDataHelper(IDictionary<string, object> data)
         {
-            if (data == null) {
+            if (data == null)
+            {
                 throw new ArgumentNullException(nameof(data));
-                    };
+            };
             _data = data;
         }
 
-        public void AddMessage(string message)
+        public void AddMessasge(UserMessage message)
         {
-            List<string> messages;
+            List<UserMessage> messages;
             if (this._data.TryGetValue("Msg", out object? ob))
             {
-                messages = (List<string>)ob;
+                messages = (List<UserMessage>)ob;
             }
             else
             {
-                messages = new List<string>();
+                messages = new List<UserMessage>();
                 _data["Msg"] = messages;
             }
             messages.Add(message);
         }
 
-
-        public void AddMessages(IEnumerable<string> messages)
+        public IList<UserMessage> GetMessages()
         {
-            foreach (var message in messages)
-            {
-                AddMessage(message);
-            }
-        }
-
-        public IList<string> GetMessages()
-        {
-            List<string> messages;
+            List<UserMessage> messages;
             if (this._data.TryGetValue("Msg", out object? ob))
             {
-                messages = (List<string>)ob;
+                messages = (List<UserMessage>)ob;
             }
             else
             {
-                messages = new List<string>();
+                messages = new List<UserMessage>();
             }
             return messages;
         }
-
     }
 }
