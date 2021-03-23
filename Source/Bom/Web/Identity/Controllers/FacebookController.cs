@@ -24,22 +24,12 @@ namespace Bom.Web.Identity.Controllers
     [Controller]
     public class FacebookController : OAuthBaseController
     {
-        //private readonly ModelContext _context;
+        public override string ProviderName => "Facebook";
 
         public FacebookController(ModelContext context) : base(context)
         {
     //        _context = context;
         }
-
-        //// GET: api/Paths
-        //[HttpGet("register")]
-        //public IActionResult Register()
-        //{
-        //    var model = new RegisterVm();
-
-        //    return View( model);
-        //    //  return View("~/Areas/Identity/Views/Account/Register", model);
-        //}
 
         [Authorize]
         [HttpPost("register")]
@@ -49,8 +39,6 @@ namespace Bom.Web.Identity.Controllers
             {
                 throw new Exception("invalid model state");
             }
-
-
             var actionResult = await GoToSecondRegisterPage();
             return actionResult;
         }
@@ -66,46 +54,21 @@ namespace Bom.Web.Identity.Controllers
             }
 
             // will return to this endpoint
-
-
             var actionResult = await GoToSecondRegisterPage();
             return actionResult;
         }
-
-
-        [Authorize]
-        [HttpGet("alreadyregistered")]
-        public IActionResult AlreadyRegistered()
-        {
-            const string viewName = Bom.Web.Identity.IdentityViewProvider.SharedOAuthRegistration; ; //  "~/Areas/Identity/Views/Shared/OAuthRegistration.cshtml";
-            return View(viewName, null);
-        }
-
-        [Authorize]
-        [HttpGet("success")]
-        public IActionResult Success()
-        {
-
-
-            // will return to this endpoint
-            const string viewName = Bom.Web.Identity.IdentityViewProvider.SharedOAuthRegistration; ; //  "~/Areas/Identity/Views/Shared/OAuthRegistration.cshtml";
-
-
-            return View(viewName, null);
-
-
-        }
-
 
         private async Task<IActionResult> GoToSecondRegisterPage()
         {
             var oAuthInfo = Bom.Web.Identity.IdentityHelper.GetFacebookType(this.User.Identities);
             if (oAuthInfo != null)
             {
+                var linkProvider = new IdentityLinkProvider(this);
+
                 var existingId = await this.Context.Users.Where(x => x.FacebookId == oAuthInfo.Identifier).Select(x => x.FacebookId).FirstOrDefaultAsync();
                 if (!string.IsNullOrEmpty(existingId))
                 {
-                    return RedirectToAction("alreadyregistered");
+                    return Redirect(linkProvider.OAuthRegisterAlreadyRegisteredLink(this.ProviderName));
                 }
 
                 var user = this.CreateNewOAuthUser(oAuthInfo);
@@ -116,7 +79,7 @@ namespace Bom.Web.Identity.Controllers
                 // redirect to
                 var regVm = new OAuthRegVm(user, "Facebook");
 
-                return RedirectToAction("success");
+                return Redirect(linkProvider.OAuthRegisterAlreadyRegisteredLink(this.ProviderName));//RedirectToAction("success");
             }
             else
             {

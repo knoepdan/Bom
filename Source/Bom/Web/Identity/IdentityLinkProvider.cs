@@ -50,6 +50,11 @@ namespace Bom.Web.Identity
 
         public string FacebookRegisterLink => this._urlHelper.Content($"~/{this._langCode}/facebook/register")!;
 
+        public string OAuthRegisterAlreadyRegisteredLink(string providerName) => this._urlHelper.Content($"~/{this._langCode}/{providerName.ToLowerInvariant()}/alreadyregistered")!;
+
+
+        public string OAuthRegisterSuccessLink(string providerName) => this._urlHelper.Content($"~/{this._langCode}/{providerName.ToLowerInvariant()}/registersuccess")!;
+
 
         private string GetLangCode()
         {

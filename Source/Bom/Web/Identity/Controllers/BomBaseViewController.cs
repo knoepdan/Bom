@@ -14,7 +14,6 @@ namespace Bom.Web.Identity.Controllers
     [Controller]
     public class BomBaseViewController : Controller
     {
-
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);

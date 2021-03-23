@@ -33,13 +33,24 @@
                     @{
                         var tempDataRegistry = new TempDataHelper(TempData);
                         var messages = tempDataRegistry.GetMessages();
-                        if (messages.Any())
+                        if (messages.Count > 0)
                         {
-                            <div id="messages" class="message-area">
-                                @foreach (var message in messages)
+                            <div class="centerBox messageArea">
+                                @foreach (var msg in messages)
                                 {
-                                    <div>@message</div>
-                                }
+                                    var className = "";
+                                    switch (msg.Type)
+                                    {
+                                        case UserMessage.MessageType.Info:
+                                            className = "infoMsg";
+                                            break;
+                                        case UserMessage.MessageType.Error:
+                                            className = "errorMsg";
+                                            break;
+                                        default: break;
+                                    }
+                                    <div class="@className">@msg.Message</div>
+                                    }
                             </div>
                         }
                     }
@@ -60,44 +71,44 @@
 
                     @if (layoutData.AvailableLanguageCodes.Count > 1)
                     {
-                        var request = this.ViewContext.HttpContext.Request;
+                                    var request = this.ViewContext.HttpContext.Request;
                         <span>
                             @foreach (var langCode in layoutData.AvailableLanguageCodes)
                             {
-                                var currentLang = layoutData.GetCurrentLangCode();
-                                var langName = layoutData.HtmlService.LocalizeHtml("Common.LangUntranslated." + langCode, langCode); // should not be translated (depends on localization store)
-                                if (currentLang == langCode)
-                                {
+                                        var currentLang = layoutData.GetCurrentLangCode();
+                                        var langName = layoutData.HtmlService.LocalizeHtml("Common.LangUntranslated." + langCode, langCode); // should not be translated (depends on localization store)
+                                        if (currentLang == langCode)
+                                        {
                                     // no ling
                                     <b>@langName</b>
-                                }
-                                else
-                                {
-                                    var path = request.Path.Value!; // "/de/Home/Index" or  in case of Home: "/Home/Index" or "/"
-                                    var basePath = request.PathBase; // /BomApi
-
-                                    string url = $"{basePath}/{Html.UrlEncoder.Encode(langCode)}/account"; // default -> only when no controller or action
-                                    if (!string.IsNullOrEmpty(path) && path != "/")
-                                    {
-                                        string newPath = $"{Html.UrlEncoder.Encode(langCode)}/{path.TrimStart('/')}";
-                                        if (request.RouteValues.ContainsKey(Bom.Web.Common.Const.RouteArgumentNames.Lang))
-                                        {
-                                            var parts = path.Split('/', StringSplitOptions.RemoveEmptyEntries);
-                                            parts[0] = Html.UrlEncoder.Encode(langCode);
-                                            newPath = $"/{string.Join('/', parts)}";
                                         }
-                                        url = $"{basePath}/{newPath.TrimStart('/')}";
-                                    }
+                                        else
+                                        {
+                                            var path = request.Path.Value!; // "/de/Home/Index" or  in case of Home: "/Home/Index" or "/"
+                                            var basePath = request.PathBase; // /BomApi
 
-                                    // add query string
-                                    if (!string.IsNullOrEmpty(request.QueryString.Value))
-                                    {
-                                        url = url + "?" + request.QueryString.Value.TrimStart('?');
-                                    }
+                                            string url = $"{basePath}/{Html.UrlEncoder.Encode(langCode)}/account"; // default -> only when no controller or action
+                                            if (!string.IsNullOrEmpty(path) && path != "/")
+                                            {
+                                                string newPath = $"{Html.UrlEncoder.Encode(langCode)}/{path.TrimStart('/')}";
+                                                if (request.RouteValues.ContainsKey(Bom.Web.Common.Const.RouteArgumentNames.Lang))
+                                                {
+                                                    var parts = path.Split('/', StringSplitOptions.RemoveEmptyEntries);
+                                                    parts[0] = Html.UrlEncoder.Encode(langCode);
+                                                    newPath = $"/{string.Join('/', parts)}";
+                                                }
+                                                url = $"{basePath}/{newPath.TrimStart('/')}";
+                                            }
+
+                                            // add query string
+                                            if (!string.IsNullOrEmpty(request.QueryString.Value))
+                                            {
+                                                url = url + "?" + request.QueryString.Value.TrimStart('?');
+                                            }
 
                                     <a href="@url">@langName</a>
-                                }
-                            }
+                                        }
+                                    }
                         </span>
                     }
                 </span>

@@ -17,12 +17,15 @@ using Bom.Web.Identity;
 
 namespace Bom.Web.Identity.Controllers
 {
-  //  [Area("Identity")]
-  //  [Route("facebook")]
+    //  [Area("Identity")]
+    //  [Route("facebook")]
     [Controller]
     public abstract class OAuthBaseController : BomBaseViewController
     {
         protected ModelContext Context { get; }
+
+        public abstract string ProviderName {get;}
+
 
         public OAuthBaseController(ModelContext context)
         {
@@ -57,6 +60,31 @@ namespace Bom.Web.Identity.Controllers
 
         }
 
+        [Authorize]
+        [HttpGet("alreadyregistered")]
+        public IActionResult AlreadyRegistered()
+        {
+            const string viewName = Bom.Web.Identity.IdentityViewProvider.SharedOAuthRegistration; ; //  "~/Areas/Identity/Views/Shared/OAuthRegistration.cshtml";
+            var msg = new Mvc.UserMessage(this.TextService.Localize("Identity.Register.AlreadyRegisteredSuccess", "Congratulations, you are already registered."), Mvc.UserMessage.MessageType.Info);
+            this.TempDataHelper.AddMessasge(msg);
+
+            return View(viewName, null);
+        }
+
+        [Authorize]
+        [HttpGet("registersuccess")]
+        public IActionResult Success()
+        {
+
+
+            // will return to this endpoint
+            const string viewName = Bom.Web.Identity.IdentityViewProvider.SharedOAuthRegistration; ; //  "~/Areas/Identity/Views/Shared/OAuthRegistration.cshtml";
+
+
+            return View(viewName, null);
+
+
+        }
 
         public IActionResult GetOAuthRegistrationSuccessView(OAuthRegVm oauthView)
         {
