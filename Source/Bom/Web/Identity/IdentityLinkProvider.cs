@@ -48,6 +48,7 @@ namespace Bom.Web.Identity
 
         public string AccountLogoutLink => this._urlHelper.Content($"~/{this._langCode}/account/logout")!;
 
+
         public string FacebookRegisterLink => this._urlHelper.Content($"~/{this._langCode}/facebook/register")!;
 
         public string OAuthRegisterAlreadyRegisteredLink(string providerName) => this._urlHelper.Content($"~/{this._langCode}/{providerName.ToLowerInvariant()}/alreadyregistered")!;

@@ -65,7 +65,27 @@ namespace Bom.Web.Identity.Controllers
             {
                 var linkProvider = new IdentityLinkProvider(this);
 
-                var existingId = await this.Context.Users.Where(x => x.FacebookId == oAuthInfo.Identifier).Select(x => x.FacebookId).FirstOrDefaultAsync();
+                string? existingId = null;
+                var username = oAuthInfo.Email;
+                if (string.IsNullOrEmpty(username))
+                {
+                    existingId = await this.Context.Users.Where(x => x.FacebookId == oAuthInfo.Identifier).Select(x => x.FacebookId).FirstOrDefaultAsync();
+                }
+                else
+                {
+                    var existingUser  = await this.Context.Users.Where(x => x.FacebookId == oAuthInfo.Identifier || x.Username == username).FirstOrDefaultAsync();
+                    if(existingUser != null)
+                    {
+                        existingId = existingUser.FacebookId;
+                        if(existingUser.Username == oAuthInfo.Email && string.IsNullOrEmpty(existingId))
+                        {
+                            // email is registered but not via facebook
+                            var msg = new Mvc.UserMessage(this.TextService.Localize("Identity.Register.UsernameTaken", "Registration not possible because the provided email address is already used as username."), Mvc.UserMessage.MessageType.Info);
+                            this.TempDataHelper.AddMessasge(msg);
+                            return Redirect(linkProvider.AccountRegisterLink);
+                        }
+                    }
+                }
                 if (!string.IsNullOrEmpty(existingId))
                 {
                     return Redirect(linkProvider.OAuthRegisterAlreadyRegisteredLink(this.ProviderName));
@@ -78,8 +98,7 @@ namespace Bom.Web.Identity.Controllers
 
                 // redirect to
                 var regVm = new OAuthRegVm(user, "Facebook");
-
-                return Redirect(linkProvider.OAuthRegisterAlreadyRegisteredLink(this.ProviderName));//RedirectToAction("success");
+                return Redirect(linkProvider.OAuthRegisterSuccessLink(this.ProviderName));//RedirectToAction("success");
             }
             else
             {

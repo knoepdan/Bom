@@ -76,6 +76,9 @@ namespace Bom.Web.Identity.Controllers
         public IActionResult Success()
         {
 
+            var msg = new Mvc.UserMessage(this.TextService.Localize("Identity.Register.RegisterSuccess", "Congratulations, you are now registered."), Mvc.UserMessage.MessageType.Info);
+            this.TempDataHelper.AddMessasge(msg);
+
 
             // will return to this endpoint
             const string viewName = Bom.Web.Identity.IdentityViewProvider.SharedOAuthRegistration; ; //  "~/Areas/Identity/Views/Shared/OAuthRegistration.cshtml";

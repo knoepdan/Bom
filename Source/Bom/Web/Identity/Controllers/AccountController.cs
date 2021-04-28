@@ -55,7 +55,12 @@ namespace Bom.Web.Identity.Controllers
 
             }
             return View(IdentityViewProvider.AccountLogin);
+        }
 
+        [HttpGet("usernametaken")]
+        public IActionResult UsernameTaken()
+        {
+            return Login();
         }
 
 

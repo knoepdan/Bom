@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Newtonsoft;
+using Newtonsoft.Json;
+
 namespace Bom.Web.Identity.Mvc
 {
     public class TempDataHelper
@@ -24,27 +27,30 @@ namespace Bom.Web.Identity.Mvc
 
         public void AddMessasge(UserMessage message)
         {
-            List<UserMessage> messages;
-            if (this._data.TryGetValue("Msg", out object? ob))
-            {
-                messages = (List<UserMessage>)ob;
-            }
-            else
-            {
-                messages = new List<UserMessage>();
-                _data["Msg"] = messages;
-            }
+            // get messages (has to be serialzed as standard serializer cannot handle collections
+            IList<UserMessage>? messages = GetMessages();
+
+            // add message
             messages.Add(message);
+
+            // serialize it back
+            var serializedString = JsonConvert.SerializeObject(messages);
+            _data["Msg"] = serializedString;
+
         }
 
         public IList<UserMessage> GetMessages()
         {
-            List<UserMessage> messages;
+            List<UserMessage>? messages = null;
             if (this._data.TryGetValue("Msg", out object? ob))
             {
-                messages = (List<UserMessage>)ob;
+                var serialized = ob?.ToString();
+                if (!string.IsNullOrEmpty(serialized))
+                {
+                    messages = JsonConvert.DeserializeObject<List<UserMessage>>(serialized);
+                }
             }
-            else
+            if (messages == null)
             {
                 messages = new List<UserMessage>();
             }
