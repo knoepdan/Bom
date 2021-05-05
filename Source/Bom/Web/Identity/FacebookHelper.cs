@@ -137,13 +137,11 @@ namespace Bom.Web.Identity
 
         public class FacebookInfoDto
         {
-
             public string? Identifier { get; set; }
 
             public string? Email { get; set; }
 
             public string? Name { get; set; }
         }
-
     }
 }

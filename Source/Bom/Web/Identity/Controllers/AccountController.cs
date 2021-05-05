@@ -52,7 +52,8 @@ namespace Bom.Web.Identity.Controllers
         {
             if (this.ModelState.IsValid)
             {
-
+                //this.SignIn();   or HttpContext.SignInAsync
+                // https://www.youtube.com/watch?v=Fhfvbl_KbWo
             }
             return View(IdentityViewProvider.AccountLogin);
         }
