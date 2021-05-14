@@ -46,6 +46,31 @@ namespace Bom.Web.Identity.Controllers
             return actionResult;
         }
 
+
+        [Authorize]
+        [HttpGet("login")]
+        public async Task<IActionResult> Login()
+        {
+            if (!this.ModelState.IsValid)
+            {
+                throw new Exception("invalid model state");
+            }
+            var actionResult = await LoginFacebookUser();
+            return actionResult;
+        }
+
+        [Authorize]
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(object dummy)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                throw new Exception("invalid model state");
+            }
+            var actionResult = await LoginFacebookUser();
+            return actionResult;
+        }
+
         [Authorize]
         [HttpGet("login")]
         public async Task<IActionResult> Login()
@@ -89,6 +114,35 @@ namespace Bom.Web.Identity.Controllers
             // will return to this endpoint
             var actionResult = await GoToSecondRegisterPage();
             return actionResult;
+        }
+
+        private async Task<IActionResult> LoginFacebookUser()
+        {
+            var linkProvider = new IdentityLinkProvider(this);
+            var oAuthInfo = Bom.Web.Identity.IdentityHelper.GetFacebookType(this.User.Identities);
+            if (oAuthInfo != null && !string.IsNullOrEmpty(oAuthInfo.Identifier))
+            {
+                var username = await this.Context.Users.Where(x => x.FacebookId == oAuthInfo.Identifier).Select(x => x.Username).FirstOrDefaultAsync();
+                if (!string.IsNullOrEmpty(username))
+                {
+                    //
+                    //this.SignIn();   or HttpContext.SignInAsync
+                    // https://www.youtube.com/watch?v=Fhfvbl_KbWo
+
+                    throw new NotImplementedException("LoginFacebookUser");
+                }
+                else
+                {
+                    var notRegiMsg = new Mvc.UserMessage(this.TextService.Localize("Identity.Register.OAuthLoginNotRegisterd", "Login failed because you are not registered yet."), Mvc.UserMessage.MessageType.Info);
+                    this.TempDataHelper.AddMessasge(notRegiMsg);
+                    return Redirect(linkProvider.AccountLoginLink);
+                }
+            }
+
+            // failed
+            var msg = new Mvc.UserMessage(this.TextService.Localize("Identity.Register.OAuthLoginFailed", "Login failed. Not found."), Mvc.UserMessage.MessageType.Info);
+            this.TempDataHelper.AddMessasge(msg);
+            return Redirect(linkProvider.AccountLoginLink);
         }
 
         private async Task<IActionResult> GoToSecondRegisterPage()
