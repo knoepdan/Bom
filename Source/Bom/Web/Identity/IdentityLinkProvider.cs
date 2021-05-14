@@ -41,6 +41,9 @@ namespace Bom.Web.Identity
 
         private string _langCode = Const.DefaultLang;
 
+
+        public string HomeLink => this._urlHelper.Content($"~/{this._langCode}/home")!;
+        
         public string AccountRegisterLink => this._urlHelper.Content($"~/{this._langCode}/account/register")!;
 
         public string AccountLoginLink => this._urlHelper.Content($"~/{this._langCode}/account/login")!;

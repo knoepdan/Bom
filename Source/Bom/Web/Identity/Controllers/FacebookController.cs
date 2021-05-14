@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,11 +16,12 @@ using Bom.Core.Identity.DbModels;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Authorization;
 using Bom.Web.Common;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Bom.Web.Identity.Controllers
 {
     [Area("Identity")]
-  //  [Route("facebook")]
+    //  [Route("facebook")]
     [Route("/{" + Const.RouteArgumentNames.Lang + "}/{" + Const.RouteArgumentNames.Controller + "}")]
     [Controller]
     public class FacebookController : OAuthBaseController
@@ -28,8 +30,39 @@ namespace Bom.Web.Identity.Controllers
 
         public FacebookController(ModelContext context) : base(context)
         {
-    //        _context = context;
+            //        _context = context;
         }
+
+
+        [Authorize]
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(object dummy)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                throw new Exception("invalid model state");
+            }
+            var actionResult = await GoToSecondRegisterPage();
+            return actionResult;
+        }
+
+        [Authorize]
+        [HttpGet("login")]
+        public async Task<IActionResult> Login()
+        {
+            // TODO try to find a way prevent dummy request
+            if (!this.ModelState.IsValid)
+            {
+                throw new Exception("invalid model state");
+            }
+
+            // will return to this endpoint
+            var actionResult = await GoToSecondRegisterPage();
+            return actionResult;
+        }
+
+
+
 
         [Authorize]
         [HttpPost("register")]
@@ -73,11 +106,11 @@ namespace Bom.Web.Identity.Controllers
                 }
                 else
                 {
-                    var existingUser  = await this.Context.Users.Where(x => x.FacebookId == oAuthInfo.Identifier || x.Username == username).FirstOrDefaultAsync();
-                    if(existingUser != null)
+                    var existingUser = await this.Context.Users.Where(x => x.FacebookId == oAuthInfo.Identifier || x.Username == username).FirstOrDefaultAsync();
+                    if (existingUser != null)
                     {
                         existingId = existingUser.FacebookId;
-                        if(existingUser.Username == oAuthInfo.Email && string.IsNullOrEmpty(existingId))
+                        if (existingUser.Username == oAuthInfo.Email && string.IsNullOrEmpty(existingId))
                         {
                             // email is registered but not via facebook
                             var msg = new Mvc.UserMessage(this.TextService.Localize("Identity.Register.UsernameTaken", "Registration not possible because the provided email address is already used as username."), Mvc.UserMessage.MessageType.Info);
@@ -106,7 +139,44 @@ namespace Bom.Web.Identity.Controllers
             }
         }
 
-        
+
+        private async Task<IActionResult> PerformLogin()
+        {
+            var linkProvider = new IdentityLinkProvider(this);
+
+            var oAuthInfo = Bom.Web.Identity.IdentityHelper.GetFacebookType(this.User.Identities);
+            if (oAuthInfo != null && !string.IsNullOrEmpty(oAuthInfo.Identifier))
+            {
+                var user = await this.Context.Users.Where(x => x.FacebookId == oAuthInfo.Identifier).FirstOrDefaultAsync();
+                if (user == null)
+                {
+                    var message = new Mvc.UserMessage(this.TextService.Localize("Account.Login.UsernameNotFound", "User not found"), Mvc.UserMessage.MessageType.Info);
+                    this.TempDataHelper.AddMessasge(message);
+                    return Redirect(linkProvider.AccountLoginLink);
+                }
+                else
+                {
+                    await DoLogin(user);
+                    return Redirect(linkProvider.AccountLoginLink);
+                }
+            }
+            var msg = new Mvc.UserMessage(this.TextService.Localize("Account.OAuth.NotFoundOrError", "Failed to login"), Mvc.UserMessage.MessageType.Info);
+            this.TempDataHelper.AddMessasge(msg);
+            return Redirect(linkProvider.AccountLoginLink);
+        }
+
+        private async Task DoLogin(User user)
+        {
+            Utils.Dev.Todo("improve.. ");
+            var claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Name, user.Name  + "facebook"),
+                new Claim(ClaimTypes.Email, user.Username),
+            };
+            var identity = new ClaimsIdentity(claims, "id");
+            var userPrincipal = new ClaimsPrincipal(new[] { identity });
+            await this.HttpContext.SignInAsync(userPrincipal);
+        }
 
     }
 }

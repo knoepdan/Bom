@@ -13,6 +13,7 @@ namespace Bom.Web.Identity.Models
 
         [LocRequired]
         [LocStringLength(255)]
+        [LocEmailAddress]
         public string Username { get; set; } = default!;
 
         // [Required]
@@ -22,6 +23,6 @@ namespace Bom.Web.Identity.Models
         public string Password { get; set; } = default!;
 
         
-        public string TestField { get; set; } = default!;
+        public string? TestField { get; set; } = default!;
     }
 }

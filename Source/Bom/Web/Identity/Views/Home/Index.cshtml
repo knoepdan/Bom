@@ -11,12 +11,26 @@
 
     var linkProvider = new Bom.Web.Identity.IdentityLinkProvider(this.Url);
 
+
+
 }
 
 
 @htmlService.FixedHtml("<h1>Bom</h1>")
 
-<a href="@linkProvider.AccountRegisterLink" >Register</a>
+<a href="@linkProvider.AccountRegisterLink">Register</a>
 
 
 <a href="@linkProvider.AccountLoginLink">Login</a>
+
+<br />
+
+<form action="@linkProvider.AccountLogoutLink" method="post">
+
+
+    @Html.ValidationSummary(true)
+
+    <div class="form-group">
+        <button type="submit" value="Logout">Logout (temp)</button>
+    </div>
+</form>

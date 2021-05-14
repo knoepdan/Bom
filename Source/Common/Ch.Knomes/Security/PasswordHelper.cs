@@ -32,21 +32,26 @@ namespace Ch.Knomes.Security
 
     }
 
-
-
-
     public class PasswordHelper
     {
-        private static readonly IReadOnlyList<byte> Pepper = new List<byte> { (byte)2, (byte)0, (byte)5, (byte)8 }; // do not change default pepper, as it would kill version upgrades
+        // private static readonly IReadOnlyList<byte> Pepper = new List<byte> { (byte)2, (byte)0, (byte)5, (byte)8 }; // do not change default pepper, as it would kill version upgrades
 
-        public bool CheckPasswordHash(string password, string salt, string expectedHashValue, bool usePepper)
+        IReadOnlyList<byte>? Pepper { get; set; }
+
+        public PasswordHelper(IReadOnlyList<byte>? pepper = null)
+        {
+            this.Pepper = pepper;
+        }
+
+
+        public bool CheckPasswordHash(string password, string salt, string expectedHashValue)
         {
             if(expectedHashValue == null)
             {
                 throw new ArgumentNullException(nameof(expectedHashValue));
             }
 
-            var result = HashPassword(password, salt, usePepper);
+            var result = HashPassword(password, salt);
             if(result.HashString == expectedHashValue)
             {
                 return true;
@@ -54,7 +59,7 @@ namespace Ch.Knomes.Security
             return false;
         }
 
-        public PasswordHashResult HashPasswordWithRandomSalt(string password, bool usePepper)
+        public PasswordHashResult HashPasswordWithRandomSalt(string password)
         {
             if (password == null)
             {
@@ -62,18 +67,18 @@ namespace Ch.Knomes.Security
             }
 
             byte[] salt = CryptoUtility.GetRandomBytes(128 / 8);
-            var result = HashPassword(password, salt, usePepper);
+            var result = HashPassword(password, salt);
             return result;
         }
 
-        public PasswordHashResult HashPassword(string password, string salt, bool usePepper)
+        public PasswordHashResult HashPassword(string password, string salt)
         {
             var saltBytes = Convert.FromBase64String(salt);
-            var result = HashPassword(password, saltBytes, usePepper);
+            var result = HashPassword(password, saltBytes);
             return result;
         }
 
-        public PasswordHashResult HashPassword(string password, byte[] salt, bool usePepper)
+        public PasswordHashResult HashPassword(string password, byte[] salt)
         {
             if (password == null)
             {
@@ -81,10 +86,10 @@ namespace Ch.Knomes.Security
             }
 
             var saltAndPepper = salt;
-            if (usePepper)
+            if (this.Pepper != null)
             {
                 var adjustableList = new List<byte>(salt);
-                adjustableList.AddRange(Pepper);
+                adjustableList.AddRange(this.Pepper);
                 saltAndPepper = adjustableList.ToArray();
             }
 

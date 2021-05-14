@@ -28,37 +28,68 @@
 
         </header>
 
-            <div class="mainContent">
-                <div>
-                    @{
-                        var tempDataRegistry = new TempDataHelper(TempData);
-                        var messages = tempDataRegistry.GetMessages();
-                        if (messages.Count > 0)
-                        {
-                            <div class="centerBox messageArea">
-                                @foreach (var msg in messages)
+        <div class="mainContent">
+            <div>
+                @{
+                    var tempDataRegistry = new TempDataHelper(TempData);
+                    var messages = tempDataRegistry.GetMessages();
+                    if (messages.Count > 0)
+                    {
+                        <div class="centerBox messageArea">
+                            @foreach (var msg in messages)
+                            {
+                                var className = "";
+                                switch (msg.Type)
                                 {
-                                    var className = "";
-                                    switch (msg.Type)
-                                    {
-                                        case UserMessage.MessageType.Info:
-                                            className = "infoMsg";
-                                            break;
-                                        case UserMessage.MessageType.Error:
-                                            className = "errorMsg";
-                                            break;
-                                        default: break;
-                                    }
-                                    <div class="@className">@msg.Message</div>
-                                    }
-                            </div>
-                        }
+                                    case UserMessage.MessageType.Info:
+                                        className = "infoMsg";
+                                        break;
+                                    case UserMessage.MessageType.Error:
+                                        className = "errorMsg";
+                                        break;
+                                    default: break;
+                                }
+                                <div class="@className">@msg.Message</div>
+                            }
+                        </div>
+                    }
+                }
+            </div>
+
+            @RenderBody()
+
+
+
+
+
+
+            @if (this.User != null && this.User.Identities != null)
+            {
+                <div>
+                    @foreach (var id in this.User.Identities)
+                    {
+                        <div>
+                            @id.Name   (@id.IsAuthenticated)  ###
+                            <ul>
+                                @foreach (var claim in id.Claims)
+                                {
+                                    <li>@claim.Type   @claim.Value</li>
+
+                                }
+                            </ul>
+                        </div>
                     }
                 </div>
+            }
 
-                @RenderBody()
 
-            </div>
+
+
+
+
+
+
+        </div>
 
             <footer class="footer">
                 <a href="#">Info</a>

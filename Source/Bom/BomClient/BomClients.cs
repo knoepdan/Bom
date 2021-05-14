@@ -2176,7 +2176,7 @@ namespace BomClient
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static Path FromJson(string data)
+        public static Path? FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Path>(data);
         }
@@ -2203,7 +2203,7 @@ namespace BomClient
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static Node FromJson(string data)
+        public static Node? FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Node>(data);
         }
@@ -2221,7 +2221,7 @@ namespace BomClient
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static ListAnswerOfNodeVm FromJson(string data)
+        public static ListAnswerOfNodeVm? FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ListAnswerOfNodeVm>(data);
         }
@@ -2251,7 +2251,7 @@ namespace BomClient
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static NodeVm FromJson(string data)
+        public static NodeVm? FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<NodeVm>(data);
         }
@@ -2275,7 +2275,7 @@ namespace BomClient
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static TreeFilterInput FromJson(string data)
+        public static TreeFilterInput? FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<TreeFilterInput>(data);
         }
@@ -2293,7 +2293,7 @@ namespace BomClient
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static AnswerOfNodeVm FromJson(string data)
+        public static AnswerOfNodeVm? FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<AnswerOfNodeVm>(data);
         }

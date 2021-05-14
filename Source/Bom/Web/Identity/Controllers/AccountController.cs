@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Ch.Knomes.Security;
 using Bom.Core.Common;
+using Bom.Core.Identity.DbModels;
 using Bom.Web.Nodes.Models;
 using Bom.Web.Common.Infrastructure;
 using Bom.Web.Identity.Models;
 using Bom.Core.Identity;
-using Bom.Core.Identity.DbModels;
 using Bom.Web.Common;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Bom.Web.Identity.Controllers
 {
@@ -48,10 +51,37 @@ namespace Bom.Web.Identity.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login(LoginVm loginModel)
+        public async Task<IActionResult> Login(LoginVm loginModel)
         {
             if (this.ModelState.IsValid)
             {
+                var userName = loginModel.Username?.Trim();
+                var user = await this._context.Users.FirstOrDefaultAsync(x => x.Username == userName);
+                if (user == null)
+                {
+                    this.ModelState.AddModelError(nameof(loginModel.Username), this.TextService.Localize("Account.Login.UsernameNotFound", "User not found"));
+                    return View(IdentityViewProvider.AccountLogin);
+                }
+                else
+                {
+
+                    Utils.Dev.Todo("Remove this dummy check.. just for testing during developmetn");
+                    if (userName != "daniel.knoepfel@live.de")
+                    {
+
+                        var pwHelper = new PasswordHelper();
+                        var pwResult = pwHelper.HashPassword(loginModel.Password, user.Salt ?? "");
+                        if (user.PasswordHash != pwResult.HashString)
+                        {
+                            this.ModelState.AddModelError(nameof(loginModel.Username), this.TextService.Localize("Account.Login.PwInvalid", "User not found"));
+                            return View(IdentityViewProvider.AccountLogin);
+                        }
+                    }
+
+                }
+                await DoLogin(user);
+                var linkProvider = new IdentityLinkProvider(this);
+                return Redirect(linkProvider.HomeLink);// RedirectToAction("Index", "Home");
 
             }
             return View(IdentityViewProvider.AccountLogin);
@@ -64,17 +94,17 @@ namespace Bom.Web.Identity.Controllers
         }
 
 
-        [HttpGet("logout")]
+   //     [HttpGet("logout")]
         [HttpPost("logout")]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
             if (this.User != null)
             {
-                this.SignOut();
+                await this.HttpContext.SignOutAsync();
+                //this.SignOut();
             }
-
-            return RedirectToAction("register");
-            //  return View("~/Areas/Identity/Views/Account/Register", model);
+            var linkProvider = new IdentityLinkProvider(this);
+            return Redirect(linkProvider.HomeLink);// RedirectToAction("Index", "Home");
         }
 
 
@@ -112,7 +142,7 @@ namespace Bom.Web.Identity.Controllers
             {
                 // create user
                 var pwHelper = new PasswordHelper();
-                var pwResult = pwHelper.HashPasswordWithRandomSalt(model.Password, true);
+                var pwResult = pwHelper.HashPasswordWithRandomSalt(model.Password);
 
                 var user = new User();
                 user.Username = model.Username.Trim();
@@ -122,12 +152,26 @@ namespace Bom.Web.Identity.Controllers
                 this._context.Users.Add(user);
                 await this._context.SaveChangesAsync();
 
-                // TODO send email
-
-                return RedirectToAction("Index", "Home");
+                // TODO send email etc.
+                var linkProvider = new IdentityLinkProvider(this);
+                return Redirect(linkProvider.HomeLink);// RedirectToAction("Index", "Home");
             }
             return View(IdentityViewProvider.AccountRegister, model);
-            //  return View("~/Areas/Identity/Views/Account/Register", model);
+
+        }
+
+        private async Task DoLogin(User user)
+        {
+            Utils.Dev.Todo("improve.. ");
+
+            var claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Name, user.Name  + "aaaaaaa"),
+                new Claim(ClaimTypes.Email, user.Username),
+            };
+            var identity = new ClaimsIdentity(claims, "id");
+            var userPrincipal = new ClaimsPrincipal(new[] { identity });
+            await this.HttpContext.SignInAsync(userPrincipal);
         }
 
     }
