@@ -59,35 +59,6 @@ namespace Bom.Web.Identity.Controllers
             return actionResult;
         }
 
-        [Authorize]
-        [HttpPost("login")]
-        public async Task<IActionResult> Login(object dummy)
-        {
-            if (!this.ModelState.IsValid)
-            {
-                throw new Exception("invalid model state");
-            }
-            var actionResult = await LoginFacebookUser();
-            return actionResult;
-        }
-
-        [Authorize]
-        [HttpGet("login")]
-        public async Task<IActionResult> Login()
-        {
-            // TODO try to find a way prevent dummy request
-            if (!this.ModelState.IsValid)
-            {
-                throw new Exception("invalid model state");
-            }
-
-            // will return to this endpoint
-            var actionResult = await GoToSecondRegisterPage();
-            return actionResult;
-        }
-
-
-
 
         [Authorize]
         [HttpPost("register")]
