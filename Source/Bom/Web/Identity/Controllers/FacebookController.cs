@@ -42,9 +42,10 @@ namespace Bom.Web.Identity.Controllers
             {
                 throw new Exception("invalid model state");
             }
-            var actionResult = await GoToSecondRegisterPage();
+            var actionResult = await PerformLogin();
             return actionResult;
         }
+
 
 
         [Authorize]
@@ -55,9 +56,10 @@ namespace Bom.Web.Identity.Controllers
             {
                 throw new Exception("invalid model state");
             }
-            var actionResult = await LoginFacebookUser();
+            var actionResult = await PerformLogin();
             return actionResult;
         }
+
 
 
         [Authorize]
@@ -87,34 +89,34 @@ namespace Bom.Web.Identity.Controllers
             return actionResult;
         }
 
-        private async Task<IActionResult> LoginFacebookUser()
-        {
-            var linkProvider = new IdentityLinkProvider(this);
-            var oAuthInfo = Bom.Web.Identity.IdentityHelper.GetFacebookType(this.User.Identities);
-            if (oAuthInfo != null && !string.IsNullOrEmpty(oAuthInfo.Identifier))
-            {
-                var username = await this.Context.Users.Where(x => x.FacebookId == oAuthInfo.Identifier).Select(x => x.Username).FirstOrDefaultAsync();
-                if (!string.IsNullOrEmpty(username))
-                {
-                    //
-                    //this.SignIn();   or HttpContext.SignInAsync
-                    // https://www.youtube.com/watch?v=Fhfvbl_KbWo
+        //private async Task<IActionResult> LoginFacebookUser()
+        //{
+        //    var linkProvider = new IdentityLinkProvider(this);
+        //    var oAuthInfo = Bom.Web.Identity.IdentityHelper.GetFacebookType(this.User.Identities);
+        //    if (oAuthInfo != null && !string.IsNullOrEmpty(oAuthInfo.Identifier))
+        //    {
+        //        var username = await this.Context.Users.Where(x => x.FacebookId == oAuthInfo.Identifier).Select(x => x.Username).FirstOrDefaultAsync();
+        //        if (!string.IsNullOrEmpty(username))
+        //        {
+        //            //
+        //            //this.SignIn();   or HttpContext.SignInAsync
+        //            // https://www.youtube.com/watch?v=Fhfvbl_KbWo
 
-                    throw new NotImplementedException("LoginFacebookUser");
-                }
-                else
-                {
-                    var notRegiMsg = new Mvc.UserMessage(this.TextService.Localize("Identity.Register.OAuthLoginNotRegisterd", "Login failed because you are not registered yet."), Mvc.UserMessage.MessageType.Info);
-                    this.TempDataHelper.AddMessasge(notRegiMsg);
-                    return Redirect(linkProvider.AccountLoginLink);
-                }
-            }
+        //            throw new NotImplementedException("LoginFacebookUser");
+        //        }
+        //        else
+        //        {
+        //            var notRegiMsg = new Mvc.UserMessage(this.TextService.Localize("Identity.Register.OAuthLoginNotRegisterd", "Login failed because you are not registered yet."), Mvc.UserMessage.MessageType.Info);
+        //            this.TempDataHelper.AddMessasge(notRegiMsg);
+        //            return Redirect(linkProvider.AccountLoginLink);
+        //        }
+        //    }
 
-            // failed
-            var msg = new Mvc.UserMessage(this.TextService.Localize("Identity.Register.OAuthLoginFailed", "Login failed. Not found."), Mvc.UserMessage.MessageType.Info);
-            this.TempDataHelper.AddMessasge(msg);
-            return Redirect(linkProvider.AccountLoginLink);
-        }
+        //    // failed
+        //    var msg = new Mvc.UserMessage(this.TextService.Localize("Identity.Register.OAuthLoginFailed", "Login failed. Not found."), Mvc.UserMessage.MessageType.Info);
+        //    this.TempDataHelper.AddMessasge(msg);
+        //    return Redirect(linkProvider.AccountLoginLink);
+        //}
 
         private async Task<IActionResult> GoToSecondRegisterPage()
         {
@@ -189,6 +191,7 @@ namespace Bom.Web.Identity.Controllers
             this.TempDataHelper.AddMessasge(msg);
             return Redirect(linkProvider.AccountLoginLink);
         }
+
 
         private async Task DoLogin(User user)
         {
