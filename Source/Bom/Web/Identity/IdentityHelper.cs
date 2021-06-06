@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 
+using Bom.Core.Identity;
 using Bom.Core.Identity.DbModels;
 
 namespace Bom.Web.Identity
@@ -50,7 +51,7 @@ namespace Bom.Web.Identity
             return null;
         }
 
-        public static async Task DoWebLogin(Microsoft.AspNetCore.Http.HttpContext context, User user, string origin = "")
+        public static async Task<string> DoWebLogin(Microsoft.AspNetCore.Http.HttpContext context, User user, string origin = "")
         {
            var claims = new List<Claim>()
             {
@@ -60,6 +61,15 @@ namespace Bom.Web.Identity
             var identity = new ClaimsIdentity(claims, origin);
             var userPrincipal = new ClaimsPrincipal(new[] { identity });
             await context.SignInAsync(userPrincipal);
+
+            // token used for api etc.
+            var tokenMgm = new TokenManager();
+            var authToken = tokenMgm.AuthenticateUser(user);
+            if (string.IsNullOrWhiteSpace(authToken))
+            {
+                throw new Exception($"Could not create token for user {user.Username}"); // should never happen
+            }
+            return authToken;
         }
 
 
