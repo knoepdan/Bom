@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+
+using Bom.Core.Identity.DbModels;
 
 namespace Bom.Web.Identity
 {
@@ -17,6 +21,7 @@ namespace Bom.Web.Identity
                     return null;
             }
         }
+
 
 
         public static OAuthInfo? GetFacebookType(IEnumerable<System.Security.Claims.ClaimsIdentity> claimsIdentities)
@@ -43,6 +48,18 @@ namespace Bom.Web.Identity
                 }
             }
             return null;
+        }
+
+        public static async Task DoWebLogin(Microsoft.AspNetCore.Http.HttpContext context, User user, string origin = "")
+        {
+           var claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Name, user.Name  + "facebook"),
+                new Claim(ClaimTypes.Email, user.Username),
+            };
+            var identity = new ClaimsIdentity(claims, origin);
+            var userPrincipal = new ClaimsPrincipal(new[] { identity });
+            await context.SignInAsync(userPrincipal);
         }
 
 

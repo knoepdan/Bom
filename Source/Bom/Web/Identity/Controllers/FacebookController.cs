@@ -13,7 +13,6 @@ using Bom.Web.Common.Infrastructure;
 using Bom.Web.Identity.Models;
 using Bom.Core.Identity;
 using Bom.Core.Identity.DbModels;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Authorization;
 using Bom.Web.Common;
 using Microsoft.AspNetCore.Authentication;
@@ -89,35 +88,6 @@ namespace Bom.Web.Identity.Controllers
             return actionResult;
         }
 
-        //private async Task<IActionResult> LoginFacebookUser()
-        //{
-        //    var linkProvider = new IdentityLinkProvider(this);
-        //    var oAuthInfo = Bom.Web.Identity.IdentityHelper.GetFacebookType(this.User.Identities);
-        //    if (oAuthInfo != null && !string.IsNullOrEmpty(oAuthInfo.Identifier))
-        //    {
-        //        var username = await this.Context.Users.Where(x => x.FacebookId == oAuthInfo.Identifier).Select(x => x.Username).FirstOrDefaultAsync();
-        //        if (!string.IsNullOrEmpty(username))
-        //        {
-        //            //
-        //            //this.SignIn();   or HttpContext.SignInAsync
-        //            // https://www.youtube.com/watch?v=Fhfvbl_KbWo
-
-        //            throw new NotImplementedException("LoginFacebookUser");
-        //        }
-        //        else
-        //        {
-        //            var notRegiMsg = new Mvc.UserMessage(this.TextService.Localize("Identity.Register.OAuthLoginNotRegisterd", "Login failed because you are not registered yet."), Mvc.UserMessage.MessageType.Info);
-        //            this.TempDataHelper.AddMessasge(notRegiMsg);
-        //            return Redirect(linkProvider.AccountLoginLink);
-        //        }
-        //    }
-
-        //    // failed
-        //    var msg = new Mvc.UserMessage(this.TextService.Localize("Identity.Register.OAuthLoginFailed", "Login failed. Not found."), Mvc.UserMessage.MessageType.Info);
-        //    this.TempDataHelper.AddMessasge(msg);
-        //    return Redirect(linkProvider.AccountLoginLink);
-        //}
-
         private async Task<IActionResult> GoToSecondRegisterPage()
         {
             var oAuthInfo = Bom.Web.Identity.IdentityHelper.GetFacebookType(this.User.Identities);
@@ -183,7 +153,7 @@ namespace Bom.Web.Identity.Controllers
                 }
                 else
                 {
-                    await DoLogin(user);
+                    await IdentityHelper.DoWebLogin(this.HttpContext, user, "facebook");
                     return Redirect(linkProvider.AccountLoginLink);
                 }
             }
@@ -192,19 +162,37 @@ namespace Bom.Web.Identity.Controllers
             return Redirect(linkProvider.AccountLoginLink);
         }
 
+        #region outcommented
 
-        private async Task DoLogin(User user)
-        {
-            Utils.Dev.Todo("improve.. ");
-            var claims = new List<Claim>()
-            {
-                new Claim(ClaimTypes.Name, user.Name  + "facebook"),
-                new Claim(ClaimTypes.Email, user.Username),
-            };
-            var identity = new ClaimsIdentity(claims, "id");
-            var userPrincipal = new ClaimsPrincipal(new[] { identity });
-            await this.HttpContext.SignInAsync(userPrincipal);
-        }
+        //private async Task<IActionResult> LoginFacebookUser()
+        //{
+        //    var linkProvider = new IdentityLinkProvider(this);
+        //    var oAuthInfo = Bom.Web.Identity.IdentityHelper.GetFacebookType(this.User.Identities);
+        //    if (oAuthInfo != null && !string.IsNullOrEmpty(oAuthInfo.Identifier))
+        //    {
+        //        var username = await this.Context.Users.Where(x => x.FacebookId == oAuthInfo.Identifier).Select(x => x.Username).FirstOrDefaultAsync();
+        //        if (!string.IsNullOrEmpty(username))
+        //        {
+        //            //
+        //            //this.SignIn();   or HttpContext.SignInAsync
+        //            // https://www.youtube.com/watch?v=Fhfvbl_KbWo
 
+        //            throw new NotImplementedException("LoginFacebookUser");
+        //        }
+        //        else
+        //        {
+        //            var notRegiMsg = new Mvc.UserMessage(this.TextService.Localize("Identity.Register.OAuthLoginNotRegisterd", "Login failed because you are not registered yet."), Mvc.UserMessage.MessageType.Info);
+        //            this.TempDataHelper.AddMessasge(notRegiMsg);
+        //            return Redirect(linkProvider.AccountLoginLink);
+        //        }
+        //    }
+
+        //    // failed
+        //    var msg = new Mvc.UserMessage(this.TextService.Localize("Identity.Register.OAuthLoginFailed", "Login failed. Not found."), Mvc.UserMessage.MessageType.Info);
+        //    this.TempDataHelper.AddMessasge(msg);
+        //    return Redirect(linkProvider.AccountLoginLink);
+        //}
+
+        #endregion
     }
 }

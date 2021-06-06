@@ -89,12 +89,12 @@ namespace Bom.Web.Identity.Controllers
 
         }
 
-        public IActionResult GetOAuthRegistrationSuccessView(OAuthRegVm oauthView)
-        {
-            const string viewName = Bom.Web.Identity.IdentityViewProvider.SharedOAuthRegistration; ; //  "~/Areas/Identity/Views/Shared/OAuthRegistration.cshtml";
+        //public IActionResult GetOAuthRegistrationSuccessView(OAuthRegVm oauthView)
+        //{
+        //    const string viewName = Bom.Web.Identity.IdentityViewProvider.SharedOAuthRegistration; ; //  "~/Areas/Identity/Views/Shared/OAuthRegistration.cshtml";
 
-            return View(viewName, oauthView);
-        }
+        //    return View(viewName, oauthView);
+        //}
 
 
 

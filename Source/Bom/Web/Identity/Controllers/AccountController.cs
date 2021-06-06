@@ -79,7 +79,7 @@ namespace Bom.Web.Identity.Controllers
                     }
 
                 }
-                await DoLogin(user);
+                await IdentityHelper.DoWebLogin(this.HttpContext, user, "");
                 var linkProvider = new IdentityLinkProvider(this);
                 return Redirect(linkProvider.HomeLink);// RedirectToAction("Index", "Home");
 
@@ -94,7 +94,7 @@ namespace Bom.Web.Identity.Controllers
         }
 
 
-   //     [HttpGet("logout")]
+        //     [HttpGet("logout")]
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
@@ -157,22 +157,6 @@ namespace Bom.Web.Identity.Controllers
                 return Redirect(linkProvider.HomeLink);// RedirectToAction("Index", "Home");
             }
             return View(IdentityViewProvider.AccountRegister, model);
-
         }
-
-        private async Task DoLogin(User user)
-        {
-            Utils.Dev.Todo("improve.. ");
-
-            var claims = new List<Claim>()
-            {
-                new Claim(ClaimTypes.Name, user.Name  + "aaaaaaa"),
-                new Claim(ClaimTypes.Email, user.Username),
-            };
-            var identity = new ClaimsIdentity(claims, "id");
-            var userPrincipal = new ClaimsPrincipal(new[] { identity });
-            await this.HttpContext.SignInAsync(userPrincipal);
-        }
-
     }
 }
