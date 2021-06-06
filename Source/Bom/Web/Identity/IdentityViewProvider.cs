@@ -17,7 +17,7 @@ namespace Bom.Web.Identity
 
         public const string AccountRegister = "~/Identity/Views/Account/Register.cshtml"; 
 
-        public const string FacebookRegister = "~/Identity/Views/Facebook/Register.cshtml";
+        //public const string FacebookRegister = "~/Identity/Views/Facebook/Register.cshtml";
 
 
         public const string SharedOAuthRegistration = "~/Identity/Views/Shared/OAuthRegistration.cshtml"; //"~/Areas/Identity/Views/Shared/OAuthRegistration.cshtml";
