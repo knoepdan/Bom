@@ -8,9 +8,9 @@ using Bom.Core.Identity.DbModels;
 
 namespace Bom.Core.Identity
 {
-    public class TokenManager
+    public class TokenService
     {
-        static TokenManager()
+        static TokenService()
         {
             Bom.Utils.Dev.Todo("Save token to db etc.", Bom.Utils.Dev.Urgency.Low);
             Bom.Utils.Dev.Todo("Not that elegant, especially cleaning. Better use .Net cache?", Bom.Utils.Dev.Urgency.Low);
@@ -20,7 +20,7 @@ namespace Bom.Core.Identity
 
         private static int SecondsToCacheUser = 60 * 4;
 
-        public string AuthenticateUser(User user)
+        public string CreateUserSession(User user)
         {
             if(user == null)
             {
@@ -36,7 +36,7 @@ namespace Bom.Core.Identity
             throw new Exception("Failed to authenticate user");
         }
 
-        internal BasicUser? GetUser(string token)
+        public IUser? GetUser(string? token)
         {
             if (string.IsNullOrWhiteSpace(token))
             {
@@ -78,7 +78,7 @@ namespace Bom.Core.Identity
             string? token = null;
             foreach (var keyVal in CurrentUserDic)
             {
-                if (keyVal.Value.UserName == username)
+                if (keyVal.Value.Username == username)
                 {
                     token = keyVal.Key;
                     break;

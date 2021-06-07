@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bom.Core.Identity.DbModels
 {
-    public class User
+    public class User : IUser
     {
 
         public int UserId { get; set; }

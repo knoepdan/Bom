@@ -7,7 +7,7 @@ using Bom.Core.Identity.DbModels;
 
 namespace Bom.Core.Identity
 {
-    public class BasicUser
+    public class BasicUser : IUser
     {
         public BasicUser() { }
 
@@ -19,11 +19,11 @@ namespace Bom.Core.Identity
             }
 
             this.UserId = user.UserId;
-            this.UserName = user.Username;
+            this.Username = user.Username;
             this.Name = user.Name;
         }
 
-        public string UserName { get; } = "";
+        public string Username { get; } = "";
 
         public string Name { get; } = "";
 
@@ -31,7 +31,7 @@ namespace Bom.Core.Identity
 
         public override string ToString()
         {
-            return this.UserName;
+            return this.Username;
         }
     }
 }

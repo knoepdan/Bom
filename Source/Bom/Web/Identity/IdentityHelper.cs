@@ -63,8 +63,8 @@ namespace Bom.Web.Identity
             await context.SignInAsync(userPrincipal);
 
             // token used for api etc.
-            var tokenMgm = new TokenManager();
-            var authToken = tokenMgm.AuthenticateUser(user);
+            var tokenMgm = new TokenService();
+            var authToken = tokenMgm.CreateUserSession(user);
             if (string.IsNullOrWhiteSpace(authToken))
             {
                 throw new Exception($"Could not create token for user {user.Username}"); // should never happen
