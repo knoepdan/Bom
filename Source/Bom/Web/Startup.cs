@@ -132,6 +132,11 @@ namespace Bom.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+
+                // fallback https://weblog.west-wind.com/posts/2020/Jul/12/Handling-SPA-Fallback-Paths-in-a-Generic-ASPNET-Core-Server
+               endpoints.MapFallbackToController("Index", "Home");
+              //  endpoints.MapFallback()
+           
             });
 
 
