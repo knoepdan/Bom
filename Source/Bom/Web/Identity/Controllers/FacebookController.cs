@@ -154,7 +154,7 @@ namespace Bom.Web.Identity.Controllers
                 else
                 {
                     await IdentityHelper.DoWebLogin(this.HttpContext, user, "facebook");
-                    return Redirect(linkProvider.AccountLoginLink);
+                    return Redirect(linkProvider.HomeLink);
                 }
             }
             var msg = new Mvc.UserMessage(this.TextService.Localize("Account.OAuth.NotFoundOrError", "Failed to login"), Mvc.UserMessage.MessageType.Info);

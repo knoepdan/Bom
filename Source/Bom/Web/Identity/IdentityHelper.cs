@@ -12,6 +12,16 @@ namespace Bom.Web.Identity
 {
     public class IdentityHelper
     {
+
+        public static bool IsAuthenticated(ClaimsPrincipal user)
+        {
+            if(user != null && user.Identity != null && user.Identity.IsAuthenticated)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public static OAuthInfo? GetOAuthInfo(IEnumerable<System.Security.Claims.ClaimsIdentity> claimsIdentities, OAuthInfo.OAuthType searchForType)
         {
             switch (searchForType)

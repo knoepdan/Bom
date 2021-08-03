@@ -35,17 +35,23 @@ namespace Bom.Web.Identity.Controllers
 
 
         [HttpGet("")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return Login();
+            if (!IdentityHelper.IsAuthenticated(this.User))
+            {
+                return await Login();
+            }
+            var linkProvider = new IdentityLinkProvider(this);
+            return Redirect(linkProvider.HomeLink);// RedirectToAction("Index", "Home");
         }
 
         [HttpGet("login")]
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
             if (this.User != null)
             {
-                this.SignOut();
+                await this.HttpContext.SignOutAsync();
+                this.SignOut(); // probably not necessary
             }
             return View(IdentityViewProvider.AccountLogin);
         }
@@ -88,9 +94,9 @@ namespace Bom.Web.Identity.Controllers
         }
 
         [HttpGet("usernametaken")]
-        public IActionResult UsernameTaken()
+        public async Task<IActionResult> UsernameTaken()
         {
-            return Login();
+            return await Login();
         }
 
 
@@ -101,7 +107,7 @@ namespace Bom.Web.Identity.Controllers
             if (this.User != null)
             {
                 await this.HttpContext.SignOutAsync();
-                //this.SignOut();
+                this.SignOut(); // probably not necessary
             }
             var linkProvider = new IdentityLinkProvider(this);
             return Redirect(linkProvider.HomeLink);// RedirectToAction("Index", "Home");
