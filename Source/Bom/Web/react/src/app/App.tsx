@@ -25,17 +25,16 @@ export const App = (): React.ReactElement => {
     console.log('App rendered');
     const userStateRef = globalState(userState.userStateRef);
 
-   // const handleLoginClick = (): void => {
-        userStateRef.set((userModel) => {
-            userModel.logIn(Config.Username);
-            if (true) {
-                userModel.permissions.push(Right.AdminArea);
-                userModel.permissions.push(Right.DevArea);
-            }
-            return userModel;
-        });
-   // };
-
+    // const handleLoginClick = (): void => {
+    userStateRef.set((userModel) => {
+        userModel.logIn(Config.Username);
+        if (true) {
+            userModel.permissions.push(Right.AdminArea);
+            userModel.permissions.push(Right.DevArea);
+        }
+        return userModel;
+    });
+    // };
 
     const navModel = nav.getNavigation(userStateRef.value);
 

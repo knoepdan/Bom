@@ -4,19 +4,19 @@ interface IConfig {
     readonly Token: string;
 
     readonly TestEntry: string;
- }
+}
 
-export function getConfig() : IConfig{
-const w = window as any;
-    if(w.bomInfo){
+export function getConfig(): IConfig {
+    const w = window as any;
+    if (w.bomInfo) {
         return w.bomInfo as IConfig;
     }
     console.warn('config not found');
     return {} as IConfig;
 }
 
- const inst : IConfig = getConfig();
- export default inst;
+const inst: IConfig = getConfig();
+export default inst;
 // const defaultConfig: IConfig = {
 //     APIUrl: '',
 //     TestEntry: 'Default-Testentry',
@@ -32,7 +32,7 @@ const w = window as any;
 //         /*
 //             // Idea for dev mode only (process.env.NODE_ENV == 'development')
 //             // have another hardoded url to config (example: 'http:localhost/blabla.json')
-//             // that is used for a developers that wants to test against some other api, 
+//             // that is used for a developers that wants to test against some other api,
 //             // but is reluctant to always change config that is tracked by source control
 //         */
 
