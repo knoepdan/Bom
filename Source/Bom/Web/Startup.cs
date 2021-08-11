@@ -68,8 +68,12 @@ namespace Bom.Web
             //----------
             Bom.Web.Identity.IdentityConfig.ConfigureIdentityServices(services);
 
-            services.AddControllersWithViews(); // also needed for third party authentication/redirects
-
+#if DEBUG
+            // controller with views needed third party authentication/redirects
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+#else
+            services.AddControllersWithViews();
+#endif
             Utils.Dev.PossibleImprovment("Call from a better place", Utils.Dev.ImproveArea.ToCheck, Utils.Dev.Urgency.Low);
             Common.UiGlobals.InitGlobals();
         }
@@ -115,7 +119,7 @@ namespace Bom.Web
             });
 
             app.UseHttpsRedirection();
-            //app.UseStaticFiles(); // only needed to server help
+            app.UseStaticFiles(); // to load react app
             //app.UseCookiePolicy();
 
 

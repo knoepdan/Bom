@@ -22,6 +22,18 @@ namespace Bom.Web.Identity
             return false;
         }
 
+        public static UserSession? GetUserSession(ClaimsPrincipal user)
+        {
+            if (user != null && user.Identity != null && user.Identity.IsAuthenticated && user.Identity.Name != null)   
+            {
+                var userName = user.Identity.Name;
+                var tokenService = new TokenService();
+                var userSession = tokenService.GetUserAndToken(userName);
+                return userSession;
+            }
+            return null;
+        }
+
         public static OAuthInfo? GetOAuthInfo(IEnumerable<System.Security.Claims.ClaimsIdentity> claimsIdentities, OAuthInfo.OAuthType searchForType)
         {
             switch (searchForType)
@@ -65,7 +77,7 @@ namespace Bom.Web.Identity
         {
            var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.Name, user.Name  + "facebook"),
+                new Claim(ClaimTypes.Name, user.Username), // we use name as identifier
                 new Claim(ClaimTypes.Email, user.Username),
             };
             var identity = new ClaimsIdentity(claims, origin);
@@ -77,6 +89,7 @@ namespace Bom.Web.Identity
             var authToken = tokenMgm.CreateUserSession(user);
             if (string.IsNullOrWhiteSpace(authToken))
             {
+                await context.SignOutAsync();
                 throw new Exception($"Could not create token for user {user.Username}"); // should never happen
             }
             return authToken;

@@ -21,24 +21,28 @@
   <ItemGroup>
     <Compile Remove="Nodes\Data\**" />
     <Compile Remove="Nodes\Views\**" />
+    <Compile Remove="react\**" />
     <Compile Remove="Testing\Data\**" />
     <Compile Remove="Testing\Models\**" />
     <Compile Remove="Testing\Views\**" />
     <Compile Remove="Models\**" />
     <Content Remove="Nodes\Data\**" />
     <Content Remove="Nodes\Views\**" />
+    <Content Remove="react\**" />
     <Content Remove="Testing\Data\**" />
     <Content Remove="Testing\Models\**" />
     <Content Remove="Testing\Views\**" />
     <Content Remove="Models\**" />
     <EmbeddedResource Remove="Nodes\Data\**" />
     <EmbeddedResource Remove="Nodes\Views\**" />
+    <EmbeddedResource Remove="react\**" />
     <EmbeddedResource Remove="Testing\Data\**" />
     <EmbeddedResource Remove="Testing\Models\**" />
     <EmbeddedResource Remove="Testing\Views\**" />
     <EmbeddedResource Remove="Models\**" />
     <None Remove="Nodes\Data\**" />
     <None Remove="Nodes\Views\**" />
+    <None Remove="react\**" />
     <None Remove="Testing\Data\**" />
     <None Remove="Testing\Models\**" />
     <None Remove="Testing\Views\**" />
@@ -50,10 +54,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="5.0.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="5.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.8" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
   </ItemGroup>
 

@@ -1,4 +1,4 @@
-import * as state from '@hookstate/core';
+//import * as state from '@hookstate/core';
 
 import * as React from 'react';
 import { UserModel } from 'app/common/UserState';
@@ -119,4 +119,4 @@ export function getNavigation(user: UserModel): NavigationModel {
     return navModel;
 }
 
-export const navStateRef = state.createState(new NavigationModel());
+//export const navStateRef = state.createState(new NavigationModel());

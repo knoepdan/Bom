@@ -10,6 +10,9 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 // main stuff
 import { TopBar } from 'app/layout/TopBar';
 //import { LoginPage } from 'app/LoginPage';
+import Config from 'app/Config';
+import { Right } from 'app/common/Right';
+
 import * as userState from 'app/common/UserState';
 import * as nav from 'app/common/NavigationState';
 import { SideNav } from './layout/SideNav';
@@ -21,6 +24,19 @@ import { useState as globalState } from '@hookstate/core';
 export const App = (): React.ReactElement => {
     console.log('App rendered');
     const userStateRef = globalState(userState.userStateRef);
+
+   // const handleLoginClick = (): void => {
+        userStateRef.set((userModel) => {
+            userModel.logIn(Config.Username);
+            if (true) {
+                userModel.permissions.push(Right.AdminArea);
+                userModel.permissions.push(Right.DevArea);
+            }
+            return userModel;
+        });
+   // };
+
+
     const navModel = nav.getNavigation(userStateRef.value);
 
     // Ensure navigation works (and references etc. in third party libs too, config call etc.)

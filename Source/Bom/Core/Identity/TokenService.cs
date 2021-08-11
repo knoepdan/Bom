@@ -18,11 +18,11 @@ namespace Bom.Core.Identity
 
         private static ConcurrentDictionary<string, UserAuthTimeStamp> CurrentUserDic = new ConcurrentDictionary<string, UserAuthTimeStamp>();
 
-        private static int SecondsToCacheUser = 60 * 4;
+        private static int SecondsToCacheUser = 60 * 60 * 4;
 
         public string CreateUserSession(User user)
         {
-            if(user == null)
+            if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
             }
@@ -38,14 +38,14 @@ namespace Bom.Core.Identity
 
         public IUser? GetUser(string? token)
         {
-            if (string.IsNullOrWhiteSpace(token))
+            if (string.IsNullOrEmpty(token))
             {
                 return null;
             }
             UserAuthTimeStamp? user;
             if (CurrentUserDic.TryGetValue(token, out user))
             {
-                if (user != null && user.Created < DateTime.Now.AddSeconds(-SecondsToCacheUser))
+                if (user != null && user.Created < DateTime.Now.AddSeconds(SecondsToCacheUser))
                 {
                     return user;
                 }
@@ -57,9 +57,27 @@ namespace Bom.Core.Identity
             return null;
         }
 
+        public UserSession? GetUserAndToken(string username)
+        {
+            string? token = GetCurrentTokenforUser(username);
+            IUser? user = GetUser(token);
+            if(user != null && token != null)
+            {
+                return new UserSession(token, user);
+            }
+            return null;
+        }
+
+        public IUser? GetUserByUsername(string username)
+        {
+            string? token = GetCurrentTokenforUser(username);
+            IUser? user = GetUser(token);
+            return user;
+        }
+
         public bool LogOut(string? token)
         {
-            if (string.IsNullOrWhiteSpace(token))
+            if (string.IsNullOrEmpty(token))
             {
                 return false;
             }
@@ -70,11 +88,19 @@ namespace Bom.Core.Identity
 
         public bool LogOutByUsername(string username)
         {
-            if (string.IsNullOrWhiteSpace(username))
+            string? token = GetCurrentTokenforUser(username);
+            bool foundAndRemoved = LogOut(token);
+            return foundAndRemoved;
+        }
+
+        private string? GetCurrentTokenforUser(string username)
+        {
+            if (string.IsNullOrEmpty(username))
             {
-                return false;
+                return null;
             }
 
+            // possible improvment: performance
             string? token = null;
             foreach (var keyVal in CurrentUserDic)
             {
@@ -84,8 +110,7 @@ namespace Bom.Core.Identity
                     break;
                 }
             }
-            bool foundAndRemoved = LogOut(token);
-            return foundAndRemoved;
+            return token;
         }
 
 
@@ -98,14 +123,14 @@ namespace Bom.Core.Identity
         private void CleanOldEntries()
         {
             var toRemove = new List<string>();
-            foreach(var keyVal in CurrentUserDic)
+            foreach (var keyVal in CurrentUserDic)
             {
                 if (keyVal.Value.Created < DateTime.Now.AddSeconds(-SecondsToCacheUser))
                 {
                     toRemove.Add(keyVal.Key);
                 }
             }
-            foreach(var oldToken in toRemove)
+            foreach (var oldToken in toRemove)
             {
                 UserAuthTimeStamp? old;
                 CurrentUserDic.TryRemove(oldToken, out old);

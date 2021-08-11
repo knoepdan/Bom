@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Config } from 'app/Config';
+import Config from 'app/Config';
 import macroCss from 'app/style/global.macros.module.css';
 
 // Import component lazy load
