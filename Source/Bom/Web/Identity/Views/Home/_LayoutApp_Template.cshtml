@@ -16,7 +16,8 @@
 <body>
     @RenderBody()
 
-    @if (isDebug) { 
+    @if (isDebug) {
+        // attention: certificate might be invalid. Browsers usually have an option to allow invalid certificates from localhost > enable it ( example for edge: edge://flags/#allow-insecure-localhost)
         <script id = "__bs_script__" >
              //<![CDATA[
              document.write("<script async src='https://HOST:3000/browser-sync/browser-sync-client.js?v=2.26.7'><\/script>".replace("HOST", location.hostname));
