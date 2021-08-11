@@ -4,7 +4,7 @@ const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const isDevelopment = process.env.NODE_ENV === 'development';
 //const CopyPlugin = require('copy-webpack-plugin');
-const outPath = path.join(__dirname, './../wwwroot');
+const outPath = path.join(__dirname, './../wwwroot/app');
 
 module.exports = {
     mode: 'development',
@@ -16,7 +16,7 @@ module.exports = {
         path: outPath,
         //  path: path.resolve(__dirname, './../../dist'),
         filename: '[name].[contenthash].js',
-        publicPath: '', // path in LayoutApp.cshtml, must be without '/' so base tag is interpreted correctly
+        publicPath: 'app/', // path in LayoutApp.cshtml
         clean: true,
     },
     resolve: {
@@ -126,7 +126,7 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             inject: 'body',
-            filename: '../../Web/Identity/Views/Home/_LayoutApp.cshtml',
+            filename: '../../Identity/Views/Home/_LayoutApp.cshtml',
             template: './../Identity/Views/Home/_LayoutApp_Template.cshtml',
             minify: false, // affects template (not js etc.)
         }),
