@@ -3,7 +3,7 @@ import { MenuItem, RouteInfo } from 'app/common/NavigationState';
 import { EntryPage } from './EntryPage';
 import { PublicPage } from './PublicPage';
 
-export function addMainMenues<T>(topMenu: MenuItem): void {
+export function addMainMenues(topMenu: MenuItem): void {
     const entry = new MenuItem(topMenu, 'Entry', new RouteInfo('/main/entry', React.createElement(EntryPage)));
     topMenu.children.push(entry);
 

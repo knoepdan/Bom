@@ -4,7 +4,7 @@ import { DeveloperPage } from './DeveloperPage';
 import { ExamplesPage } from './ExamplesPage';
 //import { UsersPage } from './UsersPage';
 
-export function addDevMenues<T>(topMenu: MenuItem): void {
+export function addDevMenues(topMenu: MenuItem): void {
     // developer
     const devs = new MenuItem(topMenu, 'Devs', new RouteInfo('/dev/developers', React.createElement(DeveloperPage)));
     topMenu.children.push(devs);

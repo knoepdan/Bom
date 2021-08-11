@@ -3,7 +3,7 @@ import { MenuItem, RouteInfo } from 'app/common/NavigationState';
 import { StatisticsPage } from './StatisticsPage';
 import { UsersPage } from './UsersPage';
 
-export function addAdminMenues<T>(topMenu: MenuItem): void {
+export function addAdminMenues(topMenu: MenuItem): void {
     // statistics
 
     //  // equals: <StatisticsPage> in jsx https://reactjs.org/docs/jsx-in-depth.html
