@@ -5,7 +5,7 @@
 
     <IsPackable>false</IsPackable>
 
-    <RootNamespace>Ch.Knomes</RootNamespace>
+    <RootNamespace>Knomes.Localize</RootNamespace>
     <Nullable>enable</Nullable>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
@@ -21,6 +21,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Localization\Store\localization.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Localization\TestUtils\localization.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
@@ -30,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Ch.Knomes\Ch.Knomes.csproj" />
+    <ProjectReference Include="..\Knomes.Localize\Knomes.Localize.csproj" />
   </ItemGroup>
 
   <ItemGroup>

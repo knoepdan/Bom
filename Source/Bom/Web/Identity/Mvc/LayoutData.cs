@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ch.Knomes.Localization;
+using Knomes.Localize;
 
 namespace Bom.Web.Identity.Mvc
 {

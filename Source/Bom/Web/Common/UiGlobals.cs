@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ch.Knomes.Localization;
-using Ch.Knomes.Localization.Store;
-using Ch.Knomes.Localization.Utils;
+using Knomes.Localize;
+using Knomes.Localize.Store;
+using Knomes.Localize.Utils;
 
 namespace Bom.Web.Common
 {
@@ -68,7 +68,7 @@ namespace Bom.Web.Common
         {
             if (UiGlobals.LocalizationStore != null)
             {
-                var resolver = new Ch.Knomes.Localization.Resolver.CurrentThreadTextResolver(); // works even with async/await as thread culture stays the same (was not the case with early versions of .Net)
+                var resolver = new Knomes.Localize.Resolver.CurrentThreadTextResolver(); // works even with async/await as thread culture stays the same (was not the case with early versions of .Net)
                 var service = new Textservice(UiGlobals.LocalizationStore, resolver);
                 return service;
             }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
-using Ch.Knomes.Localization.DataAnnotations;
+using Knomes.Localize.DataAnnotations;
 
 using Bom.Core.Identity.DbModels;
 

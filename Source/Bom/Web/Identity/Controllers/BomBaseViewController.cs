@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Ch.Knomes.Localization;
+using Knomes.Localize;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Bom.Web.Identity.Mvc;
 using Bom.Web.Common;
