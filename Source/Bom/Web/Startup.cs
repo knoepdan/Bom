@@ -68,12 +68,25 @@ namespace Bom.Web
             //----------
             Bom.Web.Identity.IdentityConfig.ConfigureIdentityServices(services);
 
+            var ccsFiles = new string[] { "/css/normalize.css", "/css/macros.css", "/css/varsAndDefault.css", "/css/layout.css",  "/css/mainClasses.css" }; // also defines order
 #if DEBUG
             // controller with views needed third party authentication/redirects
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddWebOptimizer(pipeline =>
+            {
+                pipeline.AddCssBundle("/css/bundle.css", ccsFiles).MinifyCss();
+            });
+
 #else
             services.AddControllersWithViews();
+  
+            services.AddWebOptimizer(pipeline =>
+            {
+                pipeline.AddCssBundle("/css/bundle.css", cssFiles).MinifyCss();
+            }); 
 #endif
+
+            //  services.AddWebOptimizer();
             Utils.Dev.PossibleImprovment("Call from a better place", Utils.Dev.ImproveArea.ToCheck, Utils.Dev.Urgency.Low);
             Common.UiGlobals.InitGlobals();
         }
@@ -119,6 +132,8 @@ namespace Bom.Web
             });
 
             app.UseHttpsRedirection();
+
+            app.UseWebOptimizer(); // must be before use static files (https://github.com/ligershark/WebOptimizer)
             app.UseStaticFiles(); // to load react app
             //app.UseCookiePolicy();
 

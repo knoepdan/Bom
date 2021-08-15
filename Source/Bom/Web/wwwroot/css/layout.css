@@ -1,0 +1,129 @@
+﻿
+.cont {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+
+/* top */
+.topBar {
+    order: 1;
+    overflow: hidden;
+    display: inline-block;
+    width: 100%;
+    z-index: 4;
+    font-size: 18px !important;
+    color: var(--bom-brown, #fdbb2d) !important;
+    background-color: #000 !important;
+    min-height: 30px;
+}
+
+.title {
+    padding: 8px 16px;
+    width: auto;
+    border: none;
+    display: block;
+    outline: 0;
+}
+
+/* Start main content */
+/* ******************************************33 */
+
+.mainContent {
+    order: 2;
+    flex-grow: 999;
+    margin: 0 auto;
+    width: 98%;
+    max-width: 960px;
+    padding: 4px;
+}
+
+footer {
+    background-color: var(--bom-brown, #fdbb2d);
+    order: 3;
+    align-self: flex-end;
+    min-height: 50px;
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+    font-size: var(--secondary-font-size, 9px);
+}
+
+    footer a {
+        padding: 0 4px;
+        text-decoration: unset;
+    }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+/* Mobile only (media query would not really be necessary as css would be overwritten by later css, but we leave it here for clarity */
+@media (max-width: 640px) {
+    .mobileOnly {
+        visibility: visible;
+    }
+
+    .tabletAndSmaller {
+        visibility: collapse;
+    }
+
+    .tabletOnly {
+        visibility: collapse;
+    }
+
+    .tabletAndBigger {
+        visibility: collapse;
+    }
+
+    .desktopOnly {
+        visibility: collapse;
+    }
+}
+
+/* Mobile and Tablet */
+@media (max-width: 992px) {
+    .tabletAndSmaller {
+        visibility: visible;
+    }
+}
+
+/* Tablet */
+@media (min-width: 641px) and (max-width: 992px) {
+    .mobileOnly {
+        visibility: collapse;
+    }
+
+    .tabletOnly {
+        visibility: visible;
+    }
+}
+
+/* Tablet and desktop*/
+@media (min-width: 641px) {
+    .tabletAndBigger {
+        visibility: visible;
+    }
+}
+
+/* Desktop*/
+@media (min-width: 993px) {
+    .mobileOnly {
+        visibility: collapse;
+    }
+
+    .tabletAndSmaller {
+        visibility: collapse;
+    }
+
+    .tabletOnly {
+        visibility: collapse;
+    }
+
+    .desktopOnly {
+        visibility: visible;
+    }
+}

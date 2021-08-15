@@ -1,0 +1,55 @@
+﻿
+
+
+.centerBox {
+    max-width: 440px;
+    margin: 0 auto;
+    width: 85%;
+}
+
+.lightBox {
+    background-color: #d8d8d8;
+    padding: 7px;
+    border-radius: 5px;
+}
+
+.infoText {
+    font-weight: bold;
+    color: var(--bom-brown, black);
+    font-size: var(--secondary-font-size, 15px);
+}
+
+.fbButton {
+    background-color: #1877f2;
+    color: white;
+    width: 100%
+}
+
+.messageArea {
+    background-color: white;
+    padding: 3px;
+    border-radius: 2px;
+    text-align: center;
+}
+
+.infoMsg {
+    font-size: var(--title-font-size, 1.15rem);
+    /*color: var(--bom-validation-red, red);*/
+}
+
+.errorMsg {
+    font-size: var(--title-font-size, 1.15rem);
+    color: var(--bom-validation-red, red);
+}
+
+
+
+/* mvc predefined styles */
+.field-validation-error {
+    color: var(--bom-validation-red, red);
+    font-size: var(--secondary-font-size, 10px);
+}
+
+.input-validation-error {
+    border-color: var(--bom-validation-red, red);
+}
