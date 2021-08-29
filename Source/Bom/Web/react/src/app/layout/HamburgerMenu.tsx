@@ -1,5 +1,5 @@
 import * as React from 'react';
-import globalCss from 'app/style/global.module.css';
+import c from 'app/style/cssClasses';
 import css from './HamburgerMenu.module.css';
 import { SideNavHtmlId } from './SideNav';
 
@@ -23,7 +23,7 @@ export const HamburgerMenu = (): React.ReactElement<Props> => {
 
     // TODO -> Add hideLarge class !!!! <button className="hambButton hideLarge">
     return (
-        <button className={css.hambButton + ' ' + globalCss.tabletAndSmaller}>
+        <button className={css.hambButton + ' ' + c('tabletAndSmaller')}>
             <div>
                 <input type="checkbox" id="hamburg" className={css.hambCheckbox} />
                 <label htmlFor="hamburg" className={css.hamburg} onClick={handleClick}>

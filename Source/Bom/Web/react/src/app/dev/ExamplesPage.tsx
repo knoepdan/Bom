@@ -1,5 +1,5 @@
 import * as React from 'react';
-import macroCss from 'app/style/global.macros.module.css';
+import css from 'app/style/cssClasses';
 import { Route, Link, Switch } from 'react-router-dom';
 
 // example stauff (to be moved at some point)
@@ -55,7 +55,7 @@ export const ExamplesPage = (): React.ReactElement<Props> => {
                     </li>
                 </ul>
             </nav>
-            <div className={macroCss.solidBox + ' ' + macroCss.p10}>
+            <div className={css('solidBox') + ' ' + css('p10')}>
                 <Switch>
                     <Route path={preRoute + 'router'} component={RouterDemoWrapper}></Route>
                     <Route path={preRoute + 'images'} component={ImageExample}></Route>

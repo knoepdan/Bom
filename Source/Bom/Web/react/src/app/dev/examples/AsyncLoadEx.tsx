@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import Config from 'app/Config';
-import macroCss from 'app/style/global.macros.module.css';
+import css from 'app/style/cssClasses';
 
 // Import component lazy load
 // (must have default export defined to work with typescript)
@@ -41,13 +41,13 @@ export const AsyncLoadEx = (): React.ReactElement<Props> => {
                 </button>
             </div>
             <Suspense fallback={<div>Loading that will never be called</div>}>
-                <div className={macroCss.solidBox + ' ' + macroCss.p5}>
+                <div className={css('solidBox') + ' ' + css('p5')}>
                     <SimpleText></SimpleText>
                 </div>
             </Suspense>
 
             <Suspense fallback={<div>Loading that will never be called because lazy load component defined</div>}>
-                <div className={macroCss.solidBox + ' ' + macroCss.p5}>in suspense but no lazy load defined</div>
+                <div className={css('solidBox') + ' ' + css('p5')}>in suspense but no lazy load defined</div>
             </Suspense>
         </div>
     );

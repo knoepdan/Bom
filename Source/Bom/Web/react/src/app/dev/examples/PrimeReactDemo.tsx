@@ -1,5 +1,5 @@
 import * as React from 'react';
-import macroCss from 'app/style/global.macros.module.css';
+import css from 'app/style/cssClasses';
 import { Slider } from 'primereact/slider';
 
 import { ColorPicker } from 'primereact/colorpicker';
@@ -38,10 +38,10 @@ export const PrimeReactDemo = (): React.ReactElement => {
             </div>
             <div>
                 Examples (just a tiny excerpt): <br />
-                <div className={macroCss.p5}>
+                <div className={css('p5')}>
                     Slider: <Slider value={50} style={{ maxWidth: '200px' }} />
                 </div>
-                <div className={macroCss.p5}>
+                <div className={css('p5')}>
                     ColorPicker: <ColorPicker />
                 </div>
             </div>

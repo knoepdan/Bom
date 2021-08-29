@@ -15,10 +15,13 @@
 
         //
         Bom.Utils.Dev.Todo("separate css file");
-    }
-    <link rel="stylesheet" href="~/css/bundle.css" />
+        //
+        //  @await Html.PartialAsync("~/Identity/Views/Shared/CssView.cshtml")
 
-    @await Html.PartialAsync("~/Identity/Views/Shared/CssView.cshtml")
+        //
+    }
+
+    <link rel="stylesheet" href="~/css/bundle.css" />
 
 </head>
 <body>

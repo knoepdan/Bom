@@ -66,7 +66,7 @@ namespace Bom.Web
             // authentication
 
             //----------
-            Bom.Web.Identity.IdentityConfig.ConfigureIdentityServices(services);
+            Identity.IdentityConfig.ConfigureIdentityServices(services);
 
             var ccsFiles = new string[] { "/css/normalize.css", "/css/macros.css", "/css/varsAndDefault.css", "/css/layout.css",  "/css/mainClasses.css" }; // also defines order
 #if DEBUG
@@ -74,12 +74,11 @@ namespace Bom.Web
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddWebOptimizer(pipeline =>
             {
-                pipeline.AddCssBundle("/css/bundle.css", ccsFiles).MinifyCss();
+                pipeline.AddCssBundle("/css/bundle.css", ccsFiles);
             });
 
 #else
             services.AddControllersWithViews();
-  
             services.AddWebOptimizer(pipeline =>
             {
                 pipeline.AddCssBundle("/css/bundle.css", cssFiles).MinifyCss();

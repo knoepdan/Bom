@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import macroCss from 'app/style/global.macros.module.css';
+import css from 'app/style/cssClasses';
 import samplePng from 'app/dev/examples/img/samplePng.png';
 import sampleJpg from 'app/dev/examples/img/sampleJpg.jpg';
 import sampleGif from 'app/dev/examples/img/sampleGif.gif';
@@ -18,7 +18,7 @@ interface Props {}
 export const ImageExample = (): React.ReactElement<Props> => {
     return (
         <div>
-            <div className={macroCss.dottedBox + ' ' + macroCss.p5}>
+            <div className={css('dottedBox') + ' ' + css('p5')}>
                 <img src={samplePng} alt="samplePng" />
                 <img src={sampleJpg} alt="sampleJpg" />
                 <img src={sampleGif} alt="sampleGif" style={{ maxHeight: 50 }} />

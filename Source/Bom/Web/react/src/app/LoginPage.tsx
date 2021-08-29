@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useState as globalState } from '@hookstate/core';
 import * as state from 'app/common/UserState';
 import { Right } from 'app/common/Right';
-import macroCss from 'app/style/global.macros.module.css';
+import css from 'app/style/cssClasses';
 
 export const LoginPage = (): React.ReactElement => {
     console.log('Login rendered');
@@ -61,7 +61,7 @@ export const LoginPage = (): React.ReactElement => {
                 <br />
 
                 <button type="submit">Login </button>
-                <label className={macroCss.ml10}>
+                <label className={css('ml10')}>
                     <input
                         type="checkbox"
                         value="true"
@@ -87,7 +87,7 @@ export const LoginPage = (): React.ReactElement => {
     }
 
     return (
-        <div className={macroCss.p10}>
+        <div className={css('p10')}>
             <br />
             <br />
             <br />

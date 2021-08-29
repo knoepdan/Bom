@@ -1,6 +1,6 @@
 import * as React from 'react';
 import css from './SideNav.module.css';
-import macroCss from 'app/style/global.macros.module.css';
+import c from 'app/style/cssClasses';
 import * as userState from 'app/common/UserState';
 import * as nav from 'app/common/NavigationState';
 import { NavLink } from 'react-router-dom';
@@ -18,14 +18,14 @@ export const SideNav = (): React.ReactElement<Props> => {
 
     return (
         <nav className={css.animateFromLeft + ' ' + css.sideNav} id={SideNavHtmlId}>
-            <div className={macroCss.pl10}>
+            <div className={c('pl10')}>
                 <h1>Birdview</h1>
             </div>
             <hr />
 
             <ul>
                 {navModel.topMenues.map((topNav, index) => (
-                    <li key={index} className={macroCss.p10}>
+                    <li key={index} className={c('p10')}>
                         <AreaNav topNav={topNav}></AreaNav>
                     </li>
                 ))}

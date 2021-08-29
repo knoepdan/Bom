@@ -26,6 +26,9 @@
 html {
     overflow-x: hidden;
     font-size: 16px;
+
+    width: 100%;
+    height: 100%;
 }
 
 body {
@@ -33,15 +36,50 @@ body {
     color: var(--default-font-color);
     line-height: 1.5;
     font-size: var(--default-font-size, 16px);
+
+    height: 100%;
+    width: 100%;
+    background-color: #f0f2f4;
 }
 
+
+label {
+    max-width: 100%;
+}
+
+input {
+    font-size: var(--default-font-size, 1rem);
+    background-color: #fff;
+    width: 98%;
+    max-width: 100%;
+    border-radius: 3px;
+    border-style: solid;
+    margin-bottom: 5px;
+}
+
+select {
+    font-size: var(--default-font-size, 1rem);
+    background-color: #fff;
+    width: 98%;
+    border-radius: 3px;
+    border-style: solid;
+    margin-bottom: 5px;
+}
+
+button {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    min-width: 100px;
+    max-width: 100%;
+    border: solid;
+    border-width: 1px;
+    border-radius: 2px;
+    border-color: var(--bom-dark-grey, darkgray);
+}
 input[type='text'] {
     font-size: 1rem;
 }
 
-select {
-    font-size: 1rem;
-}
 
 h1 {
     font-size: var(--bigtitle-font-size, 2rem);
@@ -55,124 +93,3 @@ hr {
     border: 0;
     border-top: 1px solid #eee;
 }
-
-/*--- global settings--*/
-.mainContent {
-    margin-top: 43px;
-    transition: margin-left 0.4s;
-}
-
-/* Mobile only (media query would not really be necessary as css would be overwritten by later css, but we leave it here for clarity */
-@media (max-width: 640px) {
-    .mobileOnly {
-        visibility: visible;
-    }
-
-    .tabletAndSmaller {
-        visibility: collapse;
-    }
-
-    .tabletOnly {
-        visibility: collapse;
-    }
-
-    .tabletAndBigger {
-        visibility: collapse;
-    }
-
-    .desktopOnly {
-        visibility: collapse;
-    }
-}
-
-/* Mobile and Tablet */
-@media (max-width: 992px) {
-    .tabletAndSmaller {
-        visibility: visible;
-    }
-
-    /* specific */
-    .mainContent {
-        margin-left: 0;
-        margin-right: 0;
-    }
-}
-
-/* Tablet */
-@media (min-width: 641px) and (max-width: 992px) {
-    .mobileOnly {
-        visibility: collapse;
-    }
-
-    .tabletOnly {
-        visibility: visible;
-    }
-}
-
-/* Tablet and desktop*/
-@media (min-width: 641px) {
-    .tabletAndBigger {
-        visibility: visible;
-    }
-}
-
-/* Desktop*/
-@media (min-width: 993px) {
-    .mobileOnly {
-        visibility: collapse;
-    }
-
-    .tabletAndSmaller {
-        visibility: collapse;
-    }
-
-    .tabletOnly {
-        visibility: collapse;
-    }
-
-    .desktopOnly {
-        visibility: visible;
-    }
-
-    /* specific */
-    .mainContent {
-        margin-left: 300px;
-    }
-}
-
-@media (max-width: 992px) {
-    .mainContent {
-        margin-left: 0;
-        margin-right: 0;
-    }
-}
-
-/* ######### START TESTS ######### */
-hr6 {
-    background-color: rgb(173, 280, 182);
-}
-
-.test {
-    color: red;
-    background-color: whitesmoke;
-}
-
-@media (max-width: 640px) {
-    body {
-        background-color: rgb(255, 254, 232);
-    }
-}
-
-@media (min-width: 641px) and (max-width: 992px) {
-    body {
-        background-color: rgb(173, 230, 182);
-    }
-}
-
-@media (min-width: 993px) {
-    body {
-        background-color: rgb(206, 218, 255);
-    }
-}
-
-/* ######### END TESTS ######### */

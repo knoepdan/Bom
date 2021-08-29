@@ -1,7 +1,4 @@
-// include css in top component in correct order (to mimick a global css)
-// styles have to be applied value. Example:  className={macroCss.pt2}
-import css from 'app/style/global.module.css';
-import macroCss from 'app/style/global.macros.module.css';
+import css from 'app/style/cssClasses';
 
 // app
 import * as React from 'react';
@@ -35,7 +32,7 @@ export const App = (): React.ReactElement => {
         return userModel;
     });
     // };
-
+    
     const navModel = nav.getNavigation(userStateRef.value);
 
     // Ensure navigation works (and references etc. in third party libs too, config call etc.)
@@ -52,8 +49,8 @@ export const App = (): React.ReactElement => {
         <BrowserRouter basename={baseHref}>
             <TopBar />
             <SideNav />
-            <div className={css.mainContent}>
-                <div className={macroCss.p2}>
+            <div className={css('mainContent')}>
+                <div className={css('p2')}>
                     <Switch>
                         {navModel.getRoutes().map((route, index) => (
                             <Route
