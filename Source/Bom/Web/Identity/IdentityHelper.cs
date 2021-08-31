@@ -80,6 +80,11 @@ namespace Bom.Web.Identity
                 new Claim(ClaimTypes.Name, user.Username), // we use name as identifier
                 new Claim(ClaimTypes.Email, user.Username),
             };
+
+            if (string.IsNullOrEmpty(origin))
+            {
+                origin = Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme;
+            }
             var identity = new ClaimsIdentity(claims, origin);
             var userPrincipal = new ClaimsPrincipal(new[] { identity });
             await context.SignInAsync(userPrincipal);

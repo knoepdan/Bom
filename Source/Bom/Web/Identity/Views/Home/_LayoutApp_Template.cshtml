@@ -3,6 +3,12 @@
 #if DEBUG
     isDebug = true;
 #endif
+
+
+    var relativeBaseUrl = Url.Content("~")?.TrimEnd('/') + "/"; // "/BomApi/"
+    var request = Url.ActionContext.HttpContext.Request;
+    var fullBaseUrl =  new Uri(new Uri(request.Scheme + "://" + request.Host.Value), relativeBaseUrl).ToString().TrimEnd('/')+"/"; // "https://localhost/BomApi"
+
 }
 <!DOCTYPE html>
 <html>
@@ -10,7 +16,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bom</title>
-    <base href="https://localhost/BomApi/" data-href="/BomApi/" />
+    <base href="@fullBaseUrl" data-href="@relativeBaseUrl" />
     <link rel="stylesheet" href="/css/bundle.css" />
 </head>
 <body>
