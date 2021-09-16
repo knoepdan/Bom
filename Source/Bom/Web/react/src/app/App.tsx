@@ -32,7 +32,7 @@ export const App = (): React.ReactElement => {
         return userModel;
     });
     // };
-    
+
     const navModel = nav.getNavigation(userStateRef.value);
 
     // Ensure navigation works (and references etc. in third party libs too, config call etc.)
