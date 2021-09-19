@@ -33,7 +33,7 @@ export const TopBarAccountInfo = (): React.ReactElement<Props> => {
             </a>
         );
     }
-    return <span className={css.account}>{loginInfo}</span>;
+    return <div className={css.account}>{loginInfo}</div>;
 };
 
 export default TopBarAccountInfo as React.FC;

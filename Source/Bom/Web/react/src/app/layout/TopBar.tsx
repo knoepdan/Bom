@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { TopBarAccountInfo } from './TopBarAccountInfo';
 import { HamburgerMenu } from './HamburgerMenu';
-import css from './TopBar.module.css';
+import css from 'app/style/cssClasses';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props {}
@@ -9,7 +9,7 @@ interface Props {}
 // more or less random notes about webpack setup
 export const TopBar = (): React.ReactElement<Props> => {
     return (
-        <header className={css.topBar}>
+        <header className={css('topBar')}>
             <HamburgerMenu />
             <TopBarAccountInfo />
         </header>

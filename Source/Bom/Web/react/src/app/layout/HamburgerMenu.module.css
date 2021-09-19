@@ -1,9 +1,8 @@
 .hambButton {
-    padding: 8px 16px;
-    float: left;
+    padding: 4px;
     width: auto;
     border: none;
-    display: block;
+    align-self: flex-start;
     outline: 0;
 
     white-space: normal;
