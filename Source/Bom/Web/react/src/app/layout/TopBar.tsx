@@ -9,7 +9,7 @@ interface Props {}
 // more or less random notes about webpack setup
 export const TopBar = (): React.ReactElement<Props> => {
     return (
-        <header className={css('topBar')}>
+        <header className={css('headerBar')}>
             <HamburgerMenu />
             <TopBarAccountInfo />
         </header>

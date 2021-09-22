@@ -20,7 +20,7 @@ export type Macro = VariousMacrco | TableMacro | PaddingMacro | MarginMacro | Te
 // layout.css (classes used in main layout but not anywhere else)
 type ResponsiveLayout = 'mobileOnly' | 'tabletAndSmaller' | 'tabletOnly' | 'tabletAndBigger' | 'desktopOnly';
 
-type OtherLayout = 'mainContent' | 'topBar' | 'title';
+type OtherLayout = 'mainContent' | 'headerBar' | 'headerTitle';
 
 type Layout = ResponsiveLayout | OtherLayout;
 
