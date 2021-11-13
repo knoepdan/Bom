@@ -50,13 +50,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="LigerShark.WebOptimizer.Core" Version="3.0.313" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="5.0.9" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.9" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.9" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="LigerShark.WebOptimizer.Core" Version="3.0.330" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
