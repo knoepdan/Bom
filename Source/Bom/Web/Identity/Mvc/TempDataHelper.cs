@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
-using Newtonsoft;
 using Newtonsoft.Json;
 
 namespace Bom.Web.Identity.Mvc
 {
     public class TempDataHelper
     {
-        private readonly IDictionary<string, object> _data;
+        private readonly ITempDataDictionary _data;
 
         /// <summary>
         /// ctor: Helper for TempData, provides typed access
         /// </summary>
         /// <param name="data">TempData (or possibly other dic)</param>
-        public TempDataHelper(IDictionary<string, object> data)
+        public TempDataHelper(ITempDataDictionary data)
         {
             if (data == null)
             {
