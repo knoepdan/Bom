@@ -34,10 +34,13 @@ namespace Bom.Web
     {
         private readonly ILogger _logger;
 
-        public Startup(IConfiguration configuration, ILogger<Startup> logger)
+        private readonly IWebHostEnvironment _env;
+
+        public Startup(IConfiguration configuration, ILogger<Startup> logger, IWebHostEnvironment hostingEnvironment)
         {
             Configuration = configuration;
             _logger = logger;
+            _env = hostingEnvironment;
         }
 
         public IConfiguration Configuration { get; }
@@ -68,20 +71,28 @@ namespace Bom.Web
             //----------
             Identity.IdentityConfig.ConfigureIdentityServices(services);
 
-            var ccsFiles = new string[] { "/css/normalize.css", "/css/macros.css", "/css/varsAndDefault.css", "/css/layout.css",  "/css/mainClasses.css" }; // also defines order
+            var ccsFiles = new string[] { "/css/normalize.css", "/css/macros.css", "/css/varsAndDefault.css", "/css/layout.css", "/css/mainClasses.css" }; // also defines order
+            var webRoot = this._env.WebRootPath; // example:  "C:\\Dev\\Github\\Bom\\Source\\Bom\\Web\\wwwroot";
+            var provider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(webRoot); // since .net core 6, we have to explicitly specify webRoot (probably a but that will be fixed some day)
+
 #if DEBUG
             // controller with views needed third party authentication/redirects
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddControllersWithViews();
+            Utils.Dev.Todo("Razor precompilation not working anymore in .Net 6.0");
+            //  TODO: outcommented because this no longer works in .Net Core 6.0 (worked in 5.0)          services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            
+            
+            
             services.AddWebOptimizer(pipeline =>
             {
-                pipeline.AddCssBundle("/css/bundle.css", ccsFiles);
+                pipeline.AddCssBundle("/css/bundle.css", ccsFiles).UseFileProvider(provider);
             });
 
 #else
             services.AddControllersWithViews();
             services.AddWebOptimizer(pipeline =>
             {
-                pipeline.AddCssBundle("/css/bundle.css", cssFiles).MinifyCss();
+                pipeline.AddCssBundle("/css/bundle.css", cssFiles).UseFileProvider(provider).MinifyCss();
             }); 
 #endif
 
