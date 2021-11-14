@@ -77,12 +77,11 @@ namespace Bom.Web
 
 #if DEBUG
             // controller with views needed third party authentication/redirects
-            services.AddControllersWithViews();
-            Utils.Dev.Todo("Razor precompilation not working anymore in .Net 6.0");
+            Utils.Dev.Todo("Razor precompilation not working anymore in .Net 6.0. Reactivate it once it works again (possible a bug of the framework or library)");
             //  TODO: outcommented because this no longer works in .Net Core 6.0 (worked in 5.0)          services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            
-            
-            
+            services.AddControllersWithViews();
+
+
             services.AddWebOptimizer(pipeline =>
             {
                 pipeline.AddCssBundle("/css/bundle.css", ccsFiles).UseFileProvider(provider);
