@@ -16,4 +16,5 @@ jest.config.js
 **/*.jpg
 **/*.svg
 **/*.ico
+**/*.scss
 adaptForProduction.js

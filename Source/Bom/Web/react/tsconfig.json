@@ -19,5 +19,5 @@
             "app/*": ["./app/*"]
         }
     },
-    "exclude": ["build", "node_modules"]
+    "include": ["src", "types", "typings"]
 }
