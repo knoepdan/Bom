@@ -9,6 +9,10 @@
     var request = Url.ActionContext.HttpContext.Request;
     var fullBaseUrl =  new Uri(new Uri(request.Scheme + "://" + request.Host.Value), relativeBaseUrl).ToString().TrimEnd('/')+"/"; // "https://localhost/BomApi"
 
+    // spa referneces are no longer injected directly into html but in a separate file that is being watched (introduces since razor reload doesnt work anymore)
+    //<script defer src="app/runtime~index.667000cca92321d79f2c.js"></script><script defer src="app/vendor.1df9e5853abde28bd7f1.js"></script><script defer src="app/index.0f0b391814a7228f5c2c.js"></script></body>
+    var spaReferences = Bom.Web.Startup.SpaReferencesWatcher();
+    string htmlReferences = spaReferences.GetContent();
 }
 <!DOCTYPE html>
 <html>
@@ -30,5 +34,6 @@
             //]]>
             </script>
     }
-<script defer src="app/runtime~index.667000cca92321d79f2c.js"></script><script defer src="app/vendor.1df9e5853abde28bd7f1.js"></script><script defer src="app/index.3ca97e70e6696f97fff1.js"></script></body>
+    @Html.Raw(htmlReferences)
+</body>
 </html>

@@ -66,4 +66,9 @@
     <ProjectReference Include="..\Utils\Utils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\varia\script_statements.txt" />
+    <None Include="wwwroot\varia\script_statements_template.txt" />
+  </ItemGroup>
+
 </Project>

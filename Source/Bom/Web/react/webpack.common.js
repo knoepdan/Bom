@@ -126,9 +126,12 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             inject: 'body',
-            filename: '../../Identity/Views/Home/_LayoutApp.cshtml',
-            template: './../Identity/Views/Home/_LayoutApp_Template.cshtml',
+            filename: '../../wwwroot/varia/script_statements.txt',
+            template: './../wwwroot/varia/script_statements_template.txt', // empty
             minify: false, // affects template (not js etc.)
+            // remark (directly injecting in cshtml file is not ideal in .Net 6 since razor compilcation no longer works)
+            //     filename: '../../Identity/Views/Home/_LayoutApp.cshtml',
+            //    template: './../Identity/Views/Home/_LayoutApp_Template.cshtml',
         }),
         // new CopyPlugin({
         //     patterns: [
