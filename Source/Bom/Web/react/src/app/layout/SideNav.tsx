@@ -56,9 +56,12 @@ interface AreaNavProps {
 const AreaNav = (props: AreaNavProps): React.ReactElement<AreaNavProps> => {
     const subLink = (subNav: MenuItem): React.ReactElement => {
         if (subNav.route && subNav.route.getRoute()) {
-            //  activeClassName={css.navActive as string}
+            let route = subNav.route.getRoute();
+            if (route.endsWith('*')) {
+                route = route.substring(0, route.length - 1);
+            }
             return (
-                <NavLink to={subNav.route.getRoute()}>
+                <NavLink to={route} className={({ isActive }) => '' + (isActive ? ' ' + css.navActive : '')}>
                     {subNav.label} ( {subNav.route.getRoute()} )
                 </NavLink>
             );
@@ -81,8 +84,8 @@ const AreaNav = (props: AreaNavProps): React.ReactElement<AreaNavProps> => {
         <div className={css.navArea}>
             <h2>{props.topNav.label}</h2>
             <ul>
-                {props.topNav.children.map((childMenu, index) => (
-                    <li key={index} onClick={onLiClick}>
+                {props.topNav.children.map((childMenu, i) => (
+                    <li key={i} onClick={onLiClick}>
                         {subLink(childMenu)}
                     </li>
                 ))}

@@ -18,14 +18,14 @@ export function getDevMenu(): MenuItem | null {
         const devs = new MenuItem(
             topMenu,
             'Devs',
-            new RouteInfo('/dev/developers', React.createElement(DeveloperPage)),
+            new RouteInfo('dev/developers/*', React.createElement(DeveloperPage)),
         );
         topMenu.children.push(devs);
 
         const ex = new MenuItem(
             topMenu,
             'Examples',
-            new RouteInfo('/dev/examples', React.createElement(ExamplesPage), false),
+            new RouteInfo('dev/examples/*', React.createElement(ExamplesPage)),
         );
         topMenu.children.push(ex);
     }

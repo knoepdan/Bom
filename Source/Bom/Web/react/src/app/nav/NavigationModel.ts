@@ -11,9 +11,9 @@ import * as adminNav from './../../admin/AdminNavigation';
 import * as devNav from './../../dev/DevNavigation';
 
 class Routes {
-    public readonly LoginRoute = new RouteInfo('/login', React.createElement(LoginPage));
+    public readonly LoginRoute = new RouteInfo('login', React.createElement(LoginPage));
 
-    public readonly PublicMainTo = '/main/entry';
+    public readonly PublicMainTo = 'main/entry';
 }
 const routes = new Routes();
 

@@ -20,6 +20,11 @@
     padding: 4px;
 }
 
+@media (min-width: 993px) {
+    .sideNavSpace {
+        margin-left: 300px;
+    }
+}
 
 /* top */
 .headerBar {

@@ -20,7 +20,7 @@ export type Macro = VariousMacrco | TableMacro | PaddingMacro | MarginMacro | Te
 // layout.css (classes used in main layout but not anywhere else)
 type ResponsiveLayout = 'mobileOnly' | 'tabletAndSmaller' | 'tabletOnly' | 'tabletAndBigger' | 'desktopOnly';
 
-type OtherLayout = 'mainContent' | 'headerBar' | 'headerTitle';
+type OtherLayout = 'mainContent' | 'sideNavSpace' | 'headerBar' | 'headerTitle';
 
 type Layout = ResponsiveLayout | OtherLayout;
 
@@ -36,8 +36,19 @@ type Main = CoreMain | OtherMain | MsgMain;
 // combine it all
 export type AllClasses = Macro | Layout | Main;
 
-export function get(cassClass: AllClasses): string {
-    return cassClass;
+export function get(
+    cssClass: AllClasses,
+    class2: AllClasses | undefined = undefined,
+    class3: AllClasses | undefined = undefined,
+): string {
+    let c = cssClass;
+    if (class2) {
+        c += ' ' + class2;
+    }
+    if (class3) {
+        c += ' ' + class3;
+    }
+    return c;
 }
 
 export default get;
