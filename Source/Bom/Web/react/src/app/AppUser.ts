@@ -1,3 +1,4 @@
+import { Right } from 'app/Right';
 export class AppUser {
     username = '';
     token: string | null = '';
@@ -5,6 +6,14 @@ export class AppUser {
 
     constructor(username: string, token: string) {
         this.username = username;
+        this.token = token;
+
+        // TODO  remove.. this is just dummy
+        this.permissions.push(Right.AdminArea, Right.DevArea);
+    }
+
+    public isLoggedIn(): boolean {
+        return !!this.token;
     }
 
     public hasRight(right: Right): boolean {
@@ -19,9 +28,4 @@ export class AppUser {
         this.username = '';
         this.token = null;
     }
-}
-
-export enum Right {
-    AdminArea = 'AdminArea',
-    DevArea = 'DevArea',
 }

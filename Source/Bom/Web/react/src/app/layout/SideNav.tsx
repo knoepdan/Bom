@@ -1,20 +1,20 @@
 import * as React from 'react';
 import css from './SideNav.module.css';
 import c from 'style/cssClasses';
-import * as userState from 'app/common/UserState';
-import * as nav from 'app/common/NavigationState';
+//import * as nav from 'app/common/NavigationState';
+import { MenuItem } from 'app/nav/MenuItem';
 import { NavLink } from 'react-router-dom';
-import { useState as globalState } from '@hookstate/core';
+
+import { useAppContext } from 'app/AppContext';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props {}
 
 export const SideNavHtmlId = 'sideNav';
 
-// more or less random notes about webpack setup
 export const SideNav = (): React.ReactElement<Props> => {
-    const userStateRef = globalState(userState.userStateRef);
-    const navModel = nav.getNavigation(userStateRef.value);
+    const app = useAppContext();
+    const navModel = app.getNavModel();
 
     return (
         <nav className={css.animateFromLeft + ' ' + css.sideNav} id={SideNavHtmlId}>
@@ -50,15 +50,15 @@ export const SideNav = (): React.ReactElement<Props> => {
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface AreaNavProps {
-    topNav: nav.MenuItem;
+    topNav: MenuItem;
 }
 
 const AreaNav = (props: AreaNavProps): React.ReactElement<AreaNavProps> => {
-    const subLink = (subNav: nav.MenuItem): React.ReactElement => {
+    const subLink = (subNav: MenuItem): React.ReactElement => {
         if (subNav.route && subNav.route.getRoute()) {
             //  activeClassName={css.navActive as string}
             return (
-                <NavLink to={subNav.route.getRoute()} >
+                <NavLink to={subNav.route.getRoute()}>
                     {subNav.label} ( {subNav.route.getRoute()} )
                 </NavLink>
             );

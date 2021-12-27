@@ -1,18 +1,33 @@
 import * as React from 'react';
-import { MenuItem, RouteInfo } from 'app/common/NavigationState';
+import { MenuItem } from 'app/nav/MenuItem';
+import { RouteInfo } from 'app/nav/RouteInfo';
+import { Right } from 'app/Right';
 import { DeveloperPage } from './DeveloperPage';
 import { ExamplesPage } from './ExamplesPage';
 //import { UsersPage } from './UsersPage';
+import { useAppContext } from 'app/AppContext';
 
-export function addDevMenues(topMenu: MenuItem): void {
-    // developer
-    const devs = new MenuItem(topMenu, 'Devs', new RouteInfo('/dev/developers', React.createElement(DeveloperPage)));
-    topMenu.children.push(devs);
+export function getDevMenu(): MenuItem | null {
+    const app = useAppContext();
+    const user = app.user;
+    let topMenu: MenuItem | null = null;
+    if (user.hasRight(Right.DevArea)) {
+        topMenu = new MenuItem(null, 'Developer-Area');
 
-    const ex = new MenuItem(
-        topMenu,
-        'Examples',
-        new RouteInfo('/dev/examples', React.createElement(ExamplesPage), false),
-    );
-    topMenu.children.push(ex);
+        // submenues
+        const devs = new MenuItem(
+            topMenu,
+            'Devs',
+            new RouteInfo('/dev/developers', React.createElement(DeveloperPage)),
+        );
+        topMenu.children.push(devs);
+
+        const ex = new MenuItem(
+            topMenu,
+            'Examples',
+            new RouteInfo('/dev/examples', React.createElement(ExamplesPage), false),
+        );
+        topMenu.children.push(ex);
+    }
+    return topMenu;
 }

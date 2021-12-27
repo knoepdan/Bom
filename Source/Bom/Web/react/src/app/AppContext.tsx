@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { AppUser } from './AppUser';
 import * as Config from './Config';
+import * as Nav from 'app/nav/NavigationModel';
+
 //import { ExosPermission } from 'util-components';
 
 //import * as xx from 'a'
@@ -10,6 +12,8 @@ export interface IAppContext {
     user: AppUser;
 
     config: Config.IConfig;
+
+    getNavModel(): Nav.NavigationModel;
 
     getRouterBase(): string;
 }
@@ -26,9 +30,14 @@ export class AppContextImpl implements IAppContext {
         this.user = user;
         this.config = Config.getConfig();
     }
-    user: AppUser;
+    public user: AppUser;
 
-    readonly config: Config.IConfig;
+    public readonly config: Config.IConfig;
+
+    public getNavModel(): Nav.NavigationModel {
+        const navModel = Nav.getNavigation(this.user);
+        return navModel;
+    }
 
     public getRouterBase(): string {
         // Ensure navigation works (and references etc. in third party libs too, config call etc.)

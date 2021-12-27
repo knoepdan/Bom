@@ -1,38 +1,40 @@
 import React, { useState } from 'react';
-import { useState as globalState } from '@hookstate/core';
-import * as state from 'app/common/UserState';
-import { Right } from 'app/common/Right';
+//import { useState as globalState } from '@hookstate/core';
+//import * as state from 'app/common/UserState';
+//import { Right } from 'app/Right';
+import { useAppContext } from 'app/AppContext';
 import css from 'style/cssClasses';
 
 export const LoginPage = (): React.ReactElement => {
-    console.log('Login rendered');
+    const app = useAppContext();
+    const user = app.user;
 
     const [isAdmin, setIsAdmin] = useState(false);
     const [username, setUsername] = useState('');
 
-    const userState = globalState(state.userStateRef);
+    //  const userState = globalState(state.userStateRef);
 
     const handleLoginClick = (): void => {
-        state.userStateRef.set((userModel) => {
-            userModel.logIn(username);
-            if (isAdmin) {
-                userModel.permissions.push(Right.AdminArea);
-                userModel.permissions.push(Right.DevArea);
-            }
-            return userModel;
-        });
+        // state.userStateRef.set((userModel) => {
+        //     userModel.logIn(username);
+        //     if (isAdmin) {
+        //         userModel.permissions.push(Right.AdminArea);
+        //         userModel.permissions.push(Right.DevArea);
+        //     }
+        //     return userModel;
+        // });
     };
 
     const handleLogoutClick = (): void => {
-        state.userStateRef.set((userModel) => {
-            userModel.logOut();
-            return userModel;
-        });
+        // state.userStateRef.set((userModel) => {
+        //     userModel.logOut();
+        //     return userModel;
+        // });
     };
 
     let submitFn = (): void => {};
     let controls;
-    if (!userState.value.isLoggedIn) {
+    if (!user.isLoggedIn()) {
         submitFn = handleLoginClick;
 
         controls = (
@@ -78,7 +80,7 @@ export const LoginPage = (): React.ReactElement => {
         controls = (
             <div>
                 Your are currently logged in as {"'"}
-                {userState.value.username}
+                {user.username}
                 {"'"}. <br />
                 <br />
                 <button onClick={handleLogoutClick}>Logout</button>
