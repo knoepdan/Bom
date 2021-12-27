@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Route, Link } from 'react-router-dom';
-import { RouterDemoDetails } from 'app/dev/examples/RouterDemoDetails';
+import { Link } from 'react-router-dom';
+//import { Route, Link } from 'react-router-dom';
+//import { RouterDemoDetails } from 'dev/examples/RouterDemoDetails';
 import css from './RouterDemo.module.css';
 
 export interface RouterDemoProps {
@@ -10,6 +11,11 @@ export interface RouterDemoProps {
 }
 export const RouterDemo: React.FC<RouterDemoProps> = (props: RouterDemoProps) => {
     const preRoute = '/dev/examples/router';
+
+    /*
+ <Route path={preRoute + '/:testid'} exact component={RouterDemoDetails}></Route>
+
+    */
     return (
         <div>
             <span className={css.hello}>
@@ -17,7 +23,7 @@ export const RouterDemo: React.FC<RouterDemoProps> = (props: RouterDemoProps) =>
                 (process.env.NODE_ENV: {process.env.NODE_ENV}). And it showcases some basic router behavior.
             </span>
             <div>
-                <Route path={preRoute + '/:testid'} exact component={RouterDemoDetails}></Route>
+                <span>Here should be the router Route...</span>
 
                 <ul>
                     <li>

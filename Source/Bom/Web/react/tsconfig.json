@@ -16,7 +16,9 @@
         "lib": ["es6", "es7", "dom"],
         "baseUrl": "src",
         "paths": {
-            "app/*": ["./app/*"]
+            "app/*": ["./app/*"],
+            "common/*": ["./common/*"],
+            "style/*": ["./style/*"]
         }
     },
     "include": ["src", "types", "typings"]

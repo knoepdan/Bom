@@ -1,13 +1,13 @@
 import React, { Suspense } from 'react';
 import Config from 'app/Config';
-import css from 'app/style/cssClasses';
+import css from 'style/cssClasses';
 
 // Import component lazy load
 // (must have default export defined to work with typescript)
 // define react components in typescript:
 // - export default SimpleText as React.FC;
 // - export default SimpleTextAsClassComponent as React.ComponentType
-const SimpleText = React.lazy(() => import('app/dev/examples/SimpleText'));
+const SimpleText = React.lazy(() => import('dev/examples/SimpleText'));
 
 /*
 // if there is no default export defined, module can still be imported lazy load
@@ -22,7 +22,7 @@ const SimpleText = lazy(() =>
 interface Props {}
 
 export async function handleButtonClick(s: string): Promise<void> {
-    const testutils = await import('app/dev/examples/utils/TestFunc');
+    const testutils = await import('dev/examples/utils/TestFunc');
     testutils.testAlertBox(s);
 }
 

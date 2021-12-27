@@ -1,16 +1,17 @@
 import * as React from 'react';
-import {AppUser}  from './AppUser';
+import { AppUser } from './AppUser';
+import * as Config from './Config';
 //import { ExosPermission } from 'util-components';
 
 //import * as xx from 'a'
 //export { ExosPermission };
 
 export interface IAppContext {
-    // getUrl(app: API.ExosWebAppEnum) : string | null
-    // webapps: Array<API.WebAppOutput>
+    user: AppUser;
 
-    user: AppUser
-    // hasPermission(authId: ExosPermission, permission?: API.Permission): boolean
+    config: Config.IConfig;
+
+    getRouterBase(): string;
 }
 
 export class AppContextImpl implements IAppContext {
@@ -23,8 +24,44 @@ export class AppContextImpl implements IAppContext {
     // }
     constructor(user: AppUser) {
         this.user = user;
+        this.config = Config.getConfig();
     }
-    user: AppUser
+    user: AppUser;
+
+    readonly config: Config.IConfig;
+
+    public getRouterBase(): string {
+        // Ensure navigation works (and references etc. in third party libs too, config call etc.)
+        // -> we set basename in BrowserRouter. However, this depends on the environment.
+        //    in deployed to application that is accesible via app name (localhost/appName) then it must be set
+        //    However document.getElementsByTagName('base')[0].href; still returns full url even though we just want whats in base tag
+        // see also: https://stackoverflow.com/questions/13832690/get-base-in-html-after-it-has-been-set-but-not-using-page-url
+        let baseHref: string = '';
+        const baseTag = document.getElementsByTagName('base');
+        if (baseTag.length > 0) {
+            baseHref = baseTag[0].dataset.href as string; // example base tag: <base href="/app" data-href="/app" />    (for dev "/" is normally ok)
+        }
+        return baseHref;
+        /*
+        const n = this.info.routerBase as string;
+        // all
+        if (n === 'undefined') {
+            return undefined; // rely on base functionality of router
+        }
+        if (!n || n == '' || n.startsWith('[')) {
+            // apply default logic (with some possiblity to influence it for absolute corner cases)
+            const parsedData = window.location.pathname.split('/');
+            let i = 1;
+            if (n && n.startsWith('[0')) {
+                i = 0;
+            } else if (n && n.startsWith('[2')) {
+                i = 2;
+            }
+            return '/' + parsedData[i];
+        }
+        return n; // rely on server side config
+        */
+    }
 
     // private readonly authMap = new Map<string, API.UserPermission>(); // use map to avoid having to iterate through array multiple times
 
@@ -71,8 +108,15 @@ export class AppContextImpl implements IAppContext {
     //     return null;
     // }
 }
-const dummyUser = new AppUser();
-export const AppContext = React.createContext<IAppContext>(new AppContextImpl(dummyUser));
+
+function getAppContextDefault(): IAppContext {
+    const info = Config.getUserInfo();
+    const user = new AppUser(info.Username, info.Token);
+    const c = new AppContextImpl(user);
+    return c;
+}
+
+export const AppContext = React.createContext<IAppContext>(getAppContextDefault());
 
 export function useAppContext(): IAppContext {
     const context: IAppContext = React.useContext(AppContext);

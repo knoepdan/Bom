@@ -21,11 +21,16 @@
     <script type="text/javascript">
             var i = {};
             i.APIUrl = '@Url.Content("~")';
-            i.Username = '@Html.Raw(JavaScriptEncoder.Default.Encode(userSession.User.Username))';
-            i.Token = '@Html.Raw(JavaScriptEncoder.Default.Encode(userSession.Token))';
 
+            var u = {};
+            u.Username = '@Html.Raw(JavaScriptEncoder.Default.Encode(userSession.User.Username))';
+            u.Token = '@Html.Raw(JavaScriptEncoder.Default.Encode(userSession.Token))';
 
-            window.bomInfo = i;
+            var b = {};
+            b.Info = i;
+            b.User = u;
+
+            window.bom = b;
     </script>
 
 

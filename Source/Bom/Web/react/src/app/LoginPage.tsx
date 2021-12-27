@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useState as globalState } from '@hookstate/core';
 import * as state from 'app/common/UserState';
 import { Right } from 'app/common/Right';
-import css from 'app/style/cssClasses';
+import css from 'style/cssClasses';
 
 export const LoginPage = (): React.ReactElement => {
     console.log('Login rendered');

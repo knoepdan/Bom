@@ -1,17 +1,36 @@
-interface IConfig {
+export interface IConfig {
     readonly APIUrl: string;
-    readonly Username: string;
-    readonly Token: string;
-
     readonly TestEntry: string;
 }
 
-export function getConfig(): IConfig {
+interface IPassedUser {
+    readonly Username: string;
+    readonly Token: string;
+}
+
+function getBom(): any {
     const w = window as any;
-    if (w.bomInfo) {
-        return w.bomInfo as IConfig;
+    if (w.bom) {
+        return w.bom;
     }
-    console.warn('config not found');
+    return {};
+}
+
+export function getUserInfo(): IPassedUser {
+    const bom = getBom();
+    if (bom.User) {
+        return bom.User as IPassedUser;
+    }
+    console.warn('user not found' + bom);
+    return {} as IPassedUser;
+}
+
+export function getConfig(): IConfig {
+    const bom = getBom();
+    if (bom.Info) {
+        return bom.Info as IConfig;
+    }
+    console.warn('config not found' + bom);
     return {} as IConfig;
 }
 

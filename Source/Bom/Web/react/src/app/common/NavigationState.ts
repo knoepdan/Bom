@@ -5,8 +5,8 @@ import { UserModel } from 'app/common/UserState';
 import { LoginPage } from 'app/LoginPage';
 import { Right } from 'app/common/Right';
 import * as mainNav from 'app/main/MainNavigation';
-import * as adminNav from 'app/admin/AdminNavigation';
-import * as devNav from 'app/dev/DevNavigation';
+import * as adminNav from '../../admin/AdminNavigation';
+import * as devNav from '../../dev/DevNavigation';
 
 export interface IRoute {
     getRoute(): string;

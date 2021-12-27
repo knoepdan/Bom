@@ -1,6 +1,6 @@
 import * as React from 'react';
 import css from './SideNav.module.css';
-import c from 'app/style/cssClasses';
+import c from 'style/cssClasses';
 import * as userState from 'app/common/UserState';
 import * as nav from 'app/common/NavigationState';
 import { NavLink } from 'react-router-dom';
@@ -56,8 +56,9 @@ interface AreaNavProps {
 const AreaNav = (props: AreaNavProps): React.ReactElement<AreaNavProps> => {
     const subLink = (subNav: nav.MenuItem): React.ReactElement => {
         if (subNav.route && subNav.route.getRoute()) {
+            //  activeClassName={css.navActive as string}
             return (
-                <NavLink to={subNav.route.getRoute()} activeClassName={css.navActive}>
+                <NavLink to={subNav.route.getRoute()} >
                     {subNav.label} ( {subNav.route.getRoute()} )
                 </NavLink>
             );

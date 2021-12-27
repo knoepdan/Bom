@@ -1,5 +1,5 @@
 import * as React from 'react';
-import css from 'app/style/cssClasses';
+import css from 'style/cssClasses';
 import { Slider } from 'primereact/slider';
 
 import { ColorPicker } from 'primereact/colorpicker';

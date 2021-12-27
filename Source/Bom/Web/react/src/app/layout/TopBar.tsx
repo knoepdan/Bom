@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { TopBarAccountInfo } from './TopBarAccountInfo';
 import { HamburgerMenu } from './HamburgerMenu';
-import css from 'app/style/cssClasses';
+import css from 'style/cssClasses';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props {}

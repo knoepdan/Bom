@@ -9,7 +9,7 @@ const outPath = path.join(__dirname, './../wwwroot/app');
 module.exports = {
     mode: 'development',
     entry: {
-        index: ['./src/main.tsx'],
+        index: ['./src/index.tsx'],
     },
     devtool: isDevelopment ? 'cheap-module-eval-source-map' : 'source-map',
     output: {
@@ -23,6 +23,8 @@ module.exports = {
         extensions: ['.ts', '.tsx', '.js', '.css', '.scss'],
         alias: {
             app: path.resolve(__dirname, 'src/app/'),
+            common: path.resolve(__dirname, 'src/common/'),
+            style: path.resolve(__dirname, 'src/style/'),
             //react: path.resolve('./node_modules/react'),
             //'react-dom': path.resolve('./node_modules/react-dom'),
         },

@@ -1,19 +1,23 @@
 export class AppUser {
-    isLoggedIn = false;
     username = '';
+    token: string | null = '';
     permissions = new Array<Right>();
+
+    constructor(username: string, token: string) {
+        this.username = username;
+    }
 
     public hasRight(right: Right): boolean {
         return this.permissions.some((r) => r == right);
     }
 
-    public logIn(user: string): void {
+    public logIn(user: string, token: string): void {
         this.username = user;
-        this.isLoggedIn = true;
+        this.token = token;
     }
     public logOut(): void {
         this.username = '';
-        this.isLoggedIn = false;
+        this.token = null;
     }
 }
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import css from 'app/style/cssClasses';
+import css from 'style/cssClasses';
 import samplePng from 'app/dev/examples/img/samplePng.png';
 import sampleJpg from 'app/dev/examples/img/sampleJpg.jpg';
 import sampleGif from 'app/dev/examples/img/sampleGif.gif';

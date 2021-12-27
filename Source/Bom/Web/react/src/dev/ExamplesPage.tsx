@@ -1,16 +1,18 @@
 import * as React from 'react';
-import css from 'app/style/cssClasses';
-import { Route, Link, Switch } from 'react-router-dom';
+import css from 'style/cssClasses';
+//import { Route, Link, Switch } from 'react-router-dom';
+
+import { Link } from 'react-router-dom';
 
 // example stauff (to be moved at some point)
-import { RouterDemo } from 'app/dev/examples/RouterDemo';
-import { TemplNotes } from 'app/dev/examples/TemplNotes';
-import { ImageExample } from 'app/dev/examples/ImageExample';
-import { StylingLibsDemo } from 'app/dev/examples/StylingLibsDemo';
-import { PrimeReactDemo } from 'app/dev/examples/PrimeReactDemo';
-import { AsyncLoadEx } from 'app/dev/examples/AsyncLoadEx';
-import { ReactHooksExample } from 'app/dev/examples/ReactHooksExample';
-import { ReactWrapperExample } from 'app/dev/examples/ReactWrapperExample';
+import { RouterDemo } from './examples/RouterDemo';
+// import { TemplNotes } from 'dev/examples/TemplNotes';
+// import { ImageExample } from 'dev/examples/ImageExample';
+// import { StylingLibsDemo } from 'dev/examples/StylingLibsDemo';
+// import { PrimeReactDemo } from 'dev/examples/PrimeReactDemo';
+// import { AsyncLoadEx } from 'dev/examples/AsyncLoadEx';
+// import { ReactHooksExample } from 'dev/examples/ReactHooksExample';
+// import { ReactWrapperExample } from 'dev/examples/ReactWrapperExample';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props {}
@@ -55,7 +57,11 @@ export const ExamplesPage = (): React.ReactElement<Props> => {
                     </li>
                 </ul>
             </nav>
-            <div className={css('solidBox') + ' ' + css('p10')}>
+            <div className={css('solidBox') + ' ' + css('p10')}></div>
+        </div>
+    );
+};
+/*
                 <Switch>
                     <Route path={preRoute + 'router'} component={RouterDemoWrapper}></Route>
                     <Route path={preRoute + 'images'} component={ImageExample}></Route>
@@ -66,9 +72,7 @@ export const ExamplesPage = (): React.ReactElement<Props> => {
                     <Route path={preRoute + 'reacthooks'} exact component={ReactHooksExample}></Route>
                     <Route path={preRoute + 'reacthooksWrapper'} exact component={ReactWrapperExample}></Route>
                 </Switch>
-            </div>
-        </div>
-    );
-};
+
+*/
 
 export default ExamplesPage as React.FC;

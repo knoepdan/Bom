@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createState, useState } from '@hookstate/core';
-import * as utils from 'app/utils/HelperFunc';
+import * as utils from 'common/utils/HelperFunc';
 
 const stateRef = createState(0);
 

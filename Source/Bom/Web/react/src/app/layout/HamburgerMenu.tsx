@@ -1,5 +1,5 @@
 import * as React from 'react';
-import c from 'app/style/cssClasses';
+import c from 'style/cssClasses';
 import css from './HamburgerMenu.module.css';
 import { SideNavHtmlId } from './SideNav';
 
