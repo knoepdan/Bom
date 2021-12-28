@@ -60,13 +60,6 @@ export class NavigationModel {
 export function getNavigation(user: AppUser): NavigationModel {
     const navModel = new NavigationModel();
 
-    /*
-    // login
-    const loginMenu = new MenuItem(null, 'Login');
-    loginMenu.route = NavigationModel.LoginRoute;
-    navModel.topMenues.push(loginMenu);
-*/
-
     // main
     const m = mainNav.getMainMenu();
     navModel.addMenu(m);

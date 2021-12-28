@@ -5,6 +5,8 @@ import React, { useState } from 'react';
 import { useAppContext } from 'app/AppContext';
 import css from 'style/cssClasses';
 
+// TODO -> page probably to be removed
+
 export const LoginPage = (): React.ReactElement => {
     const app = useAppContext();
     const user = app.user;

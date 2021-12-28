@@ -82,7 +82,7 @@ namespace Bom.Web
             //----------
             Identity.IdentityConfig.ConfigureIdentityServices(services);
 
-            var cssFiles = new string[] { "/css/normalize.css", "/css/macros.css", "/css/varsAndDefault.css", "/css/layout.css", "/css/mainClasses.css" }; // also defines order
+            var cssFiles = new string[] { "/css/normalize.css", "/css/macro.css", "/css/varsAndDefault.css", "/css/layout.css", "/css/mainClasses.css" }; // also defines order
             var webRoot = this._env.WebRootPath; // example:  "C:\\Dev\\Github\\Bom\\Source\\Bom\\Web\\wwwroot";
             var provider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(webRoot); // since .net core 6, we have to explicitly specify webRoot (probably a but that will be fixed some day)
 

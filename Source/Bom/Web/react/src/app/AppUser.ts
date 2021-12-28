@@ -2,6 +2,7 @@ import { Right } from 'app/Right';
 export class AppUser {
     username = '';
     token: string | null = '';
+    lang: string = 'en';
     permissions = new Array<Right>();
 
     constructor(username: string, token: string) {

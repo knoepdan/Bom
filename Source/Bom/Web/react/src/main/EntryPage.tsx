@@ -1,11 +1,12 @@
 import * as React from 'react';
+import loc from 'app/Localizer';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props {}
 
 // more or less random notes about webpack setup
 export const EntryPage = (): React.ReactElement<Props> => {
-    return <div>Welcome</div>;
+    return <div>{loc.localizeDynamic('Tmp.Welcome', 'Welcome')}</div>;
 };
 
 export default EntryPage as React.FC;

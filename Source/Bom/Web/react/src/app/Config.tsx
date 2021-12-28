@@ -6,6 +6,7 @@ export interface IConfig {
 interface IPassedUser {
     readonly Username: string;
     readonly Token: string;
+    readonly Lang: string;
 }
 
 function getBom(): any {

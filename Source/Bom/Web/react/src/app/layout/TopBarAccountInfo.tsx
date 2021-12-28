@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'; // useHistory
 import css from './TopBarAccountInfo.module.css';
 
 import { useAppContext } from 'app/AppContext';
+import loc from 'app/Localizer';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Props {}
@@ -59,7 +60,7 @@ export const TopBarAccountInfo = (): React.ReactElement<Props> => {
     } else {
         loginInfo = (
             <a onClick={handleLogoutClick}>
-                Logout {"'"}
+                {loc.localize('App_TopBar_Logout', 'Logout')} {"'"}
                 {user.username}
                 {"'"}
             </a>

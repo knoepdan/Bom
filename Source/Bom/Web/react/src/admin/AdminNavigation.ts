@@ -5,6 +5,7 @@ import { Right } from 'app/Right';
 import { useAppContext } from 'app/AppContext';
 import { StatisticsPage } from './StatisticsPage';
 import { UsersPage } from './UsersPage';
+import loc from 'app/Localizer';
 
 export function getAdminMenu(): MenuItem | null {
     const app = useAppContext();
@@ -12,17 +13,21 @@ export function getAdminMenu(): MenuItem | null {
     let topMenu: MenuItem | null = null;
     // admin
     if (user.hasRight(Right.AdminArea)) {
-        topMenu = new MenuItem(null, 'Admin-Area');
+        topMenu = new MenuItem(null, loc.localize('Admin_AdminArea', 'Admin-Area'));
 
         //  // equals: <StatisticsPage> in jsx https://reactjs.org/docs/jsx-in-depth.html
 
-        const statistic = new MenuItem(topMenu, 'Statistics');
+        const statistic = new MenuItem(topMenu, loc.localize('Admin_NavStatistics', 'Statistics'));
         statistic.route = new RouteInfo('admin/statistics/*', React.createElement(StatisticsPage)); //// equals: <StatisticsPage> in jsx https://reactjs.org/docs/jsx-in-depth.html
 
         topMenu.children.push(statistic);
 
         // users
-        const users = new MenuItem(topMenu, 'Users', new RouteInfo('admin/users/*', React.createElement(UsersPage)));
+        const users = new MenuItem(
+            topMenu,
+            loc.localize('Admin_NavUsers', 'Users'),
+            new RouteInfo('admin/users/*', React.createElement(UsersPage)),
+        );
         topMenu.children.push(users);
     }
     return topMenu;

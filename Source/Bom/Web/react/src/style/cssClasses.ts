@@ -5,9 +5,9 @@ type VariousMacrco = 'nowrap' | 'print' | 'screen' | 'submitDisguise' | 'print' 
 
 type TableMacro = 'tableP0' | 'tableP2' | 'table5';
 
-type PaddingMacro = 'p0' | 'p1' | 'p2' | 'p5' | 'p10' | 'ml10' | 'pl10';
+type PaddingMacro = 'p0' | 'p1' | 'p2' | 'p5' | 'p10' | 'pl10' | 'pr5' | 'pr10';
 
-type MarginMacro = 'm0' | 'm1' | 'm2' | 'm5' | 'm10';
+type MarginMacro = 'm0' | 'm1' | 'm2' | 'm5' | 'm10' | 'ml10';
 
 type TextMacro = 'right' | 'left' | 'center' | 'vt' | 'vm' | 'vb';
 

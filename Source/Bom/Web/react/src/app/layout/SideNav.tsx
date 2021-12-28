@@ -1,9 +1,9 @@
 import * as React from 'react';
 import css from './SideNav.module.css';
 import c from 'style/cssClasses';
-//import * as nav from 'app/common/NavigationState';
 import { MenuItem } from 'app/nav/MenuItem';
 import { NavLink } from 'react-router-dom';
+import loc from 'app/Localizer';
 
 import { useAppContext } from 'app/AppContext';
 
@@ -19,13 +19,13 @@ export const SideNav = (): React.ReactElement<Props> => {
     return (
         <nav className={css.animateFromLeft + ' ' + css.sideNav} id={SideNavHtmlId}>
             <div className={c('pl10')}>
-                <h1>Birdview</h1>
+                <h1>{loc.localize('App_Title', 'Birdview')}</h1>
             </div>
             <hr />
 
-            <ul>
+            <ul className={c('p10')}>
                 {navModel.topMenues.map((topNav, index) => (
-                    <li key={index} className={c('p10')}>
+                    <li key={index}>
                         <AreaNav topNav={topNav}></AreaNav>
                     </li>
                 ))}
@@ -62,7 +62,7 @@ const AreaNav = (props: AreaNavProps): React.ReactElement<AreaNavProps> => {
             }
             return (
                 <NavLink to={route} className={({ isActive }) => '' + (isActive ? ' ' + css.navActive : '')}>
-                    {subNav.label} ( {subNav.route.getRoute()} )
+                    {subNav.label}
                 </NavLink>
             );
         } else {

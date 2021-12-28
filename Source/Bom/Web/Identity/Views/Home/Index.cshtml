@@ -10,6 +10,7 @@
     var linkProvider = new Bom.Web.Identity.IdentityLinkProvider(this.Url);
 
     var userSession = Bom.Web.Identity.IdentityHelper.GetUserSession(this.User);
+    var lang = System.Threading.Thread.CurrentThread.CurrentUICulture; // improve-> dependend on user and not on current thread (in practice they will be the same though)
 }
 
 @if (userSession != null)
@@ -25,6 +26,7 @@
             var u = {};
             u.Username = '@Html.Raw(JavaScriptEncoder.Default.Encode(userSession.User.Username))';
             u.Token = '@Html.Raw(JavaScriptEncoder.Default.Encode(userSession.Token))';
+            u.Lang = '@Html.Raw(lang)';
 
             var b = {};
             b.Info = i;
