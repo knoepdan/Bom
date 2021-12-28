@@ -22,7 +22,7 @@
 
 @media (min-width: 993px) {
     .sideNavSpace {
-        margin-left: 300px;
+        margin: 0 auto 0 300px;
     }
 }
 

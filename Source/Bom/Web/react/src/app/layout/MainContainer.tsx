@@ -19,8 +19,8 @@ export const MainContainer = (): React.ReactElement<Props> => {
         <>
             <TopBar />
             <SideNav />
-            <div className={css('mainContent', 'p2')}>
-                <div className={css('sideNavSpace')}>
+            <div className={css('mainContent', 'sideNavSpace',  'p2')}>
+                <div>
                     <Routes>
                         {navModel.getRoutes().map((route, i) => {
                             const r = route.getRoute();
