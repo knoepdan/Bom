@@ -1,31 +1,34 @@
 import * as React from 'react';
+import { Suspense } from 'react';
 import { SideNav } from 'app/layout/SideNav';
 import { TopBar } from 'app/layout/TopBar';
 import css from 'style/cssClasses';
 import { useAppContext } from 'app/AppContext';
 import { Routes, Route } from 'react-router-dom';
+import loc from 'app/Localizer';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface Props {}
+interface SuspenseContainerProps {
+    element: JSX.Element;
+}
 
-// Info regarding react-rounter
-// - <Rout path="/" exact  -> without exact the path matches with a startwith logic. So normally, path="/" is used with exact.
-// - <Switch - ensures only one component (the first one matching the path ) is returned
+const SuspenseContainer: React.FC<SuspenseContainerProps> = (props: SuspenseContainerProps) => {
+    return <Suspense fallback={<div>{loc.localize('Common_Loading', 'Loading...')}</div>}>{props.element}</Suspense>;
+};
 
-export const MainContainer = (): React.ReactElement<Props> => {
+export const MainContainer = (): React.ReactElement => {
     const app = useAppContext();
     const navModel = app.getNavModel();
     return (
         <>
             <TopBar />
             <SideNav />
-            <div className={css('mainContent', 'sideNavSpace',  'p2')}>
+            <div className={css('mainContent', 'sideNavSpace', 'p2')}>
                 <div>
                     <Routes>
                         {navModel.getRoutes().map((route, i) => {
                             const r = route.getRoute();
                             const compFunc = route.getComponentFunc();
-                            return <Route key={i} path={r} element={compFunc()} />;
+                            return <Route key={i} path={r} element={<SuspenseContainer element={compFunc()} />} />;
                         })}
                     </Routes>
                 </div>

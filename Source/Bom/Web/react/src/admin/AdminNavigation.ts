@@ -3,8 +3,9 @@ import { MenuItem } from 'app/nav/MenuItem';
 import { RouteInfo } from 'app/nav/RouteInfo';
 import { Right } from 'app/Right';
 import { useAppContext } from 'app/AppContext';
-import { StatisticsPage } from './StatisticsPage';
-import { UsersPage } from './UsersPage';
+const StatisticsPage = React.lazy(() => import('./StatisticsPage')); // import { StatisticsPage } from './StatisticsPage';
+const UsersPage = React.lazy(() => import('./UsersPage')); // import { UsersPage } from './UsersPage';
+
 import loc from 'app/Localizer';
 
 export function getAdminMenu(): MenuItem | null {

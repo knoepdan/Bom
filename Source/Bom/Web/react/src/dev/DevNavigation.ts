@@ -2,8 +2,8 @@ import * as React from 'react';
 import { MenuItem } from 'app/nav/MenuItem';
 import { RouteInfo } from 'app/nav/RouteInfo';
 import { Right } from 'app/Right';
-import { DeveloperPage } from './DeveloperPage';
-import { ExamplesPage } from './ExamplesPage';
+const DeveloperPage = React.lazy(() => import('./DeveloperPage')); // import { DeveloperPage } from './DeveloperPage';
+const ExamplesPage = React.lazy(() => import('./ExamplesPage'));
 import { useAppContext } from 'app/AppContext';
 import loc from 'app/Localizer';
 
