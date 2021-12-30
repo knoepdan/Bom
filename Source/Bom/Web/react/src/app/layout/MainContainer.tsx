@@ -6,6 +6,7 @@ import css from 'style/cssClasses';
 import { useAppContext } from 'app/AppContext';
 import { Routes, Route } from 'react-router-dom';
 import loc from 'app/Localizer';
+import ErrorBoundary from 'common/react/ErrorBoundary';
 
 interface SuspenseContainerProps {
     element: JSX.Element;
@@ -13,6 +14,21 @@ interface SuspenseContainerProps {
 
 const SuspenseContainer: React.FC<SuspenseContainerProps> = (props: SuspenseContainerProps) => {
     return <Suspense fallback={<div>{loc.localize('Common_Loading', 'Loading...')}</div>}>{props.element}</Suspense>;
+};
+
+const ErrorDisplay = (): React.ReactElement => {
+    return (
+        <div className={css('p10', 'm10')}>
+            <br />
+            <br />
+            <br />
+            {loc.localize('Main_errorMsg', 'Oh no there was an error. That should not have happened.')}
+            <br />
+            {loc.localize('Main_errorMsgApology', 'We are sorry for the inconvenience')}
+            <br />
+            {loc.localize('Main_errorMsgRecommendation', 'It might be necessary to refresh the browser.')}
+        </div>
+    );
 };
 
 export const MainContainer = (): React.ReactElement => {
@@ -24,13 +40,15 @@ export const MainContainer = (): React.ReactElement => {
             <SideNav />
             <div className={css('mainContent', 'sideNavSpace', 'p2')}>
                 <div>
-                    <Routes>
-                        {navModel.getRoutes().map((route, i) => {
-                            const r = route.getRoute();
-                            const compFunc = route.getComponentFunc();
-                            return <Route key={i} path={r} element={<SuspenseContainer element={compFunc()} />} />;
-                        })}
-                    </Routes>
+                    <ErrorBoundary fallbackComponent={<ErrorDisplay></ErrorDisplay>}>
+                        <Routes>
+                            {navModel.getRoutes().map((route, i) => {
+                                const r = route.getRoute();
+                                const compFunc = route.getComponentFunc();
+                                return <Route key={i} path={r} element={<SuspenseContainer element={compFunc()} />} />;
+                            })}
+                        </Routes>
+                    </ErrorBoundary>
                 </div>
             </div>
         </>

@@ -39,10 +39,6 @@ class ErrorBoundary extends Component<Props, State> {
             if (this.props.fallbackComponent) {
                 return this.props.fallbackComponent;
             } else {
-                // const s = {
-                //     color: 'black',
-                //     padding: '20px',
-                // };
                 return <h1 style={{ padding: '35px' }}>Ups... that should not have happened. We are sorry.</h1>;
             }
         }
