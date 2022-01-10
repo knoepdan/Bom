@@ -1,0 +1,1 @@
+﻿Generating OpenAPI definitions not implemented because it seems quite complicated using the .Net Core (or Net 5 or bigger). It's relativly simple using the old .Net Framework

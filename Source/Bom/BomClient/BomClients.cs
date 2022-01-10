@@ -14,8 +14,7 @@
 #pragma warning disable 8073 // Disable "CS8073 The result of the expression is always 'false' since a value of type 'T' is never equal to 'null' of type 'T?'"
 #pragma warning disable 3016 // Disable "CS3016 Arrays as attribute arguments is not CLS-compliant"
 
-// custom pragma
-#pragma warning disable CS8603 // Possible null reference return.
+#pragma warning disable 8603 // Disable "CS8603 Possible null reference return"
 
 namespace BomClient
 {
@@ -1877,7 +1876,8 @@ namespace BomClient
 
 #pragma warning restore 1591
 #pragma warning restore 1573
-#pragma warning restore  472
-#pragma warning restore  114
-#pragma warning restore  108
+#pragma warning restore 472
+#pragma warning restore 114
+#pragma warning restore 108
 #pragma warning restore 3016
+#pragma warning restore 8603
