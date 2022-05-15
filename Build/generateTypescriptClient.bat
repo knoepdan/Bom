@@ -1,0 +1,25 @@
+@ECHO OFF
+SETLOCAL
+
+
+PUSHD "./../Source/Bom/WebTsClient"
+npm run generate 
+POPD
+IF ERRORLEVEL 1 GOTO FAILED
+
+
+:FAILED
+SET ERROR=1
+ECHO Failed
+pause
+GOTO END
+
+:SUCCEEDED
+SET ERROR=0
+ECHO succeeded
+pause
+
+
+:END
+ECHO.
+EXIT /B

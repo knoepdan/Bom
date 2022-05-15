@@ -1,0 +1,33 @@
+https://github.com/ferdikoomen/openapi-typescript-codegen 
+
+
+generated using this
+npx openapi-typescript-codegen --input ./../Help/apiDev.json --output ./generated
+
+
+
+#################################3
+Code to open API  -> NSWAG   (Bom\Build\generateApiJsonToHelp.bat)
+
+openAPI to C# client  -> NSWAG   (in C# project)
+
+openAPI to typescript  ??   (separate 
+
+
+###### Candidates #########
+
+-  https://github.com/swagger-api/swagger-js#readme - NOK: seems to be for javascript not typescript
+
+-  https://github.com/ferdikoomen/openapi-typescript-codegen  -> seems a good choice (not as many users as nswag though)
+
+-  openapi-generator-cli  ->  NOK requires JAVA so we wont use it
+
+-  NSWAG (ok choice)
+
+## aspects
+- typehandling: enum, dateTime
+- error handling
+- simplicity
+- modularity (not everything in one file)
+- modification: can we adapt serialization/deserialization etc.
+- no or not too many dependencies (no java)
