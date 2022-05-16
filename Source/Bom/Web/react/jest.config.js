@@ -11,7 +11,7 @@ module.exports = {
     }, // ignore css module imports.: https://www.npmjs.com/package/jest-css-modules
 
     // Setup jest for testing-library (        "@testing-library/jest-dom": "^5.16.1",     "@testing-library/react": "^12.1.2",)
-    //setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'],
+    setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'],
 
     // Example for setting up enzyme  (also see src/setupEnzyme.ts)   (remark: discarded in favor of testing-library)
     // snapshotSerializers: ['enzyme-to-json/serializer'],
