@@ -7,12 +7,15 @@ module.exports = {
     testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$',
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
     moduleNameMapper: {
-        "\\.(css|less|scss|sss|styl)$": "<rootDir>/node_modules/jest-css-modules"
-      }, // ignore css module imports.: https://www.npmjs.com/package/jest-css-modules
+        '\\.(css|less|scss|sss|styl)$': '<rootDir>/node_modules/jest-css-modules',
+    }, // ignore css module imports.: https://www.npmjs.com/package/jest-css-modules
 
-    // Setup Enzyme  (see src/setupEnzyme.ts)
-    snapshotSerializers: ['enzyme-to-json/serializer'],
-    setupFilesAfterEnv: ['<rootDir>/src/setupEnzyme.ts'],
+    // Setup jest for testing-library (        "@testing-library/jest-dom": "^5.16.1",     "@testing-library/react": "^12.1.2",)
+    //setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'],
+
+    // Example for setting up enzyme  (also see src/setupEnzyme.ts)   (remark: discarded in favor of testing-library)
+    // snapshotSerializers: ['enzyme-to-json/serializer'],
+    // setupFilesAfterEnv: ['<rootDir>/src/setupEnzyme.ts'],
     // "setupTestFrameworkScriptFile": "<rootDir>/src/setupEnzyme.ts", depreceated in favor of setupFilesAfterEnv
 };
 
