@@ -45,6 +45,7 @@
         "html-webpack-plugin": "^5.5.0",
         "jest": "^28.1.0",
         "jest-css-modules": "^2.1.0",
+        "jest-environment-jsdom": "^28.1.0",
         "mini-css-extract-plugin": "^2.6.0",
         "prettier": "^2.6.2",
         "style-loader": "^3.3.1",
