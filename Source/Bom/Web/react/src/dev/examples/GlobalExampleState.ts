@@ -1,4 +1,4 @@
-import { BaseState } from 'dev/examples/utils/BaseState';
+import { BaseState } from './utils/BaseState';
 import { State } from '@hookstate/core';
 import { SetStateAction } from 'react';
 

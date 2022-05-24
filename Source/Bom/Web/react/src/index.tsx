@@ -1,11 +1,12 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { App } from './App';
 import ErrorBoundary from 'common/react/ErrorBoundary';
 
-ReactDOM.render(
+const el = document.getElementById('root') as HTMLElement;
+const root = ReactDOM.createRoot(el);
+root.render(
     <ErrorBoundary>
         <App />
     </ErrorBoundary>,
-    document.getElementById('root'),
 );
