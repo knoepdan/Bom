@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
-//import { Route, Link } from 'react-router-dom';
-//import { RouterDemoDetails } from 'dev/examples/RouterDemoDetails';
+import { Routes, Route, Link } from 'react-router-dom';
+import { RouterDemoDetails } from './RouterDemoDetails';
 import css from './RouterDemo.module.css';
 
 export interface RouterDemoProps {
@@ -10,12 +9,8 @@ export interface RouterDemoProps {
     bundler: string;
 }
 export const RouterDemo: React.FC<RouterDemoProps> = (props: RouterDemoProps) => {
-    const preRoute = '/dev/examples/router';
+    const preRoute = './'; // we are already on: '/dev/examples/router';
 
-    /*
- <Route path={preRoute + '/:testid'} exact component={RouterDemoDetails}></Route>
-
-    */
     return (
         <div>
             <span className={css.hello}>
@@ -23,8 +18,9 @@ export const RouterDemo: React.FC<RouterDemoProps> = (props: RouterDemoProps) =>
                 (process.env.NODE_ENV: {process.env.NODE_ENV}). And it showcases some basic router behavior.
             </span>
             <div>
-                <span>Here should be the router Route...</span>
-
+                <Routes>
+                    <Route path=":testid" element={<RouterDemoDetails />}></Route>
+                </Routes>
                 <ul>
                     <li>
                         <Link to={preRoute + '/3'}>
@@ -54,7 +50,8 @@ export const RouterDemo: React.FC<RouterDemoProps> = (props: RouterDemoProps) =>
                     <li>
                         Passing props (rarely needed. Often global state or passing url param is the better options):{' '}
                         <br />
-                        Easiest solution I have found: WrapperComponent (as in this example, couldnt get typing to work)
+                        Easiest solution I have found: WrapperComponent (as in this example, couldnt get typing to work,
+                        might be obsolete)
                     </li>
                     <li>Passing url params: see example here or some links</li>
                     <li>
@@ -65,12 +62,13 @@ export const RouterDemo: React.FC<RouterDemoProps> = (props: RouterDemoProps) =>
                         </mark>
                     </li>
                     <li>
-                        Detail link might not support browser refresh in dev mode (depending on settings)
+                        Detail link might not support browser refresh in dev mode (depending on settings, might be
+                        obsolete)
                         <br />
                         https://stackoverflow.com/questions/29718481/unexpected-token-error-in-react-router-component
                     </li>
                 </ul>
-                Some react-router links:
+                Some react-router links (might be obsolete):
                 <ul>
                     <li>https://itnext.io/a-react-router-from-scratch-in-typescript-f0eec6ccb293</li>
                     <li>

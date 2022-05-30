@@ -1,11 +1,13 @@
 import * as React from 'react';
+import { useParams } from 'react-router-dom';
 
 export const RouterDemoDetails: React.FC = (props) => {
+    let { testid } = useParams();
     return (
         <div>
             <h2>
                 Details {'"'}
-                TODO: not working since upgrading to react-router v6
+                {testid}
                 {'"'}
             </h2>
             <br />

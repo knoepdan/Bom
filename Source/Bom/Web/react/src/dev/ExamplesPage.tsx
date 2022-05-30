@@ -2,9 +2,7 @@ import * as React from 'react';
 import css from 'style/cssClasses';
 import { Route, Link, Routes } from 'react-router-dom';
 
-//import { Link } from 'react-router-dom';
-
-// example stauff (to be moved at some point)
+// example stuff (to be moved at some point)
 import { RouterDemo } from './examples/RouterDemo';
 import { TemplNotes } from './examples/TemplNotes';
 import { ImageExample } from './examples/ImageExample';
@@ -24,8 +22,7 @@ export const RouterDemoWrapper: React.FC = () => {
 
 // more or less random notes about webpack setup
 export const ExamplesPage = (): React.ReactElement<Props> => {
-    const preRouteRelative = './';
-    //const preRoute = '/dev/examples/';
+    const preRouteRelative = './'; // we are already on route: "/dev/examples/" so routes must be relative to this
     return (
         <div>
             Examples page <br />
@@ -60,59 +57,15 @@ export const ExamplesPage = (): React.ReactElement<Props> => {
             </nav>
             <div className={css('solidBox') + ' ' + css('p10')}>
                 <Routes>
-                    <Route path="/" element={<div>aaaaaaaaaaaaaaaaaaaaaaa</div>}>
-                        <Route path="dev" element={<div>bbbbbbbbbbbbbbb</div>}>
-                            <Route path="examples" element={<div>ccccccccccc</div>}>
-                                <Route path="router" element={<RouterDemoWrapper />}></Route>
-                                <Route path="images" element={<ImageExample />} />
-                                <Route path="styling" element={<StylingLibsDemo />} />
-                                <Route path="primeReact" element={<PrimeReactDemo />}></Route>
-                                <Route path="notes" element={<TemplNotes />}></Route>
-                                <Route path="async" element={<AsyncLoadEx />}></Route>
-                                <Route path="reacthooks" element={<ReactHooksExample />}></Route>
-                                <Route path="reacthooksWrapper" element={<ReactWrapperExample />}></Route>
-                                <Route path="*" element={<div>NOOO MATCH</div>}></Route>
-                            </Route>
-                        </Route>
-                    </Route>
-                </Routes>
-            </div>
-            <div className={css('solidBox') + ' ' + css('p10')}>
-                <Routes>
-                    <Route path="/" element={<div>aaaaaaaaaaaaaaaaaaaaaaa2</div>}>
-                        <Route path="*" element={<div>path seems to be not ok</div>}></Route>
-                        <Route path="dev" element={<div>bbbbbbbbbbbbbbb</div>}>
-                            <Route path="examples" element={<div>ccccccccccc</div>}>
-                                <Route path="router" element={<RouterDemoWrapper />}></Route>
-                                <Route path="images" element={<ImageExample />} />
-                                <Route path="styling" element={<StylingLibsDemo />} />
-                                <Route path="primeReact" element={<PrimeReactDemo />}></Route>
-                                <Route path="notes" element={<TemplNotes />}></Route>
-                                <Route path="async" element={<AsyncLoadEx />}></Route>
-                                <Route path="reacthooks" element={<ReactHooksExample />}></Route>
-                                <Route path="reacthooksWrapper" element={<ReactWrapperExample />}></Route>
-                            </Route>
-                        </Route>
-                    </Route>
-                </Routes>
-            </div>
-            <div className={css('solidBox') + ' ' + css('p10')}>
-                <Routes>
-                    <Route path="/" element={<div>aaaaaaaaaaaaaaaaaaaaaa333333333</div>}>
-                        <Route path="*" element={<div>path seems to be not ok</div>}></Route>
-                        <Route path="dev" element={<div>bbbbbbbbbbbbbbb</div>}>
-                            <Route path="examples" element={<div>ccccccccccc</div>}>
-                                <Route path="router" element={<RouterDemoWrapper />}></Route>
-                                <Route path="images" element={<ImageExample />} />
-                                <Route path="styling" element={<StylingLibsDemo />} />
-                                <Route path="primeReact" element={<PrimeReactDemo />}></Route>
-                                <Route path="notes" element={<TemplNotes />}></Route>
-                                <Route path="async" element={<AsyncLoadEx />}></Route>
-                                <Route path="reacthooks" element={<ReactHooksExample />}></Route>
-                                <Route path="reacthooksWrapper" element={<ReactWrapperExample />}></Route>
-                            </Route>
-                        </Route>
-                    </Route>
+                    <Route path="router/*" element={<RouterDemoWrapper />}></Route>
+                    <Route path="images" element={<ImageExample />} />
+                    <Route path="styling" element={<StylingLibsDemo />} />
+                    <Route path="primeReact" element={<PrimeReactDemo />}></Route>
+                    <Route path="notes" element={<TemplNotes />}></Route>
+                    <Route path="async" element={<AsyncLoadEx />}></Route>
+                    <Route path="reacthooks" element={<ReactHooksExample />}></Route>
+                    <Route path="reacthooksWrapper" element={<ReactWrapperExample />}></Route>
+                    <Route path="*" element={<div>NO MATCH</div>}></Route>
                 </Routes>
             </div>
         </div>
