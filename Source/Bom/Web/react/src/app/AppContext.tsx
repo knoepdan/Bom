@@ -2,6 +2,7 @@ import * as React from 'react';
 import { AppUser } from './AppUser';
 import * as Config from './Config';
 import * as Nav from 'app/nav/NavigationModel';
+import * as Api from 'api-clients';
 
 //import { ExosPermission } from 'util-components';
 
@@ -29,10 +30,19 @@ export class AppContextImpl implements IAppContext {
     constructor(user: AppUser) {
         this.user = user;
         this.config = Config.getConfig();
+        this.initApi();
     }
     public user: AppUser;
 
     public readonly config: Config.IConfig;
+
+    private initApi(): void {
+        Api.OpenAPI.BASE = this.config.APIUrl;
+        Api.OpenAPI.TOKEN = ''; // reset to be on the safe side
+        if (this.user.token) {
+            Api.OpenAPI.TOKEN = this.user.token;
+        }
+    }
 
     public getNavModel(): Nav.NavigationModel {
         const navModel = Nav.getNavigation(this.user);

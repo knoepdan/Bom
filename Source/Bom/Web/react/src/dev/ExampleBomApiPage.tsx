@@ -8,7 +8,6 @@ export const ExamplesBomApiPage = (): React.ReactElement<Props> => {
 
     const loadSomething = async () => {
         try {
-            Api.OpenAPI.BASE = 'BomApi';
             let result = await Api.TreeService.treeGetRootNodes();
             setRootNodes(result);
         } catch (e: unknown) {
