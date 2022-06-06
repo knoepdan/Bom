@@ -11,9 +11,7 @@ namespace Bom.Web.Identity
 {
     public class AuthenticationMiddleware
     {
-        //private const string AuthorizationHeaderKey = "Authorization";
         private readonly RequestDelegate _next;
-
 
         private const string AuthorizationHeaderKey = "Authorization";
 
@@ -60,54 +58,40 @@ namespace Bom.Web.Identity
         {
             if (authHeaderValue == null || string.IsNullOrEmpty(authHeaderValue.Parameter))
             {
-                authData = new AuthenticationRequestData(null, null);
+                authData = new AuthenticationRequestData(null);
                 return false;
             }
-
-            const string basicAuthToken = "Basic";
-            var isValidBasicAuth = authHeaderValue.Scheme.Equals(basicAuthToken, StringComparison.OrdinalIgnoreCase) &&
-                authHeaderValue?.Parameter != null;
+            const string bearerKey = "Bearer";
+            var isValidBasicAuth = authHeaderValue.Scheme.Equals(bearerKey, StringComparison.OrdinalIgnoreCase) &&
+                !string.IsNullOrWhiteSpace(authHeaderValue?.Parameter);
 
             if (!isValidBasicAuth)
             {
-                authData = new AuthenticationRequestData(null, authHeaderValue?.Parameter ?? "");
+                authData = new AuthenticationRequestData(authHeaderValue?.Parameter ?? "");
                 return false;
             }
-
-            var decoded = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(authHeaderValue?.Parameter ?? ""));
-
-            var data = decoded.Split(":".ToCharArray());
-            if (data.Length != 2)
+            else
             {
-                authData = new AuthenticationRequestData(null, decoded);
-                return false;
+                authData = new AuthenticationRequestData(authHeaderValue?.Parameter);
             }
-
-            var apiKey = data.First();
-            var identityToken = data.Last();
-            authData = new AuthenticationRequestData(apiKey, identityToken);
-
             return authData.HasData;
         }
     }
 
     public class AuthenticationRequestData
     {
-        public AuthenticationRequestData(string? apiKey, string? token)
+        public AuthenticationRequestData(string? token)
         {
-            ApiKey = apiKey;
             Token = token;
         }
 
-        public string? ApiKey { get; }
-
         public string? Token { get; }
 
-        public bool HasData { get { return !string.IsNullOrEmpty(ApiKey) && !string.IsNullOrEmpty(Token); } }
+        public bool HasData { get { return !string.IsNullOrWhiteSpace(Token); } }
 
         public override string ToString()
         {
-            return $"{nameof(AuthenticationRequestData)} Key: {ApiKey}, IdentityToken: {Token}, Valid: {HasData}";
+            return $"{nameof(AuthenticationRequestData)} Token: {Token}, HasData: {HasData}";
         }
     }
 }
